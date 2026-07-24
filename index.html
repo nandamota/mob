@@ -203,6 +203,8 @@ table.cmptbl{border-collapse:collapse;font-size:.75rem;min-width:600px}
         <select class="csel" id="gridCycleSel"></select>
         <button class="csel" id="newCycle"
           style="border-color:var(--rosa);color:var(--rosa);font-weight:700;cursor:pointer">+ Ciclo</button>
+        <button class="csel" id="delCycle"
+          style="border-color:var(--vermelho);color:var(--vermelho);font-weight:700;cursor:pointer">🗑 Ciclo</button>
       </div>
     </div>
     <div id="gridBody"></div>
@@ -644,7 +646,12 @@ async function saveModal(){
   if(!data){alert("Escolha a data.");return}
   if(!M.sinto&&!M.vejo&&!M.sang&&!M.sym&&!M.cor&&!M.fert&&!M.rel&&!M.apice)
     {alert("Escolha pelo menos uma sensação, símbolo ou cor.");return}
-  const cyc=await getOne("cycles",currentCycle);
+  let cyc=await getOne("cycles",currentCycle);
+  if(data<cyc.inicio){
+    cyc.inicio=data;await put("cycles",cyc);
+    const allCD=(await getAll("days")).filter(d=>d.cycle==currentCycle);
+    for(const d of allCD){d.diaCiclo=cycleDayNum(data,d.data);await put("days",d)}
+  }
   if(M.apice){
     const all=(await getAll("days")).filter(d=>d.cycle==currentCycle&&d.apice&&d.data!==data);
     for(const d of all){d.apice=false;await put("days",d)}
@@ -738,8 +745,7 @@ function buildCompareHTML(selCycles,allDays,tableClass){
     h+='<th colspan="6" class="ch cyc-h">Ciclo — início '+fmtBRfull(c.cyc.inicio)+'</th>';
   });
   h+='</tr><tr>';
-  cdata.forEach((c,i)=>{
-    if(i>0)h+='<th class="psep sep"></th>';
+  cdata.forEach((c)=>{
     h+='<th>Data</th><th>Descrição</th><th>Cor</th><th>Á</th><th>R</th><th>♥</th>';
   });
   h+='</tr></thead><tbody>';
@@ -935,6 +941,15 @@ function switchTab(id){
   $("#newCycle").onclick=async()=>{
     const c={id:Date.now(),inicio:todayISO()};await put("cycles",c);
     currentCycle=c.id;renderGrid();gSave();
+  };
+  $("#delCycle").onclick=async()=>{
+    const cycles=await getAll("cycles");
+    if(cycles.length<=1){alert("Não é possível apagar o único ciclo.");return}
+    if(!confirm("Apagar este ciclo e todos os seus dias?"))return;
+    const toDelete=(await getAll("days")).filter(d=>d.cycle==currentCycle);
+    for(const d of toDelete)await del("days",d.key);
+    await del("cycles",currentCycle);
+    currentCycle=null;renderGrid();gSave();
   };
   $("#saveCad").onclick=saveCad;
   $("#gConnectBtn").onclick=async()=>{
