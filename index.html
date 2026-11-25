@@ -2,985 +2,1261 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9a6a36">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gráfico MOB">
 <title>Meu Gráfico MOB</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23f3e8f0'/%3E%3Cg transform='translate(32,32)'%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85'/%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85' transform='rotate(60)'/%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85' transform='rotate(120)'/%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85' transform='rotate(180)'/%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85' transform='rotate(240)'/%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85' transform='rotate(300)'/%3E%3Ccircle cx='0' cy='0' r='7' fill='%23f4d955'/%3E%3Ccircle cx='0' cy='0' r='4' fill='%23c8941a'/%3E%3C/g%3E%3C/svg%3E">
 <style>
 :root{
-  --vermelho:#e34b4b;--verde:#4fc07f;--amarelo:#f4d955;--branco:#f3f1ea;
-  --rosa:#e84d8a;--rosa-claro:#fce4ef;
-  --tinta:#2b2b3a;--tinta-suave:#6a6a7e;--papel:#fbf9f4;
-  --linha:#e3ddd0;--acento:#c08a4e;--acento-escuro:#9a6a36;
+  --vermelho:#e34b4b;--verde:#4fc07f;--amarelo:#f4d955;--branco:#f7f5ee;
+  --rosa:#e84d8a;--rosa-cl:#fce4ef;--rosa-esc:#a3245a;
+  --tinta:#2b2b3a;--suave:#6a6a7e;--papel:#fbf9f4;--card:#fff;
+  --linha:#e6e0d3;--acento:#c08a4e;--acento-esc:#9a6a36;--creme:#faf6ee;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  background:var(--papel);color:var(--tinta);line-height:1.45;padding-bottom:90px}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--papel);
+  color:var(--tinta);line-height:1.45;padding-bottom:calc(76px + env(safe-area-inset-bottom));-webkit-tap-highlight-color:transparent}
 .serif{font-family:Georgia,"Times New Roman",serif}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit}
 
-header{background:linear-gradient(135deg,#c79560,#9a6a36);color:#fff;
-  padding:16px 18px 13px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.12)}
-header h1{font-family:Georgia,serif;font-size:1.4rem;font-weight:700}
-header p{font-size:.78rem;opacity:.9;margin-top:2px}
-.sync-bar{display:flex;justify-content:center;margin-top:6px}
-.sync-pill{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;
-  background:rgba(255,255,255,.18);border-radius:20px;padding:3px 10px;cursor:default}
-.sdot{width:7px;height:7px;border-radius:50%;background:#aaa;flex-shrink:0}
-.sdot.ok{background:#7fff9a}
-.sdot.err{background:#ff8080}
-.sdot.spin{background:none;border:2px solid rgba(255,255,255,.7);border-top-color:transparent;
-  border-radius:50%;width:9px;height:9px;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+header.top{background:linear-gradient(135deg,#c79560,#9a6a36);color:#fff;
+  padding:calc(12px + env(safe-area-inset-top)) 16px 12px;box-shadow:0 2px 12px rgba(0,0,0,.12)}
+header.top .hin{max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+header.top h1{font-family:Georgia,serif;font-size:1.2rem;margin:0;font-weight:700}
+header.top p{margin:1px 0 0;font-size:.76rem;opacity:.92}
+.hdr-cyc{background:rgba(255,255,255,.18);border-radius:12px;padding:5px 10px;text-align:center;font-size:.7rem;line-height:1.2;white-space:nowrap}
+.hdr-cyc b{display:block;font-size:1.05rem}
 
-.wrap{max-width:980px;margin:0 auto;padding:0 12px}
-.tabs{display:flex;gap:4px;margin:14px 0 0;flex-wrap:wrap}
-.tab{flex:1;min-width:65px;border:1px solid var(--linha);border-bottom:none;cursor:pointer;
-  background:#fff;color:var(--tinta-suave);padding:9px 4px;border-radius:11px 11px 0 0;
-  font-size:.76rem;font-weight:600;transition:.15s;text-align:center}
-.tab.active{background:var(--acento);color:#fff;border-color:var(--acento)}
-.panel{display:none;background:#fff;border:1px solid var(--linha);
-  border-radius:0 0 14px 14px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,.05)}
-.panel.active{display:block}
+main{max-width:960px;margin:0 auto;padding:14px 16px}
+.view{display:none}.view.on{display:block}
 
-.cycle-info{display:flex;justify-content:space-between;align-items:center;
-  background:#faf6ee;border:1px solid var(--linha);border-radius:11px;
-  padding:10px 14px;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.cycle-info b{font-family:Georgia,serif;color:var(--acento-escuro);font-size:1.05rem}
-.cycle-info small{color:var(--tinta-suave);font-size:.78rem;display:block}
-select.csel{padding:7px 9px;border:1px solid var(--linha);border-radius:8px;background:#fff;font-size:.84rem}
+nav.bnav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--linha);
+  display:flex;z-index:40;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 12px rgba(0,0,0,.05)}
+.bnav button{flex:1;background:none;border:0;padding:8px 2px 7px;font-size:.66rem;color:var(--suave);
+  display:flex;flex-direction:column;align-items:center;gap:1px;position:relative}
+.bnav .ic{font-size:1.25rem;line-height:1.2;filter:grayscale(.6);opacity:.75}
+.bnav button.on{color:var(--acento-esc);font-weight:700}
+.bnav button.on .ic{filter:none;opacity:1}
+.badge{position:absolute;top:4px;left:calc(50% + 6px);background:var(--rosa);color:#fff;border-radius:9px;
+  font-size:.58rem;padding:0 5px;min-width:15px;line-height:15px;font-weight:700}
 
-/* main grid table */
-table.gtbl{width:100%;border-collapse:collapse;font-size:.8rem}
-.gtbl th,.gtbl td{border:1px solid var(--linha);padding:5px;text-align:center}
-.gtbl th{background:#faf6ee;font-size:.64rem;text-transform:uppercase;letter-spacing:.3px;color:var(--tinta-suave)}
-.gtbl td.desc{text-align:left;font-size:.78rem}
-.gtbl td.cell{width:34px;height:30px}
-.gtbl tr.today td{outline:2px solid var(--acento);outline-offset:-2px}
-.gtbl tr.clickable{cursor:pointer}
-.gtbl tr.clickable:hover td{background:#fdf7ee}
-.sym-cell{font-size:1rem;font-weight:700}
-.selo-R{color:var(--rosa);font-weight:800}
-.empty{text-align:center;color:var(--tinta-suave);padding:26px 10px;font-style:italic}
+.card{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:14px;margin-bottom:12px}
+h2.t{font-family:Georgia,serif;color:var(--acento-esc);font-size:1.08rem;margin:0 0 10px}
+h3.t{font-family:Georgia,serif;color:var(--acento-esc);font-size:.98rem;margin:16px 0 8px}
+.lbl{font-size:.7rem;font-weight:700;color:var(--suave);text-transform:uppercase;letter-spacing:.5px;margin:16px 0 7px}
+.lbl:first-child{margin-top:0}
+.lbl small{text-transform:none;font-weight:500;letter-spacing:0}
+.muted{color:var(--suave);font-size:.8rem}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row>.grow{flex:1;min-width:0}
 
-/* compare table */
-.cmp-wrap{overflow-x:auto}
-.cmp-sel-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.cmp-sel-row select{flex:1;min-width:150px;padding:9px;border:1px solid var(--linha);
-  border-radius:9px;font-size:.86rem;background:#fff}
-table.cmptbl{border-collapse:collapse;font-size:.75rem;min-width:600px}
-.cmptbl th,.cmptbl td{border:1px solid var(--linha);padding:4px 5px;text-align:center;white-space:nowrap}
-.cmptbl th{background:#faf6ee;font-size:.62rem;text-transform:uppercase;color:var(--tinta-suave)}
-.cmptbl th.ch{background:var(--acento);color:#fff;font-size:.7rem;text-align:center}
-.cmptbl td.cd{text-align:left;font-size:.72rem;max-width:130px;overflow:hidden;text-overflow:ellipsis}
-.cmptbl td.csym{width:26px;height:24px;font-weight:700;font-size:.9rem}
-.cmptbl td.cap{font-size:.72rem;font-weight:700}
-.cmptbl td.sep{background:#ece7dd;width:5px;padding:0;border-top:1px solid #ddd;border-bottom:1px solid #ddd;border-left:none;border-right:none}
-.cmptbl tr.ch-row th.sep{background:#9a6a36}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1.5px solid var(--linha);background:#f6f4ef;border-radius:999px;padding:8px 13px;font-size:.86rem;
+  user-select:none;cursor:pointer;color:var(--tinta);line-height:1.2}
+.chip.on,label.chip:has(input:checked){background:var(--rosa-cl);border-color:var(--rosa);color:var(--rosa-esc);font-weight:600}
+label.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip.sm{padding:6px 10px;font-size:.78rem}
+.chip.add{border-style:dashed;background:#fff;color:var(--suave)}
 
-/* modal */
-.fab{position:fixed;right:18px;bottom:20px;width:60px;height:60px;border-radius:50%;
-  background:var(--rosa);color:#fff;border:none;font-size:2rem;cursor:pointer;
-  box-shadow:0 6px 18px rgba(232,77,138,.45);z-index:50;line-height:1}
-.overlay{position:fixed;inset:0;background:rgba(40,40,55,.55);z-index:100;
-  display:none;align-items:flex-start;justify-content:center;padding:18px;overflow-y:auto}
-.overlay.show{display:flex}
-.modal{background:#fff;border-radius:18px;width:100%;max-width:520px;margin:auto;
-  box-shadow:0 20px 50px rgba(0,0,0,.3);overflow:hidden}
-.modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 6px}
-.modal-head h3{color:var(--rosa);font-size:1.1rem;font-weight:800;letter-spacing:.3px}
-.x-btn{background:var(--vermelho);color:#fff;border:none;width:42px;height:42px;
-  border-radius:10px;font-size:1.2rem;cursor:pointer}
-.modal-body{padding:8px 18px 18px}
-.mlabel{font-size:.72rem;font-weight:700;color:var(--tinta-suave);text-transform:uppercase;
-  letter-spacing:.5px;margin:14px 0 7px}
-.opt-group{border:1.5px dashed var(--linha);border-radius:12px;padding:9px;display:flex;gap:7px;flex-wrap:wrap}
-.opt{min-width:54px;min-height:54px;flex:1;border:1.5px solid var(--linha);background:#f1f0ec;
-  border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:1.3rem;color:var(--tinta);padding:6px;transition:.12s;font-weight:700;text-align:center;flex-direction:column}
-.opt small{font-size:.6rem;font-weight:600;display:block}
-.opt.sel{border-color:var(--rosa);background:#fff;box-shadow:0 0 0 2px var(--rosa-claro)}
-.opt.naomostrar{font-size:.66rem;font-style:italic;color:var(--tinta-suave);font-weight:600}
-.swatch-opt{min-width:54px;height:48px}
-.two-col{display:flex;gap:10px;flex-wrap:wrap}
-.two-col>div{flex:1;min-width:150px}
-.minput{width:100%;padding:9px 11px;border:1px solid var(--linha);border-radius:9px;font-size:.92rem;margin-top:4px}
-.modal-foot{display:flex;gap:10px;align-items:center;padding:14px 18px;
-  background:#faf8f3;border-top:1px solid var(--linha)}
-.preview{min-width:70px;height:54px;border:1px solid var(--linha);border-radius:10px;
-  display:flex;align-items:center;justify-content:center;gap:3px;font-size:1.1rem;font-weight:700;background:#fff}
-.upd-btn{flex:1;background:var(--rosa);color:#fff;border:none;padding:14px;border-radius:11px;
-  font-size:1rem;font-weight:700;cursor:pointer}
-.del-line{text-align:center;margin-top:10px}
-.del-line button{background:none;border:none;color:var(--vermelho);font-size:.85rem;cursor:pointer;text-decoration:underline}
+.in{width:100%;padding:11px 12px;border:1px solid var(--linha);border-radius:10px;font-size:16px;background:#fff;color:var(--tinta)}
+textarea.in{min-height:70px;resize:vertical}
+.in:focus{outline:2px solid var(--rosa-cl);border-color:var(--rosa)}
+.fld{margin-bottom:10px}
+.fld>label{display:block;font-size:.76rem;font-weight:600;color:var(--suave);margin-bottom:4px}
 
-/* forms */
-.form-card{border:1px solid var(--linha);border-radius:12px;padding:14px;margin-bottom:14px}
-.form-card h3{font-family:Georgia,serif;color:var(--acento-escuro);margin-bottom:10px;font-size:1.1rem}
-.form-card label{display:block;font-size:.76rem;font-weight:600;color:var(--tinta-suave);margin:8px 0 2px}
-.form-card input{width:100%;padding:9px 11px;border:1px solid var(--linha);border-radius:9px;font-size:.92rem}
-.primary-btn{width:100%;padding:13px;border:none;border-radius:11px;background:var(--verde);
-  color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-top:6px}
-.secondary-btn{width:100%;padding:11px;border:1.5px solid var(--acento);border-radius:11px;
-  background:#fff;color:var(--acento-escuro);font-size:.9rem;font-weight:600;cursor:pointer;margin-top:6px}
-.danger-btn{border-color:var(--vermelho)!important;color:var(--vermelho)!important}
-.info-box{background:#faf6ee;border:1px solid var(--linha);border-radius:10px;padding:12px;
-  font-size:.8rem;color:var(--tinta-suave);line-height:1.6;margin:8px 0}
-.info-box strong{color:var(--tinta)}
+.btn{border:0;border-radius:11px;padding:12px 16px;font-size:.95rem;font-weight:700;display:inline-flex;
+  align-items:center;justify-content:center;gap:6px}
+.btn.pri{background:var(--rosa);color:#fff;box-shadow:0 4px 12px rgba(232,77,138,.3)}
+.btn.ok{background:var(--verde);color:#fff}
+.btn.sec{background:#fff;color:var(--acento-esc);border:1.5px solid var(--acento)}
+.btn.ghost{background:none;color:var(--suave);font-weight:600;padding:8px 10px}
+.btn.danger{background:#fff;color:var(--vermelho);border:1.5px solid var(--vermelho)}
+.btn.block{width:100%}
+.btn.sm{padding:8px 12px;font-size:.82rem;border-radius:9px}
+.btn:disabled{opacity:.5}
 
-.exp-field{margin-bottom:14px}
-.exp-field>label{display:block;font-size:.78rem;font-weight:700;color:var(--acento-escuro);
-  text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
-.cycle-checks{display:flex;flex-direction:column;gap:7px}
-.cycle-check{display:flex;align-items:center;gap:9px;border:1px solid var(--linha);
-  border-radius:10px;padding:10px 12px;cursor:pointer}
-.cycle-check input{width:18px;height:18px;accent-color:var(--acento)}
-.cycle-check span{font-size:.88rem}
-.cycle-check small{color:var(--tinta-suave);display:block;font-size:.74rem}
-.tools{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.tools button{flex:1;min-width:130px;padding:11px;border:1px solid var(--acento);background:#fff;
-  color:var(--acento-escuro);border-radius:9px;font-weight:600;cursor:pointer;font-size:.85rem}
-.note{font-size:.72rem;color:var(--tinta-suave);text-align:center;margin-top:10px;font-style:italic}
+/* hoje */
+.hello{display:flex;gap:10px;flex-wrap:wrap}
+.stat{flex:1;min-width:120px;background:var(--creme);border:1px solid var(--linha);border-radius:12px;padding:9px 12px}
+.stat small{display:block;color:var(--suave);font-size:.7rem;text-transform:uppercase;letter-spacing:.4px;font-weight:700}
+.stat b{font-family:Georgia,serif;color:var(--acento-esc);font-size:1.05rem}
+.alert{border-radius:12px;padding:10px 12px;font-size:.84rem;margin-bottom:12px;display:flex;gap:9px;align-items:center}
+.alert.rosa{background:var(--rosa-cl);color:var(--rosa-esc)}
+.alert.creme{background:var(--creme);border:1px solid var(--linha);color:var(--tinta)}
+.datebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.datebar input{flex:1;min-width:150px}
+.voice{display:flex;gap:8px;align-items:stretch}
+.voice .in{flex:1}
+.mic{width:50px;border-radius:11px;border:0;background:var(--rosa);color:#fff;font-size:1.3rem;flex-shrink:0}
+.mic.rec{animation:pulse 1s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(232,77,138,.25)}}
+.preview-box{display:flex;align-items:center;gap:14px;background:var(--creme);border:1px solid var(--linha);border-radius:12px;padding:10px 12px;margin-top:14px}
+.preview-box .st{width:46px;height:46px;font-size:1.4rem;border-radius:9px}
+.preview-box .txt{flex:1;font-size:.84rem}
+.preview-box .txt b{display:block;font-size:.92rem}
+.toggles{display:flex;gap:8px;flex-wrap:wrap}
+.tg{flex:1;min-width:96px;border:1.5px solid var(--linha);background:#f6f4ef;border-radius:12px;padding:9px 6px;
+  text-align:center;font-size:.78rem;color:var(--tinta);display:flex;flex-direction:column;align-items:center;gap:2px}
+.tg .big{font-size:1.2rem;font-weight:800;line-height:1.1}
+.tg.on{border-color:var(--rosa);background:var(--rosa-cl);color:var(--rosa-esc);font-weight:600}
+details.adj{margin-top:12px;border:1px dashed var(--linha);border-radius:12px;padding:8px 12px}
+details.adj summary{font-size:.84rem;color:var(--acento-esc);font-weight:600;cursor:pointer}
+.sw{width:44px;height:38px;border-radius:9px;border:1.5px solid var(--linha);display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem}
+.sw.on{box-shadow:0 0 0 3px var(--rosa)}
+.savebar{position:sticky;bottom:calc(70px + env(safe-area-inset-bottom));margin-top:14px;display:flex;gap:8px;z-index:5}
+.savebar .btn.pri{flex:1}
 
-.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:9px;margin-bottom:16px}
-.ref-card{border:1px solid var(--linha);border-radius:11px;padding:11px;display:flex;gap:10px;align-items:center}
-.ref-color{width:30px;height:30px;border-radius:7px;flex-shrink:0;border:1px solid rgba(0,0,0,.12);
-  display:flex;align-items:center;justify-content:center;font-size:1.1rem}
-.ref-card small{display:block;color:var(--tinta-suave);font-size:.74rem}
-.rule{border-left:4px solid var(--acento);background:#faf6ee;border-radius:0 10px 10px 0;padding:10px 13px;margin-bottom:9px}
-.rule h4{font-family:Georgia,serif;color:var(--acento-escuro);margin-bottom:2px}
-.rule p{font-size:.84rem;color:var(--tinta-suave)}
-.rule .sub{font-weight:700;color:var(--tinta);font-size:.78rem}
+/* stamps */
+.st{width:26px;height:26px;border-radius:5px;border:1px solid rgba(0,0,0,.18);display:flex;align-items:center;
+  justify-content:center;font-weight:800;font-size:.9rem;line-height:1;position:relative;color:#2b2b3a;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.st.vermelho{background:var(--vermelho);color:#fff}
+.st.verde{background:var(--verde);color:#fff}
+.st.amarelo{background:var(--amarelo)}
+.st.branco{background:var(--branco);border-color:#bdb6a6}
+.st.none{background:#fff}
+.st.dots{color:#111}
+.st.apx{box-shadow:0 0 0 2px var(--rosa)}
+.st.empty{background:transparent;border:1px dashed #e2dccf}
+.st .xo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--rosa);font-size:1.25em;font-weight:900;opacity:.9}
 
-/* PRINT */
+/* chart */
+.chart-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.chart-tools .seg{display:flex;border:1px solid var(--linha);border-radius:10px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:7px 11px;font-size:.8rem;color:var(--suave)}
+.seg button.on{background:var(--acento);color:#fff;font-weight:700}
+.chart-wrap{overflow:auto;border:1px solid var(--linha);border-radius:12px;background:#fff;max-height:70vh}
+table.chart{border-collapse:separate;border-spacing:0}
+.chart th,.chart td{padding:0}
+.chart thead th{position:sticky;top:0;background:var(--creme);z-index:2;font-size:.62rem;color:var(--suave);
+  font-weight:700;height:22px;border-bottom:1px solid var(--linha);min-width:31px}
+.chart th.cn{position:sticky;left:0;z-index:3;background:#fff;text-align:left;padding:4px 8px;min-width:78px;max-width:78px;
+  border-right:1px solid var(--linha);font-size:.7rem;font-weight:600;color:var(--tinta);border-bottom:1px solid #f0ebe0}
+.chart thead th.cn{z-index:4;background:var(--creme);color:var(--suave)}
+.chart th.cn b{display:block;font-family:Georgia,serif;color:var(--acento-esc);font-size:.84rem}
+.chart th.cn small{color:var(--suave);font-weight:500;font-size:.62rem;display:block;line-height:1.25}
+.chart td{text-align:center;vertical-align:top;border-bottom:1px solid #f0ebe0}
+.chart td.off{background:repeating-linear-gradient(45deg,#fff,#fff 4px,#faf8f3 4px,#faf8f3 8px)}
+.cell{display:flex;flex-direction:column;align-items:center;padding:2px 2px 3px;cursor:pointer}
+.cell .lab{height:13px;font-size:.66rem;font-weight:800;color:var(--acento-esc);line-height:13px}
+.cell .lab.x{color:var(--rosa);font-size:.74rem}
+.cell .mk{height:11px;font-size:.58rem;line-height:11px;color:var(--rosa);white-space:nowrap}
+.cell .mk .r{color:var(--acento-esc);font-weight:700}
+.cell .sd{display:inline-block;width:5px;height:5px;border-radius:50%;background:#8d7ad1;vertical-align:middle;margin-left:1px}
+.cell .dm{font-size:.52rem;color:#b3ad9f;line-height:10px}
+.cell.today .st{outline:2px solid var(--acento);outline-offset:1px}
+.demo-tag{display:inline-block;background:var(--amarelo);color:#5a4a00;border-radius:6px;font-size:.64rem;font-weight:700;padding:1px 6px;margin-left:4px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font-size:.72rem;color:var(--suave)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend .st{width:18px;height:18px;font-size:.7rem;border-radius:4px}
+
+table.det{width:100%;border-collapse:collapse;font-size:.8rem}
+.det th,.det td{border-bottom:1px solid #f0ebe0;padding:7px 4px;text-align:left;vertical-align:middle}
+.det th{font-size:.62rem;text-transform:uppercase;color:var(--suave);letter-spacing:.3px}
+.det td.c{text-align:center}
+.det tr{cursor:pointer}
+.det .st{width:22px;height:22px;font-size:.78rem}
+.tags{display:flex;flex-wrap:wrap;gap:3px}
+.tag{background:#efeafb;color:#5b4aa3;border-radius:6px;padding:1px 6px;font-size:.68rem}
+
+/* sheets */
+.ov{position:fixed;inset:0;background:rgba(40,40,55,.5);z-index:60;display:none;align-items:flex-end;justify-content:center}
+.ov.show{display:flex}
+.sheet{background:#fff;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;border-radius:18px 18px 0 0;
+  padding:16px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.25)}
+@media(min-width:640px){.ov{align-items:center}.sheet{border-radius:18px}}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.sheet-h h3{margin:0;font-family:Georgia,serif;color:var(--acento-esc);font-size:1.05rem}
+.xbtn{border:0;background:#f1eee6;width:36px;height:36px;border-radius:50%;font-size:1rem;color:var(--suave)}
+
+.toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
+  background:#2b2b3a;color:#fff;padding:10px 16px;border-radius:999px;font-size:.86rem;opacity:0;transition:.25s;z-index:90;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* dúvidas */
+.q{border:1px solid var(--linha);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.q.done{background:#f7f9f6;border-color:#d9e8dc}
+.q-top{display:flex;gap:10px;align-items:flex-start}
+.q-top input[type=checkbox]{width:20px;height:20px;accent-color:var(--verde);margin-top:2px;flex-shrink:0}
+.q-txt{flex:1;font-size:.9rem;white-space:pre-wrap}
+.q.done .q-txt{color:var(--suave)}
+.q-meta{font-size:.68rem;color:var(--suave);margin-top:3px}
+.q-ans{margin-top:8px;background:var(--creme);border-radius:9px;padding:8px 10px;font-size:.84rem;white-space:pre-wrap}
+.q-ans b{color:var(--acento-esc);font-size:.7rem;text-transform:uppercase;display:block}
+.q-act{display:flex;gap:4px;justify-content:flex-end;margin-top:4px}
+.q-act button{border:0;background:none;color:var(--suave);font-size:.76rem;padding:4px 6px;text-decoration:underline}
+
+/* aprender */
+details.lrn{background:#fff;border:1px solid var(--linha);border-radius:12px;margin-bottom:8px;overflow:hidden}
+details.lrn summary{padding:12px 14px;font-weight:700;color:var(--acento-esc);font-family:Georgia,serif;list-style:none;display:flex;justify-content:space-between;cursor:pointer}
+details.lrn summary::-webkit-details-marker{display:none}
+details.lrn summary::after{content:"＋";color:var(--acento)}
+details.lrn[open] summary::after{content:"－"}
+details.lrn .bd{padding:0 14px 12px;font-size:.88rem}
+details.lrn .bd p{margin:6px 0}
+details.lrn .bd ul{margin:6px 0;padding-left:18px}
+details.lrn .bd li{margin:3px 0}
+.rule{border-left:4px solid var(--acento);background:var(--creme);border-radius:0 10px 10px 0;padding:9px 12px;margin:8px 0}
+.rule h4{margin:0 0 3px;font-family:Georgia,serif;color:var(--acento-esc);font-size:.92rem}
+.rule p{margin:2px 0;font-size:.84rem;color:var(--tinta)}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.ref{display:flex;gap:9px;align-items:center;border:1px solid var(--linha);border-radius:10px;padding:8px}
+.ref .st{flex-shrink:0;width:30px;height:30px}
+.ref b{font-size:.8rem;display:block}
+.ref small{font-size:.72rem;color:var(--suave);line-height:1.25;display:block}
+.disc{font-size:.76rem;color:var(--suave);font-style:italic;text-align:center;margin:14px 6px}
+
+/* onboarding */
+#onb{position:fixed;inset:0;background:var(--papel);z-index:80;overflow-y:auto;display:none}
+#onb.show{display:block}
+body.onb main,body.onb nav.bnav,body.onb header.top{display:none}
+.onb-in{max-width:560px;margin:0 auto;padding:calc(22px + env(safe-area-inset-top)) 18px 30px}
+.onb-steps{display:flex;gap:6px;justify-content:center;margin-bottom:16px}
+.onb-steps i{width:28px;height:5px;border-radius:3px;background:var(--linha)}
+.onb-steps i.on{background:var(--rosa)}
+.onb-hero{text-align:center;margin-bottom:14px}
+.onb-hero h1{font-family:Georgia,serif;color:var(--acento-esc);margin:6px 0 4px;font-size:1.4rem}
+.onb-hero p{color:var(--suave);font-size:.88rem;margin:0}
+.slide{text-align:center;padding:10px 6px}
+.slide .emo{font-size:2.6rem}
+.slide h2{font-family:Georgia,serif;color:var(--acento-esc);font-size:1.15rem;margin:8px 0}
+.slide p{font-size:.92rem;margin:6px 0;color:var(--tinta)}
+.slide .ex{display:flex;justify-content:center;gap:5px;margin:12px 0}
+
 #printArea{display:none}
 @media print{
-  @page{size:A4 landscape;margin:7mm 8mm}
+  @page{size:A4 landscape;margin:8mm}
   body{background:#fff;padding:0}
   body>*:not(#printArea){display:none!important}
-  #printArea{display:block!important}
-  .pcycle{page-break-after:always}
-  .pcycle:last-child{page-break-after:auto}
-  .phead{display:flex;justify-content:space-between;align-items:flex-end;
-    border-bottom:2px solid #9a6a36;margin-bottom:6px;padding-bottom:5px}
-  .phead h2{font-family:Georgia,serif;color:#9a6a36;font-size:1rem;margin:0}
-  .phead small{font-size:.64rem;color:#555;text-align:right;line-height:1.4}
-  table.ptbl{width:100%;border-collapse:collapse;font-size:.62rem;
-    -webkit-print-color-adjust:exact;print-color-adjust:exact;table-layout:fixed}
-  .ptbl th,.ptbl td{border:1px solid #bbb;padding:2px 3px;text-align:center;overflow:hidden}
-  .ptbl th{background:#f0e8d8;font-size:.56rem;text-transform:uppercase;letter-spacing:.2px;color:#555}
-  .ptbl th.ch{background:#c08a4e;color:#fff;text-align:center}
-  .ptbl td.pd{text-align:left;font-size:.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .ptbl td.psym{height:16px;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:.8rem;font-weight:700}
-  .ptbl td.pap{font-weight:700}
-  .ptbl td.psep{background:#e0d8cc;padding:0;border:none;width:4px}
-  .ptbl th.psep{background:#a07840;padding:0;border:none;width:4px}
-  .ptbl .pr{color:#c0305a;font-weight:700}
+  #printArea{display:block!important;font-size:9pt;color:#222}
+  .p-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #9a6a36;padding-bottom:4px;margin-bottom:8px}
+  .p-head h1{font-family:Georgia,serif;color:#9a6a36;font-size:14pt;margin:0}
+  .p-head .meta{font-size:8pt;text-align:right;line-height:1.4;color:#444}
+  .p-sec{margin-top:10px;page-break-inside:auto}
+  .p-sec h2{font-family:Georgia,serif;color:#9a6a36;font-size:11pt;margin:0 0 5px;border-bottom:1px solid #ddd}
+  table.pchart{border-collapse:collapse;width:100%;table-layout:fixed}
+  .pchart th,.pchart td{border:1px solid #ddd;padding:1px 0;text-align:center;vertical-align:top}
+  .pchart thead th{background:#f3ece0;font-size:6.5pt;color:#555}
+  .pchart th.cn{width:22mm;text-align:left;padding:1px 3px;font-size:7pt;background:#fff}
+  .pchart th.cn small{display:block;font-weight:400;color:#666;font-size:6pt}
+  .pchart tr{page-break-inside:avoid}
+  .pchart .cell{padding:1px 0;cursor:default}
+  .pchart .st{width:15px;height:15px;font-size:7.5pt;border-radius:3px}
+  .pchart .lab{height:9px;font-size:6pt;line-height:9px}
+  .pchart .mk{height:8px;font-size:5.5pt;line-height:8px}
+  .pchart .dm{font-size:5pt;line-height:7px}
+  table.pdet{border-collapse:collapse;width:100%;font-size:7.5pt;margin-bottom:6px}
+  .pdet th,.pdet td{border:1px solid #ddd;padding:2px 4px;text-align:left;vertical-align:top}
+  .pdet th{background:#f3ece0;font-size:6.5pt;text-transform:uppercase}
+  .pdet .st{width:13px;height:13px;font-size:6.5pt;border-radius:3px}
+  .pdet tr{page-break-inside:avoid}
+  .p-cyc{font-weight:700;color:#9a6a36;margin:6px 0 3px;font-size:9pt}
+  .p-q{margin:3px 0;padding:3px 6px;border-left:3px solid #c08a4e;page-break-inside:avoid}
+  .p-q small{color:#666}
+  .p-leg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:7pt;color:#555;margin-top:5px}
+  .p-leg span{display:inline-flex;gap:3px;align-items:center}
+  .p-leg .st{width:11px;height:11px;font-size:6pt}
+  .p-foot{margin-top:10px;font-size:7pt;color:#888;text-align:center}
 }
 </style>
 </head>
 <body>
-<header>
-  <h1 class="serif">Meu Gráfico MOB</h1>
-  <p id="hdrUser">Método de Ovulação Billings©</p>
-  <div class="sync-bar" id="syncBar" style="display:none">
-    <div class="sync-pill"><div class="sdot" id="sdot"></div><span id="stxt">—</span></div>
+
+<header class="top">
+  <div class="hin">
+    <div>
+      <h1>Meu Gráfico MOB</h1>
+      <p id="hdrSub">Método de Ovulação Billings</p>
+    </div>
+    <div class="hdr-cyc" id="hdrCyc" style="display:none"></div>
   </div>
 </header>
 
-<div class="wrap">
-  <div class="tabs">
-    <button class="tab active" data-tab="grid">Gráfico</button>
-    <button class="tab" data-tab="compare">Comparar</button>
-    <button class="tab" data-tab="cad">Cadastro</button>
-    <button class="tab" data-tab="exp">Exportar</button>
-    <button class="tab" data-tab="ref">Consulta</button>
+<main>
+  <!-- ═════════ HOJE / REGISTRAR ═════════ -->
+  <section class="view on" id="v-hoje">
+    <div id="hojeAlerts"></div>
+    <div class="hello" id="hojeStats" style="margin-bottom:12px"></div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px">
+        <h2 class="t" id="formTitle" style="margin:0">Registrar o dia</h2>
+        <span class="muted" id="formCycleInfo"></span>
+      </div>
+      <div class="datebar">
+        <input class="in" type="date" id="fDate">
+        <button class="chip sm" data-qd="0">Hoje</button>
+        <button class="chip sm" data-qd="-1">Ontem</button>
+      </div>
+
+      <div class="lbl">Fale ou digite como foi o dia <small>(preenche sozinho)</small></div>
+      <div class="voice">
+        <input class="in" id="fVoice" placeholder="ex.: seca, nada vejo, cólica" enterkeyhint="done" autocomplete="off">
+        <button class="mic" id="micBtn" title="Falar">🎤</button>
+      </div>
+      <div class="muted" id="voiceHint" style="margin-top:5px;font-size:.74rem">Toque no 🎤 e fale: “molhada, clara de ovo, estresse”.</div>
+
+      <div class="lbl">1º — O que sinto?</div>
+      <div class="chips" id="gSinto"></div>
+      <div class="lbl">2º — O que vejo?</div>
+      <div class="chips" id="gVejo"></div>
+      <div class="lbl">Sangramento</div>
+      <div class="chips" id="gSang"></div>
+
+      <div class="preview-box">
+        <div id="pvStamp"></div>
+        <div class="txt"><b id="pvTitle">—</b><span id="pvDesc" class="muted"></span></div>
+      </div>
+
+      <div class="lbl">Marcar</div>
+      <div class="toggles">
+        <button class="tg" id="tgNovo"><span class="big">①</span>1º dia do ciclo</button>
+        <button class="tg" id="tgApice"><span class="big" style="color:var(--rosa)">X</span>Ápice</button>
+        <button class="tg" id="tgRel"><span class="big" style="color:var(--rosa)">♥</span>Relação</button>
+      </div>
+      <div class="muted" id="novoHint" style="display:none;margin-top:6px;font-size:.76rem"></div>
+
+      <details class="adj" id="adjBox">
+        <summary>Ajustar símbolo, cor e regra</summary>
+        <div class="lbl">Cor</div><div class="chips" id="gCor"></div>
+        <div class="lbl">Símbolo</div><div class="chips" id="gSym"></div>
+        <div class="lbl">Fértil (bolinha aberta ○)</div><div class="chips" id="gFert"></div>
+        <div class="lbl">Regra aplicada</div><div class="chips" id="gRule"></div>
+        <div class="muted" id="ruleHint" style="margin-top:6px;font-size:.78rem"></div>
+        <div class="lbl">Descrição <small>(gerada automaticamente — pode editar)</small></div>
+        <input class="in" id="fDesc" placeholder="ex.: Seca / nada vejo">
+      </details>
+
+      <div class="lbl">Sintomas <small>(se tiver)</small></div>
+      <div class="chips" id="gSint"></div>
+
+      <div class="lbl">Anotação curta <small>(opcional)</small></div>
+      <input class="in" id="fNota" placeholder="ex.: dormi mal, viagem" maxlength="120">
+
+      <div class="savebar">
+        <button class="btn danger" id="delDayBtn" style="display:none">🗑</button>
+        <button class="btn pri" id="saveDayBtn">Salvar o dia</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ GRÁFICO ═════════ -->
+  <section class="view" id="v-graf">
+    <div class="chart-tools">
+      <span class="muted">Linhas:</span>
+      <div class="seg" id="rowSeg"></div>
+      <span class="grow"></span>
+      <button class="btn sec sm" id="pdfBtn">📄 PDF</button>
+    </div>
+    <div class="chart-wrap" id="chartWrap"></div>
+    <div class="legend" id="legend"></div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="row" style="justify-content:space-between;margin-bottom:6px">
+        <h2 class="t" style="margin:0">Detalhes do ciclo</h2>
+        <select class="in" id="detSel" style="width:auto;padding:7px 10px;font-size:.85rem"></select>
+      </div>
+      <div id="detBody"></div>
+    </div>
+  </section>
+
+  <!-- ═════════ DÚVIDAS & INSTRUTORA ═════════ -->
+  <section class="view" id="v-duv">
+    <div class="card" id="acompCard"></div>
+
+    <div class="card">
+      <h2 class="t">Dúvidas para a instrutora</h2>
+      <div class="voice">
+        <textarea class="in" id="qNew" placeholder="Escreva sua dúvida…" style="min-height:50px"></textarea>
+      </div>
+      <button class="btn pri block" id="qAdd" style="margin-top:8px">Anotar dúvida</button>
+      <div class="row" style="margin:14px 0 8px">
+        <button class="chip sm on" data-qf="pend">Pendentes</button>
+        <button class="chip sm" data-qf="all">Todas</button>
+      </div>
+      <div id="qList"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="t">Orientações da instrutora</h2>
+      <div class="fld"><input class="in" type="date" id="oDate"></div>
+      <textarea class="in" id="oNew" placeholder="O que a instrutora orientou…"></textarea>
+      <button class="btn sec block" id="oAdd" style="margin-top:8px">Salvar orientação</button>
+      <div id="oList" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- ═════════ APRENDER ═════════ -->
+  <section class="view" id="v-apr">
+    <div id="learn"></div>
+  </section>
+
+  <!-- ═════════ PERFIL ═════════ -->
+  <section class="view" id="v-perf">
+    <div class="card">
+      <h2 class="t">Meu cadastro</h2>
+      <div id="profForm"></div>
+      <button class="btn ok block" id="profSave" style="margin-top:6px">Salvar cadastro</button>
+    </div>
+
+    <div class="card">
+      <h2 class="t">Lembretes</h2>
+      <p class="muted" style="margin-top:0">O app avisa no horário escolhido enquanto estiver aberto ou em segundo plano. Para garantir o aviso <b>todo dia, mesmo com o app fechado</b>, adicione também o lembrete na agenda do celular.</p>
+      <button class="btn sec block" id="notifBtn">🔔 Permitir notificações</button>
+      <button class="btn sec block" id="icsDaily" style="margin-top:8px">📅 Lembrete diário na agenda</button>
+      <button class="btn sec block" id="icsAcomp" style="margin-top:8px">📅 Acompanhamento mensal na agenda</button>
+      <div class="muted" id="notifStatus" style="margin-top:8px;font-size:.76rem"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="t">Inícios de ciclo</h2>
+      <p class="muted" style="margin-top:0">Cada ciclo começa no 1º dia da menstruação. Marque “1º dia do ciclo” ao registrar, ou ajuste aqui.</p>
+      <div id="startsList"></div>
+      <div class="row" style="margin-top:8px">
+        <input class="in grow" type="date" id="startNew">
+        <button class="btn sec sm" id="startAdd">Adicionar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="t">Cópia de segurança</h2>
+      <p class="muted" style="margin-top:0">Seus dados ficam só neste celular. Faça uma cópia de vez em quando (e antes de trocar de aparelho).</p>
+      <div class="row">
+        <button class="btn sec sm grow" id="bkExport">⬇️ Salvar cópia</button>
+        <button class="btn sec sm grow" id="bkImport">⬆️ Restaurar cópia</button>
+      </div>
+      <input type="file" id="bkFile" accept="application/json,.json" style="display:none">
+      <button class="btn ghost block" id="wipeBtn" style="margin-top:10px;color:var(--vermelho)">Apagar todos os dados</button>
+    </div>
+    <p class="disc">Este app é um caderno de registro. As decisões sobre o método devem seguir as orientações da sua instrutora credenciada.</p>
+  </section>
+</main>
+
+<nav class="bnav" id="bnav">
+  <button data-v="hoje" class="on"><span class="ic">✏️</span>Registrar</button>
+  <button data-v="graf"><span class="ic">📊</span>Gráfico</button>
+  <button data-v="duv"><span class="ic">💬</span>Instrutora<span class="badge" id="qBadge" style="display:none"></span></button>
+  <button data-v="apr"><span class="ic">📖</span>Aprender</button>
+  <button data-v="perf"><span class="ic">👤</span>Perfil</button>
+</nav>
+
+<!-- detalhe do dia -->
+<div class="ov" id="dayOv"><div class="sheet" id="daySheet"></div></div>
+
+<!-- PDF -->
+<div class="ov" id="pdfOv"><div class="sheet">
+  <div class="sheet-h"><h3>Exportar PDF</h3><button class="xbtn" data-close="pdfOv">✕</button></div>
+  <div class="lbl">Escolher por</div>
+  <div class="chips">
+    <label class="chip"><input type="radio" name="pdfMode" value="ciclo" checked><span>Ciclos</span></label>
+    <label class="chip"><input type="radio" name="pdfMode" value="periodo"><span>Período</span></label>
   </div>
-
-  <!-- GRÁFICO -->
-  <section class="panel active" id="grid">
-    <div class="cycle-info">
-      <div><b id="ciTitle">Ciclo</b><small id="ciInicio"></small></div>
-      <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
-        <select class="csel" id="gridCycleSel"></select>
-        <button class="csel" id="newCycle"
-          style="border-color:var(--rosa);color:var(--rosa);font-weight:700;cursor:pointer">+ Ciclo</button>
-        <button class="csel" id="delCycle"
-          style="border-color:var(--vermelho);color:var(--vermelho);font-weight:700;cursor:pointer">🗑 Ciclo</button>
-      </div>
-    </div>
-    <div id="gridBody"></div>
-  </section>
-
-  <!-- COMPARAR -->
-  <section class="panel" id="compare">
-    <p style="font-size:.82rem;color:var(--tinta-suave);margin-bottom:11px">
-      Selecione até 3 ciclos para comparar lado a lado:</p>
-    <div class="cmp-sel-row">
-      <select id="cmpA"><option value="">— Ciclo A —</option></select>
-      <select id="cmpB"><option value="">— Ciclo B —</option></select>
-      <select id="cmpC"><option value="">— Ciclo C —</option></select>
-    </div>
-    <button class="primary-btn" id="cmpBtn"
-      style="width:auto;padding:10px 24px;margin-bottom:14px">Comparar</button>
-    <div class="cmp-wrap" id="cmpBody"></div>
-  </section>
-
-  <!-- CADASTRO -->
-  <section class="panel" id="cad">
-    <div class="form-card">
-      <h3 class="serif">Dados da usuária</h3>
-      <label>Nome completo</label><input id="uNome" placeholder="Seu nome">
-      <label>Data de nascimento</label><input id="uNasc" type="date">
-      <label>Telefone / contato</label><input id="uTel" placeholder="(83) ...">
-      <label>Observações (amamentação, pós-pílula, pós-DIU...)</label>
-      <input id="uObs" placeholder="ex.: amamentando">
-    </div>
-    <div class="form-card">
-      <h3 class="serif">Dados da instrutora</h3>
-      <label>Nome</label><input id="iNome" placeholder="Nome da instrutora">
-      <label>Contato (e-mail / telefone)</label><input id="iContato" placeholder="">
-      <label>Credenciamento</label><input id="iCred" placeholder="ex.: Cenplafam">
-    </div>
-    <div class="form-card">
-      <h3 class="serif">Google Drive <span style="font-size:.75rem;font-weight:400;color:var(--tinta-suave)">(opcional, gratuito)</span></h3>
-      <div class="info-box">
-        <strong>Configuração única (5 min):</strong><br>
-        1. Acesse <strong>console.cloud.google.com</strong> e crie um projeto<br>
-        2. Menu → <em>APIs e Serviços → Biblioteca</em> → ative <em>Google Drive API</em><br>
-        3. Menu → <em>APIs e Serviços → Credenciais → Criar credenciais → ID do cliente OAuth 2.0</em><br>
-        4. Tipo: <em>Aplicativo da Web</em> · Em "Origens JavaScript autorizadas" adicione:<br>
-        &nbsp;&nbsp;&nbsp;<code style="background:#eee;padding:1px 5px;border-radius:3px">http://localhost:5173</code><br>
-        5. Copie o <em>ID do cliente</em> (termina em <em>.apps.googleusercontent.com</em>) e cole abaixo
-      </div>
-      <label>Client ID do Google</label>
-      <input id="gClientId" placeholder="...apps.googleusercontent.com" autocomplete="off">
-      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-        <button class="secondary-btn" id="gConnectBtn" style="margin-top:0;flex:1">Conectar com Google</button>
-        <button class="secondary-btn danger-btn" id="gRestoreBtn" style="margin-top:0;flex:1">Restaurar do Drive</button>
-      </div>
-      <div id="gStatusMsg" style="font-size:.76rem;margin-top:8px;color:var(--tinta-suave);min-height:18px"></div>
-    </div>
-    <button class="primary-btn" id="saveCad">Salvar cadastro</button>
-  </section>
-
-  <!-- EXPORTAR -->
-  <section class="panel" id="exp">
-    <div class="exp-field">
-      <label>Quais ciclos incluir no PDF? (até 3 ficam lado a lado)</label>
-      <div class="cycle-checks" id="expChecks"></div>
-    </div>
-    <button class="primary-btn" id="genPDF" style="background:var(--rosa)">
-      Gerar PDF — 3 ciclos lado a lado</button>
-    <p class="note">Abre impressão em paisagem (A4). Selecione "Salvar como PDF". Com até 3 ciclos marcados eles ficam em colunas paralelas para comparação.</p>
-    <div class="tools">
-      <button id="exportBtn">Backup (JSON)</button>
-      <button id="importBtn">Importar backup</button>
-      <input type="file" id="importFile" accept="application/json" style="display:none">
-    </div>
-  </section>
-
-  <!-- CONSULTA -->
-  <section class="panel" id="ref">
-    <h2 class="serif" style="color:var(--acento-escuro);margin-bottom:9px">Cores e símbolos</h2>
-    <div class="ref-grid" id="refColors"></div>
-    <h2 class="serif" style="color:var(--acento-escuro);margin-bottom:9px">As 4 regras</h2>
-    <div id="refRules"></div>
-  </section>
-</div>
-
-<button class="fab" id="fab" title="Registrar dia">+</button>
-
-<!-- MODAL -->
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <div class="modal-head">
-      <h3 id="modalTitle">REGISTRAR DIA</h3>
-      <button class="x-btn" id="closeModal">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="mlabel">Data</div>
-      <input class="minput" type="date" id="mData" style="margin-top:0">
-
-      <div class="mlabel">1º — O que sinto?</div>
-      <div class="opt-group" id="sintoGroup"></div>
-
-      <div class="mlabel">2º — O que vejo? (muco)</div>
-      <div class="opt-group" id="vejoGroup"></div>
-
-      <div class="mlabel">Sangramento / borra</div>
-      <div class="opt-group" id="sangGroup"></div>
-
-      <div class="mlabel">Símbolo <span style="font-weight:400;text-transform:none">(sugerido — pode trocar)</span></div>
-      <div class="opt-group" id="symGroup"></div>
-
-      <div class="mlabel">Cor <span style="font-weight:400;text-transform:none">(sugerida — pode trocar)</span></div>
-      <div class="opt-group" id="colorGroup"></div>
-
-      <div class="mlabel">Regra aplicada</div>
-      <div class="opt-group" id="ruleGroup"></div>
-      <div id="ruleHint" style="display:none;font-size:.78rem;color:var(--acento-escuro);
-        background:#faf6ee;border-radius:9px;padding:8px 11px;margin-top:7px;line-height:1.4"></div>
-
-      <div class="two-col">
-        <div>
-          <div class="mlabel">Fertilidade</div>
-          <div class="opt-group" id="fertGroup"></div>
-        </div>
-        <div>
-          <div class="mlabel">Relação</div>
-          <div class="opt-group" id="relGroup"></div>
-        </div>
-      </div>
-
-      <div class="mlabel">Ápice (último dia escorregadio / muco fértil)</div>
-      <div class="opt-group" id="apiceGroup"></div>
-      <div id="apiceHint" style="display:none;font-size:.78rem;color:var(--acento-escuro);
-        background:#fce4ef;border-radius:9px;padding:8px 11px;margin-top:7px;line-height:1.4"></div>
-
-      <div class="mlabel">Descrição <span style="font-weight:400;text-transform:none">(gerada automaticamente — pode editar)</span></div>
-      <input class="minput" type="text" id="mDesc" placeholder="ex.: Seca / nada vejo" style="margin-top:0">
-
-      <div class="del-line"><button id="delDay">Apagar este dia</button></div>
-    </div>
-    <div class="modal-foot">
-      <div class="preview" id="preview">—</div>
-      <button class="upd-btn" id="updBtn">Salvar</button>
+  <div id="pdfCiclos" style="margin-top:10px"></div>
+  <div id="pdfPeriodo" style="display:none;margin-top:10px">
+    <div class="row">
+      <div class="grow fld"><label>De</label><input class="in" type="date" id="pdfDe"></div>
+      <div class="grow fld"><label>Até</label><input class="in" type="date" id="pdfAte"></div>
     </div>
   </div>
-</div>
+  <div class="lbl">Incluir</div>
+  <div class="chips">
+    <label class="chip"><input type="checkbox" id="pdfDet" checked><span>Descrição dos dias e sintomas</span></label>
+    <label class="chip"><input type="checkbox" id="pdfQ"><span>Dúvidas</span></label>
+    <label class="chip"><input type="checkbox" id="pdfQAll"><span>…inclusive as já respondidas</span></label>
+    <label class="chip"><input type="checkbox" id="pdfO"><span>Orientações da instrutora</span></label>
+  </div>
+  <button class="btn pri block" id="pdfGo" style="margin-top:16px">Gerar PDF</button>
+  <p class="muted" style="font-size:.74rem;text-align:center">Abre a tela de impressão: escolha <b>“Salvar como PDF”</b> e depois compartilhe pelo WhatsApp ou e-mail.</p>
+</div></div>
 
+<!-- onboarding -->
+<div id="onb"><div class="onb-in" id="onbIn"></div></div>
+
+<div class="toast" id="toast"></div>
 <div id="printArea"></div>
 
 <script>
-/* ── constants ── */
+/* ════════════════ CONSTANTES DO MÉTODO ════════════════ */
 const COLORS=[
-  {id:"vermelho",hex:"#e34b4b",nome:"Vermelho",desc:"Sangramento / menstruação"},
-  {id:"amarelo",hex:"#f4d955",nome:"Amarelo",desc:"Fluxo infértil (PBI) e pós-ovulação"},
-  {id:"verde",hex:"#4fc07f",nome:"Verde",desc:"Sensação de seca"},
-  {id:"branco",hex:"#f3f1ea",nome:"Branco",desc:"Dias férteis"}
+  {id:"vermelho",nome:"Vermelho",desc:"Sangramento / menstruação"},
+  {id:"verde",nome:"Verde",desc:"Sensação de seca"},
+  {id:"amarelo",nome:"Amarelo",desc:"Fluxo infértil (PBI) e pós-ovulação"},
+  {id:"branco",nome:"Branco",desc:"Dias férteis"}
 ];
 const SYMBOLS=[
-  {id:"cheia",ch:"●",nome:"Bolinha fechada — sangramento"},
-  {id:"borra",ch:"⠿",nome:"Pequenas bolinhas — manchas"},
-  {id:"igual",ch:"=",nome:"Igual — fluxo infértil"},
-  {id:"traco",ch:"❘",nome:"Tracinho — seco"}
+  {id:"cheia",ch:"●",nome:"Bolinha fechada",desc:"sangramento"},
+  {id:"borra",ch:"⠿",nome:"Pontinhos",desc:"manchas / borra"},
+  {id:"igual",ch:"=",nome:"Igual",desc:"fluxo infértil (PBI)"},
+  {id:"traco",ch:"❘",nome:"Tracinho",desc:"seco"}
 ];
-const FERT=[{id:"aberta",ch:"○",nome:"Bolinha aberta — fértil"}];
-const SINTO=["Seca","Molhada","Úmida","Pegajosa","Escorregadia"];
+const SINTO=["Seca","Úmida","Molhada","Pegajosa","Escorregadia"];
 const VEJO=["Nada vejo","Clara de ovo","Leitoso","Turvo","Flocoso"];
-const SANG=["Sangramento","Menstruação","Manchas/borra"];
+const SANG=["Menstruação","Sangramento","Manchas/borra"];
+const SINTOMAS=["Cólica","Estresse","Dor de cabeça","Inchaço","Seios sensíveis","Dor lombar","Cansaço","Irritação","Insônia","Doença/febre","Viagem","Enjoo","Acne"];
 const RULES=[
-  {n:"Regra 01",t:"Evitar relação sexual em dias de forte sangramento."},
-  {n:"Regra 02",t:"Noites alternadas disponíveis durante o PBI."},
-  {n:"Regra 03",e:"PBI interrompido + desejo de espaçar: suspender o ato conjugal.",
-    c:"Esperar a sensação escorregadia (ou de maior fertilidade) para o ato conjugal."},
-  {n:"Regra 04 — Ápice",
-    e:"Após o ápice, manter abstinência por mais 3 dias; retornar na manhã do 4º dia.",
-    c:"Relação quando a vulva estiver escorregadia e inchada, e por 3 dias após o ápice."}
+  {n:"1",t:"Regra 01",txt:"Evitar relação sexual em dias de forte sangramento."},
+  {n:"2",t:"Regra 02",txt:"Noites alternadas disponíveis durante o PBI."},
+  {n:"3",t:"Regra 03",esp:"PBI interrompido + desejo de espaçar: suspender o ato conjugal.",con:"Esperar a sensação escorregadia (ou de maior fertilidade) para o ato conjugal."},
+  {n:"4",t:"Regra 04 — Ápice",esp:"Após o ápice, manter abstinência por mais 3 dias; retornar na manhã do 4º dia.",con:"Relação quando a vulva estiver escorregadia e inchada, e por 3 dias após o ápice."}
 ];
-const RULE_HINTS={
-  "1":"Regra 01 — Evitar relação em dias de forte sangramento.",
-  "2":"Regra 02 — Noites alternadas disponíveis durante o PBI.",
-  "3":"Regra 03 — Para espaçar: suspender após interromper o PBI. Para conquistar: esperar a sensação escorregadia."
-};
 
-/* ── state ── */
-let M={data:"",sinto:"",vejo:"",sang:"",sym:"",rule:"",cor:"",fert:"",
-       rel:false,apice:false,desc:"",descEdited:false,editKey:null};
-let db, currentCycle=null;
+/* ════════════════ ESTADO / ARMAZENAMENTO ════════════════ */
+const LS="mob_v2";
+const DEF_PROFILE={nome:"",idade:"",objetivo:"",filhos:"",qtdFilhos:"",situacao:"",instrutora:"",instrContato:"",diaAcomp:"",horaAcomp:"",lembrete:false,horaLembrete:"21:00"};
+function fresh(){return{v:2,onboarded:false,profile:{...DEF_PROFILE},starts:[],days:{},duvidas:[],orient:[],customSint:[],rows:3,lastNotif:""}}
+function load(){
+  try{const r=localStorage.getItem(LS);if(r){const o=JSON.parse(r);const f=fresh();
+    return{...f,...o,profile:{...f.profile,...(o.profile||{})}}}}catch(e){}
+  return null;
+}
+let S=load()||fresh();
+const isNew=!localStorage.getItem(LS);
+function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){toast("⚠️ Não foi possível salvar")}}
 
-/* ── indexedDB ── */
-function openDB(){return new Promise((res,rej)=>{
-  const r=indexedDB.open("billings2",1);
-  r.onupgradeneeded=e=>{const d=e.target.result;
-    if(!d.objectStoreNames.contains("days"))d.createObjectStore("days",{keyPath:"key"});
-    if(!d.objectStoreNames.contains("cycles"))d.createObjectStore("cycles",{keyPath:"id"});
-    if(!d.objectStoreNames.contains("meta"))d.createObjectStore("meta",{keyPath:"id"});
-  };
-  r.onsuccess=e=>{db=e.target.result;res()};r.onerror=rej;
-})}
-const store=(s,m)=>db.transaction(s,m).objectStore(s);
-const getAll=s=>new Promise(r=>{const o=[];store(s,"readonly").openCursor().onsuccess=e=>{
-  const c=e.target.result;if(c){o.push(c.value);c.continue()}else r(o)}});
-const getOne=(s,k)=>new Promise(r=>{store(s,"readonly").get(k).onsuccess=e=>r(e.target.result)});
-const put=(s,v)=>new Promise(r=>{store(s,"readwrite").put(v).onsuccess=()=>r()});
-const del=(s,k)=>new Promise(r=>{store(s,"readwrite").delete(k).onsuccess=()=>r()});
-
-/* ── utils ── */
+/* ════════════════ UTILITÁRIOS ════════════════ */
 const $=s=>document.querySelector(s);
-const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
-const fmtBR=iso=>{const p=iso.split("-");return p[2]+"/"+p[1]};
-const fmtBRfull=iso=>{const p=iso.split("-");return p[2]+"/"+p[1]+"/"+p[0]};
-const colorHex=id=>{const c=COLORS.find(c=>c.id===id);return c?c.hex:"#fff"};
-const symChar=id=>{const s=SYMBOLS.find(s=>s.id===id);return s?s.ch:""};
-const fertChar=id=>{const f=FERT.find(f=>f.id===id);return f?f.ch:""};
-const cycleDayNum=(ini,d)=>Math.floor((new Date(d)-new Date(ini))/86400000)+1;
+const $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const isoOf=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const todayISO=()=>isoOf(new Date());
+const parse=s=>{const[y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return isoOf(d)};
+const diffDays=(a,b)=>Math.round((parse(b)-parse(a))/864e5);
+const br=s=>s?s.slice(8,10)+"/"+s.slice(5,7):"";
+const brFull=s=>s?s.slice(8,10)+"/"+s.slice(5,7)+"/"+s.slice(0,4):"";
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+let toastT;
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2200)}
+const symCh=id=>(SYMBOLS.find(s=>s.id===id)||{}).ch||"";
+const firstName=()=>(S.profile.nome||"").trim().split(/\s+/)[0]||"";
 
-/* ── cloud sync ── */
-/* ── sync status ── */
-function setSyncStatus(state,txt){
-  const bar=$("#syncBar"),dot=$("#sdot"),stxt=$("#stxt");
-  if(state==="hide"){bar.style.display="none";return}
-  bar.style.display="flex";
-  dot.className="sdot"+(state==="ok"?" ok":state==="err"?" err":state==="spin"?" spin":"");
-  stxt.textContent=txt||"";
-}
-function setGMsg(txt,color){
-  const el=$("#gStatusMsg");if(el){el.textContent=txt;el.style.color=color||"var(--tinta-suave)"}
-}
-
-/* ── Google Drive sync ── */
-let gToken=null;
-let gFileId=localStorage.getItem("gdrive_file_id")||null;
-
-function gLoadScript(){
-  return new Promise(res=>{
-    if(window.google?.accounts?.oauth2){res();return}
-    const s=document.createElement("script");
-    s.src="https://accounts.google.com/gsi/client";
-    s.onload=res;document.head.appendChild(s);
+/* ════════════════ CICLOS ════════════════ */
+function getCycles(){
+  let st=[...new Set(S.starts)].sort();
+  const dk=Object.keys(S.days).sort();
+  if(dk.length&&(!st.length||dk[0]<st[0]))st=[dk[0],...st];
+  const today=todayISO();
+  return st.map((s,i)=>{
+    const next=st[i+1];
+    const end=next?addDays(next,-1):null;
+    const inC=dk.filter(d=>d>=s&&(!end||d<=end));
+    let maxDay=end?diffDays(s,end)+1:(inC.length?diffDays(s,inC[inC.length-1])+1:1);
+    if(!end&&today>=s)maxDay=Math.max(maxDay,diffDays(s,today)+1);
+    const apex=inC.find(d=>S.days[d].apice)||null;
+    return{n:i+1,start:s,end,closed:!!next,maxDay,dates:inC,apex,implicit:!S.starts.includes(s)};
   });
 }
+function cycleOf(date,cyc=getCycles()){let r=null;for(const c of cyc)if(c.start<=date)r=c;return r}
+function postLabel(c,date){
+  if(!c||!c.apex)return"";const k=diffDays(c.apex,date);
+  return k===0?"X":(k>=1&&k<=3?String(k):"");
+}
+const isBleed=d=>d&&(d.sang==="Menstruação"||d.sang==="Sangramento");
 
-async function gSignIn(clientId){
-  await gLoadScript();
-  return new Promise((res,rej)=>{
-    const client=google.accounts.oauth2.initTokenClient({
-      client_id:clientId,
-      scope:"https://www.googleapis.com/auth/drive.file",
-      callback:resp=>{
-        if(resp.error){rej(new Error(resp.error));return}
-        gToken=resp.access_token;res();
-      }
-    });
-    client.requestAccessToken();
-  });
+/* ════════════════ CARIMBO (SELO) ════════════════ */
+function stampHTML(d,opts={}){
+  if(!d)return'<div class="st empty"></div>';
+  const cls=["st",d.cor||"none"];
+  if(d.sym==="borra")cls.push("dots");
+  if(opts.apex)cls.push("apx");
+  const inner=symCh(d.sym)+(d.fert?"○":"");
+  return'<div class="'+cls.join(" ")+'">'+inner+(opts.apex&&opts.xo?'<span class="xo">X</span>':"")+'</div>';
+}
+function cellHTML(d,date,c,today){
+  const lab=d?postLabel(c,date):"";
+  const mk=d?((d.rel?"♥":"")+(d.rule?'<span class="r">'+d.rule+'</span>':"")+((d.sintomas&&d.sintomas.length)||d.nota?'<i class="sd"></i>':"")):"";
+  return'<div class="cell'+(date===today?" today":"")+'" data-date="'+date+'">'
+    +'<div class="lab'+(lab==="X"?" x":"")+'">'+lab+'</div>'
+    +stampHTML(d,{apex:lab==="X"})
+    +'<div class="mk">'+mk+'</div><div class="dm">'+date.slice(8,10)+'</div></div>';
 }
 
-async function gFindFile(){
-  const r=await fetch(
-    "https://www.googleapis.com/drive/v3/files?q=name%3D'billings-mob-data.json'+and+trashed%3Dfalse&fields=files(id)",
-    {headers:{Authorization:"Bearer "+gToken}});
-  const j=await r.json();
-  return j.files?.[0]?.id||null;
+/* ════════════════ SUGESTÃO AUTOMÁTICA ════════════════ */
+function suggest(f){
+  if(f.sang==="Menstruação"||f.sang==="Sangramento")return{cor:"vermelho",sym:"cheia",fert:false};
+  if(f.sang==="Manchas/borra")return{cor:"vermelho",sym:"borra",fert:false};
+  if(f.sinto==="Escorregadia"||f.vejo==="Clara de ovo")return{cor:"branco",sym:"",fert:true};
+  if(f.sinto==="Seca"&&(!f.vejo||f.vejo==="Nada vejo"))return{cor:"verde",sym:"traco",fert:false};
+  if(f.sinto||f.vejo)return{cor:"amarelo",sym:"igual",fert:false};
+  return null;
+}
+function buildDesc(f){
+  const p=[];
+  if(f.sinto)p.push(f.sinto);
+  if(f.sang)p.push(f.sang.toLowerCase());
+  if(f.vejo==="Nada vejo")p.push("nada vejo");else if(f.vejo)p.push("muco "+f.vejo.toLowerCase());
+  return p.join(" / ");
+}
+function stampTitle(f){
+  const c=COLORS.find(x=>x.id===f.cor);const s=SYMBOLS.find(x=>x.id===f.sym);
+  if(!c&&!s&&!f.fert)return"Escolha o que sente e vê";
+  return[c&&c.nome,s&&s.nome.toLowerCase(),f.fert&&"bolinha aberta (fértil)"].filter(Boolean).join(" · ");
 }
 
-async function gSave(){
-  if(!gToken)return;
-  setSyncStatus("spin","salvando no Drive…");
-  try{
-    const body=JSON.stringify({cycles:await getAll("cycles"),days:await getAll("days"),meta:await getAll("meta")});
-    if(!gFileId)gFileId=await gFindFile();
-    if(gFileId){
-      const r=await fetch("https://www.googleapis.com/upload/drive/v3/files/"+gFileId+"?uploadType=media",
-        {method:"PATCH",headers:{Authorization:"Bearer "+gToken,"Content-Type":"application/json"},body});
-      if(r.status===404){gFileId=null;localStorage.removeItem("gdrive_file_id");await gSave();return}
-      if(!r.ok)throw new Error("HTTP "+r.status);
-    }else{
-      const form=new FormData();
-      form.append("metadata",new Blob([JSON.stringify({name:"billings-mob-data.json"})],{type:"application/json"}));
-      form.append("file",new Blob([body],{type:"application/json"}));
-      const r=await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",
-        {method:"POST",headers:{Authorization:"Bearer "+gToken},body:form});
-      if(!r.ok)throw new Error("HTTP "+r.status);
-      const j=await r.json();
-      gFileId=j.id;localStorage.setItem("gdrive_file_id",gFileId);
-    }
-    setSyncStatus("ok","salvo no Drive ✓");
-    setGMsg("Salvo no Drive ✓","var(--verde)");
-  }catch(e){
-    setSyncStatus("err","erro no Drive");
-    setGMsg("Erro ao salvar: "+e.message,"var(--vermelho)");
-    console.error("Drive save error:",e);
-  }
+/* ════════════════ VOZ / TEXTO → CAMPOS ════════════════ */
+const VOICE_MAP=[
+  ["sinto","Escorregadia",/escorreg|lubrific|liso|lisa|deslizando/],
+  ["sinto","Molhada",/molhad/],
+  ["sinto","Úmida",/umid/],
+  ["sinto","Pegajosa",/pegajos|grudent/],
+  ["sinto","Seca",/\bsec[ao]s?\b|sequinh|secura/],
+  ["vejo","Clara de ovo",/clara de ovo|elastic|transparent|estica|fio/],
+  ["vejo","Leitoso",/leitos|cremos/],
+  ["vejo","Turvo",/turv|opac/],
+  ["vejo","Flocoso",/floc|grum|pedacinh/],
+  ["vejo","Nada vejo",/nada|nao vi|nao vejo|sem muco|nenhum muco/],
+  ["sang","Manchas/borra",/borra|mancha|marrom|escape|spotting/],
+  ["sang","Menstruação",/menstrua|fluxo|regra veio|desceu/],
+  ["sang","Sangramento",/sangr/]
+];
+const SINT_MAP=[["Cólica",/colica/],["Estresse",/estress/],["Dor de cabeça",/cabeca|enxaqueca/],["Inchaço",/inchac|inchad/],
+  ["Seios sensíveis",/seio|mama|peito/],["Dor lombar",/lombar|costas/],["Cansaço",/cansa/],["Irritação",/irrita/],
+  ["Insônia",/insonia|dormi mal/],["Doença/febre",/febre|gripe|doente|doenca/],["Viagem",/viag/],["Enjoo",/enjo/],["Acne",/acne|espinha/]];
+function parseVoice(txt){
+  const t=norm(txt);const got=[];
+  if(/anteontem/.test(t)){setFormDate(addDays(todayISO(),-2));got.push("anteontem")}
+  else if(/\bontem\b/.test(t)){setFormDate(addDays(todayISO(),-1));got.push("ontem")}
+  const done={};
+  if(!F.desc||F.desc===buildDesc(F))F.descEdited=false;
+  for(const[k,v,re]of VOICE_MAP){if(!done[k]&&re.test(t)){F[k]=v;done[k]=1;got.push(v)}}
+  if(done.sinto||done.vejo||done.sang)F.manual=false;
+  for(const[n,re]of SINT_MAP){if(re.test(t)&&!F.sintomas.includes(n)){F.sintomas.push(n);got.push(n)}}
+  for(const c of S.customSint){if(t.includes(norm(c))&&!F.sintomas.includes(c)){F.sintomas.push(c);got.push(c)}}
+  if(/apice|pico/.test(t)){F.apice=true;got.push("ápice")}
+  if(/relacao|ato conjugal/.test(t)){F.rel=true;got.push("relação")}
+  if(/novo ciclo|primeiro dia/.test(t)){F.novo=true;got.push("1º dia")}
+  if(done.sinto||done.vejo||done.sang)applySuggestion();
+  autoNovo();renderForm();
+  toast(got.length?"✓ "+got.join(", "):"Não reconheci — toque nas opções abaixo");
 }
 
-async function gRestore(){
-  if(!gToken){setGMsg("Conecte ao Google primeiro.","var(--vermelho)");return}
-  setSyncStatus("spin","restaurando do Drive…");
-  try{
-    if(!gFileId)gFileId=await gFindFile();
-    if(!gFileId){setGMsg("Nenhum arquivo encontrado no Drive.","var(--vermelho)");setSyncStatus("hide","");return}
-    const r=await fetch("https://www.googleapis.com/drive/v3/files/"+gFileId+"?alt=media",
-      {headers:{Authorization:"Bearer "+gToken}});
-    if(!r.ok)throw new Error("HTTP "+r.status);
-    const d=await r.json();
-    if(!d?.cycles)throw new Error("Arquivo inválido");
-    for(const c of(d.cycles||[]))await put("cycles",c);
-    for(const x of(d.days||[]))await put("days",x);
-    for(const m of(d.meta||[]))await put("meta",m);
-    await renderGrid();await loadCad();
-    setSyncStatus("ok","restaurado ✓");
-    setGMsg("Dados restaurados do Drive ✓","var(--verde)");
-  }catch(e){
-    setSyncStatus("err","erro ao restaurar");
-    setGMsg("Erro ao restaurar: "+e.message,"var(--vermelho)");
-  }
-}
-
-/* ── suggestions ── */
-function suggestFromSensations(){
-  if(M.sang==="Sangramento"||M.sang==="Menstruação")return{cor:"vermelho",sym:"cheia"};
-  if(M.sang==="Manchas/borra")return{cor:"vermelho",sym:"borra"};
-  if(M.sinto==="Seca"&&(!M.vejo||M.vejo==="Nada vejo"))return{cor:"verde",sym:"traco"};
-  if(M.sinto==="Escorregadia"||M.vejo==="Clara de ovo")return{cor:"branco",sym:""};
-  if(M.sinto||M.vejo)return{cor:"amarelo",sym:"igual"};
-  return{};
-}
-function buildDesc(){
-  const parts=[];
-  if(M.sinto)parts.push(M.sinto);
-  if(M.sang)parts.push(M.sang.toLowerCase());
-  if(M.vejo&&M.vejo!=="Nada vejo")parts.push("muco "+M.vejo.toLowerCase());
-  else if(M.vejo==="Nada vejo")parts.push("nada vejo");
-  return parts.join(" / ");
+/* ════════════════ FORMULÁRIO DO DIA ════════════════ */
+let F;
+function emptyF(date){return{date,sinto:"",vejo:"",sang:"",cor:"",sym:"",fert:false,rule:"",apice:false,rel:false,novo:false,sintomas:[],nota:"",desc:"",descEdited:false,manual:false,editing:false}}
+function setFormDate(date){
+  const d=S.days[date];
+  if(d){F={...emptyF(date),...JSON.parse(JSON.stringify(d)),date,novo:S.starts.includes(date),descEdited:true,manual:true,editing:true}}
+  else{F=emptyF(date);F.novo=S.starts.includes(date)}
+  $("#fDate").value=date;$("#fVoice").value="";
+  renderForm();
 }
 function applySuggestion(){
-  const s=suggestFromSensations();
-  if(s.cor!==undefined)M.cor=s.cor;
-  if(s.sym!==undefined)M.sym=s.sym;
-  if(!M.descEdited){M.desc=buildDesc();$("#mDesc").value=M.desc}
+  if(!F.manual){const s=suggest(F);if(s)Object.assign(F,s);else{F.cor="";F.sym="";F.fert=false}}
+  if(!F.descEdited)F.desc=buildDesc(F);
+}
+function autoNovo(){
+  if(F.editing||F.sang!=="Menstruação")return;
+  const prev=S.days[addDays(F.date,-1)];
+  const c=cycleOf(F.date);
+  if(!isBleed(prev)&&(!c||c.start===F.date||diffDays(c.start,F.date)>=10))F.novo=true;
+}
+function chipGroup(el,arr,cur,onPick,opts={}){
+  el.innerHTML="";
+  arr.forEach(v=>{
+    const b=document.createElement("button");
+    const val=typeof v==="object"?v.v:v;
+    b.className="chip"+(opts.multi?(cur.includes(val)?" on":""):(cur===val?" on":""));
+    b.innerHTML=typeof v==="object"?v.h:esc(v);
+    b.onclick=()=>onPick(val);
+    el.appendChild(b);
+  });
+}
+function renderForm(){
+  const cyc=getCycles();
+  const isToday=F.date===todayISO();
+  $("#formTitle").textContent=F.editing?"Editar "+(isToday?"hoje":brFull(F.date)):(isToday?"Registrar hoje":"Registrar "+brFull(F.date));
+  $$("[data-qd]").forEach(b=>b.classList.toggle("on",F.date===addDays(todayISO(),+b.dataset.qd)));
+  const c=F.novo?null:cycleOf(F.date,cyc);
+  $("#formCycleInfo").textContent=F.novo?"Ciclo novo · dia 1":(c?"Ciclo "+c.n+" · dia "+(diffDays(c.start,F.date)+1):"");
+
+  const pick=k=>v=>{
+    if(!F.desc||F.desc===buildDesc(F))F.descEdited=false;
+    F[k]=F[k]===v?"":v;F.manual=false;applySuggestion();if(k==="sang")autoNovo();renderForm()};
+  chipGroup($("#gSinto"),SINTO,F.sinto,pick("sinto"));
+  chipGroup($("#gVejo"),VEJO,F.vejo,pick("vejo"));
+  chipGroup($("#gSang"),SANG,F.sang,pick("sang"));
+
+  $("#pvStamp").innerHTML=stampHTML(F.cor||F.sym||F.fert?F:null,{apex:F.apice,xo:F.apice});
+  $("#pvTitle").textContent=stampTitle(F);
+  $("#pvDesc").textContent=F.desc||"";
+
+  $("#tgNovo").classList.toggle("on",F.novo);
+  $("#tgApice").classList.toggle("on",F.apice);
+  $("#tgRel").classList.toggle("on",F.rel);
+  const nh=$("#novoHint");
+  if(F.novo&&!F.editing&&F.sang==="Menstruação"&&!S.starts.includes(F.date)){nh.style.display="block";nh.textContent="Marquei como 1º dia de um novo ciclo porque a menstruação começou. Desmarque se não for."}
+  else if(F.apice){nh.style.display="block";nh.textContent="Ápice = último dia da sensação mais fértil. Os 3 dias seguintes serão contados 1, 2, 3."}
+  else nh.style.display="none";
+
+  const manual=fn=>v=>{fn(v);F.manual=true;renderForm()};
+  chipGroup($("#gCor"),COLORS.map(c=>({v:c.id,h:'<span class="st '+c.id+'" style="width:16px;height:16px;display:inline-flex;vertical-align:middle;margin-right:4px"></span>'+c.nome})),F.cor,manual(v=>F.cor=F.cor===v?"":v));
+  chipGroup($("#gSym"),SYMBOLS.map(s=>({v:s.id,h:'<b>'+s.ch+'</b> '+s.desc})),F.sym,manual(v=>F.sym=F.sym===v?"":v));
+  chipGroup($("#gFert"),[{v:"1",h:"○ Sim"},{v:"0",h:"Não"}],F.fert?"1":"0",manual(v=>F.fert=v==="1"));
+  chipGroup($("#gRule"),RULES.map(r=>({v:r.n,h:"Regra "+r.n})),F.rule,manual(v=>F.rule=F.rule===v?"":v));
+  const r=RULES.find(x=>x.n===F.rule);
+  $("#ruleHint").textContent=r?(r.txt||("Espaçar: "+r.esp+" · Conquistar: "+r.con)):"";
+  if(document.activeElement!==$("#fDesc"))$("#fDesc").value=F.desc;
+
+  const all=[...SINTOMAS,...S.customSint];
+  chipGroup($("#gSint"),[...all,{v:"__add",h:"＋ outro"}],F.sintomas,v=>{
+    if(v==="__add"){const n=(prompt("Novo sintoma (curto):")||"").trim().slice(0,24);
+      if(n){if(!all.includes(n)){S.customSint.push(n);save()}if(!F.sintomas.includes(n))F.sintomas.push(n)}}
+    else F.sintomas=F.sintomas.includes(v)?F.sintomas.filter(x=>x!==v):[...F.sintomas,v];
+    renderForm();
+  },{multi:true});
+  $$("#gSint .chip").forEach(b=>b.classList.add("sm"));
+  if(document.activeElement!==$("#fNota"))$("#fNota").value=F.nota||"";
+  $("#delDayBtn").style.display=F.editing?"inline-flex":"none";
+}
+function saveDay(){
+  const date=F.date;if(!date){toast("Escolha a data");return}
+  if(date>todayISO()){toast("Não dá para registrar dia futuro");return}
+  if(!F.sinto&&!F.vejo&&!F.sang&&!F.cor&&!F.sym&&!F.fert&&!F.rel&&!F.apice&&!F.sintomas.length&&!F.nota){toast("Escolha pelo menos o que sente ou vê");return}
+  const rec={sinto:F.sinto,vejo:F.vejo,sang:F.sang,cor:F.cor,sym:F.sym,fert:!!F.fert,rule:F.rule,apice:!!F.apice,rel:!!F.rel,
+    sintomas:[...F.sintomas],nota:(F.nota||"").trim(),desc:(F.desc||"").trim(),ts:Date.now()};
+  S.days[date]=rec;
+  S.starts=S.starts.filter(s=>s!==date);
+  if(F.novo)S.starts.push(date);
+  S.starts.sort();
+  if(rec.apice){const c=cycleOf(date);for(const d of c.dates)if(d!==date&&S.days[d].apice)S.days[d].apice=false}
+  save();
+  toast("Dia salvo ✓");
+  refreshAll();
+  if(date===todayISO()){setFormDate(date)}else{setFormDate(todayISO())}
+}
+function deleteDay(){
+  if(!F.editing||!confirm("Apagar o registro de "+brFull(F.date)+"?"))return;
+  delete S.days[F.date];S.starts=S.starts.filter(s=>s!==F.date);save();toast("Registro apagado");
+  setFormDate(todayISO());refreshAll();
 }
 
-/* ── modal options ── */
-function naoMostrarBtn(active,onclick){
-  const b=document.createElement("div");
-  b.className="opt naomostrar"+(active?" sel":"");b.textContent="não mostrar";b.onclick=onclick;return b;
+/* ════════════════ TOPO / HOJE ════════════════ */
+function nextAcomp(){
+  const d=parseInt(S.profile.diaAcomp,10);if(!d)return null;
+  const now=new Date();let y=now.getFullYear(),m=now.getMonth();
+  const mk=(y,m)=>{const last=new Date(y,m+1,0).getDate();return new Date(y,m,Math.min(d,last))};
+  let dt=mk(y,m);if(isoOf(dt)<todayISO()){m++;if(m>11){m=0;y++}dt=mk(y,m)}
+  return isoOf(dt);
 }
-function pillGroup(boxId,arr,key){
-  const g=$(boxId);g.innerHTML="";
-  arr.forEach(v=>{const d=document.createElement("div");d.className="opt"+(M[key]===v?" sel":"");
-    d.style.fontSize=".8rem";d.style.minHeight="46px";d.textContent=v;
-    d.onclick=()=>{M[key]=M[key]===v?"":v;applySuggestion();buildModalOptions();updatePreview()};
-    g.appendChild(d)});
-  g.appendChild(naoMostrarBtn(M[key]==="",()=>{M[key]="";applySuggestion();buildModalOptions();updatePreview()}));
-}
-function buildModalOptions(){
-  pillGroup("#sintoGroup",SINTO,"sinto");
-  pillGroup("#vejoGroup",VEJO,"vejo");
-  pillGroup("#sangGroup",SANG,"sang");
+function renderTop(){
+  const cyc=getCycles();const t=todayISO();const c=cycleOf(t,cyc);
+  $("#hdrSub").textContent=S.profile.nome?("Olá, "+firstName()+" 🌸"):"Método de Ovulação Billings";
+  const hc=$("#hdrCyc");
+  if(c){hc.style.display="block";hc.innerHTML="Ciclo "+c.n+"<b>dia "+(diffDays(c.start,t)+1)+"</b>"}else hc.style.display="none";
 
-  let g=$("#symGroup");g.innerHTML="";
-  SYMBOLS.forEach(s=>{const d=document.createElement("div");d.className="opt"+(M.sym===s.id?" sel":"");
-    d.textContent=s.ch;d.title=s.nome;
-    d.onclick=()=>{M.sym=M.sym===s.id?"":s.id;buildModalOptions();updatePreview()};g.appendChild(d)});
-  g.appendChild(naoMostrarBtn(M.sym==="",()=>{M.sym="";buildModalOptions();updatePreview()}));
+  const pend=S.duvidas.filter(q=>!q.done).length;
+  const bd=$("#qBadge");bd.style.display=pend?"block":"none";bd.textContent=pend;
 
-  g=$("#colorGroup");g.innerHTML="";
-  COLORS.forEach(c=>{const d=document.createElement("div");
-    d.className="opt swatch-opt"+(M.cor===c.id?" sel":"");
-    d.style.background=c.hex;d.title=c.nome+" — "+c.desc;
-    if(c.id==="branco")d.style.border="1.5px solid #ccc";
-    d.onclick=()=>{M.cor=M.cor===c.id?"":c.id;buildModalOptions();updatePreview()};g.appendChild(d)});
-  g.appendChild(naoMostrarBtn(M.cor==="",()=>{M.cor="";buildModalOptions();updatePreview()}));
+  let al="";
+  if(!S.days[t])al+='<div class="alert rosa">🌸 <span>Você ainda não registrou hoje. À noite, anote o mais fértil que percebeu no dia.</span></div>';
+  const na=nextAcomp();
+  if(na){const k=diffDays(t,na);if(k<=3)al+='<div class="alert creme">📅 <span>Acompanhamento '+(k===0?"<b>hoje</b>":k===1?"<b>amanhã</b>":"em <b>"+k+" dias</b> ("+br(na)+")")+(pend?" · você tem <b>"+pend+" dúvida"+(pend>1?"s":"")+"</b> anotada"+(pend>1?"s":""):"")+'.</span></div>'}
+  $("#hojeAlerts").innerHTML=al;
 
-  g=$("#ruleGroup");g.innerHTML="";
-  ["1","2","3"].forEach(n=>{const d=document.createElement("div");
-    d.className="opt"+(M.rule===n?" sel":"");
-    d.innerHTML=n+'<small>Regra</small>';d.style.fontSize=".95rem";
-    d.onclick=()=>{M.rule=M.rule===n?"":n;buildModalOptions();updatePreview()};g.appendChild(d)});
-  g.appendChild(naoMostrarBtn(M.rule==="",()=>{M.rule="";buildModalOptions();updatePreview()}));
-  const rh=$("#ruleHint");
-  if(M.rule&&RULE_HINTS[M.rule]){rh.style.display="block";rh.textContent=RULE_HINTS[M.rule]}
-  else rh.style.display="none";
-
-  g=$("#fertGroup");g.innerHTML="";
-  FERT.forEach(f=>{const d=document.createElement("div");d.className="opt"+(M.fert===f.id?" sel":"");
-    d.textContent=f.ch;d.title=f.nome;
-    d.onclick=()=>{M.fert=M.fert===f.id?"":f.id;buildModalOptions();updatePreview()};g.appendChild(d)});
-  g.appendChild(naoMostrarBtn(M.fert==="",()=>{M.fert="";buildModalOptions();updatePreview()}));
-
-  g=$("#relGroup");g.innerHTML="";
-  const r=document.createElement("div");r.className="opt"+(M.rel?" sel":"");
-  r.innerHTML='<span style="color:#e84d8a;font-size:1.4rem">♥</span>';
-  r.onclick=()=>{M.rel=!M.rel;buildModalOptions();updatePreview()};g.appendChild(r);
-  g.appendChild(naoMostrarBtn(!M.rel,()=>{M.rel=false;buildModalOptions();updatePreview()}));
-
-  g=$("#apiceGroup");g.innerHTML="";
-  const ap=document.createElement("div");ap.className="opt"+(M.apice?" sel":"");
-  ap.innerHTML='<span style="font-weight:800;font-size:1.1rem">X</span><small>Ápice</small>';
-  ap.onclick=()=>{M.apice=!M.apice;buildModalOptions();updatePreview()};g.appendChild(ap);
-  g.appendChild(naoMostrarBtn(!M.apice,()=>{M.apice=false;buildModalOptions();updatePreview()}));
-  const ah=$("#apiceHint");
-  if(M.apice){ah.style.display="block";
-    ah.innerHTML='Marcado como <b>ápice</b>. Os 3 dias seguintes serão contados como 1, 2, 3 (Regra 04). Para espaçar: abstinência nesses 3 dias, retorno na manhã do 4º dia.'}
-  else ah.style.display="none";
-}
-function updatePreview(){
-  const p=$("#preview");
-  const isBorra=M.sym==="borra";
-  p.style.background=M.cor?colorHex(M.cor):"#fff";
-  p.style.backgroundImage="none";
-  let inner="";
-  if(M.sym==="borra")inner='<span style="color:#000;font-size:1.3rem">⠿</span>';
-  else if(M.sym)inner+=symChar(M.sym);
-  if(M.fert)inner+=fertChar(M.fert);
-  if(M.rule)inner+='<span style="font-size:.7rem"> '+M.rule+'</span>';
-  if(M.rel)inner+='<span class="selo-R" style="font-size:.95rem">♥</span>';
-  p.innerHTML=inner||"—";
-  p.style.color=(M.cor==="vermelho"||M.cor==="verde")?"#fff":"#2b2b3a";
-}
-
-/* ── modal open/close/save ── */
-function openModal(dayKey){
-  if(dayKey){
-    getOne("days",dayKey).then(d=>{
-      M={data:d.data,sinto:d.sinto||"",vejo:d.vejo||"",sang:d.sang||"",sym:d.sym||"",
-         rule:d.rule||"",cor:d.cor||"",fert:d.fert||"",rel:!!d.rel,apice:!!d.apice,
-         desc:d.desc||"",descEdited:true,editKey:dayKey};
-      $("#mData").value=d.data;$("#mDesc").value=d.desc||"";
-      $("#modalTitle").textContent="EDITAR DIA";$("#delDay").parentElement.style.display="block";
-      buildModalOptions();updatePreview();$("#overlay").classList.add("show");
-    });
-  }else{
-    M={data:todayISO(),sinto:"",vejo:"",sang:"",sym:"",rule:"",cor:"",fert:"",
-       rel:false,apice:false,desc:"",descEdited:false,editKey:null};
-    $("#mData").value=todayISO();$("#mDesc").value="";
-    $("#modalTitle").textContent="REGISTRAR DIA";$("#delDay").parentElement.style.display="none";
-    buildModalOptions();updatePreview();$("#overlay").classList.add("show");
+  let st="";
+  if(c){
+    if(c.apex){const k=diffDays(c.apex,t);
+      st+='<div class="stat"><small>Ápice</small><b>dia '+(diffDays(c.start,c.apex)+1)+(k>=1&&k<=3?' · hoje é '+k+'º':"")+'</b></div>'}
   }
-}
-function closeModal(){$("#overlay").classList.remove("show")}
-
-async function saveModal(){
-  const data=$("#mData").value;
-  if(!data){alert("Escolha a data.");return}
-  if(!M.sinto&&!M.vejo&&!M.sang&&!M.sym&&!M.cor&&!M.fert&&!M.rel&&!M.apice)
-    {alert("Escolha pelo menos uma sensação, símbolo ou cor.");return}
-  let cyc=await getOne("cycles",currentCycle);
-  if(data<cyc.inicio){
-    cyc.inicio=data;await put("cycles",cyc);
-    const allCD=(await getAll("days")).filter(d=>d.cycle==currentCycle);
-    for(const d of allCD){d.diaCiclo=cycleDayNum(data,d.data);await put("days",d)}
-  }
-  if(M.apice){
-    const all=(await getAll("days")).filter(d=>d.cycle==currentCycle&&d.apice&&d.data!==data);
-    for(const d of all){d.apice=false;await put("days",d)}
-  }
-  const day={key:currentCycle+"_"+data,cycle:currentCycle,data,
-    diaCiclo:cycleDayNum(cyc.inicio,data),
-    sinto:M.sinto,vejo:M.vejo,sang:M.sang,sym:M.sym,rule:M.rule,
-    cor:M.cor,fert:M.fert,rel:M.rel,apice:M.apice,desc:$("#mDesc").value.trim()};
-  await put("days",day);
-  closeModal();renderGrid();
-  gSave();
+  const closed=cyc.filter(x=>x.closed&&!x.implicit);
+  if(closed.length){const avg=Math.round(closed.reduce((a,x)=>a+x.maxDay,0)/closed.length);
+    st+='<div class="stat"><small>Média dos ciclos</small><b>'+avg+' dias</b></div>'}
+  $("#hojeStats").innerHTML=st;$("#hojeStats").style.display=st?"flex":"none";
 }
 
-/* ── cycles & grid ── */
-async function loadCycles(){
-  let cycles=await getAll("cycles");
-  if(!cycles.length){const c={id:Date.now(),inicio:todayISO()};await put("cycles",c);cycles=[c]}
-  cycles.sort((a,b)=>a.inicio.localeCompare(b.inicio));
-  if(!currentCycle)currentCycle=cycles[cycles.length-1].id;
-  const sel=$("#gridCycleSel");sel.innerHTML="";
-  cycles.forEach((c,i)=>{const o=document.createElement("option");o.value=c.id;
-    o.textContent="Ciclo "+(i+1)+" ("+fmtBR(c.inicio)+")";
-    if(c.id===currentCycle)o.selected=true;sel.appendChild(o)});
-  return cycles;
-}
-
-function buildPostLabels(days){
-  const apD=days.find(d=>d.apice);
-  const lbl={};
-  if(apD){const base=new Date(apD.data);days.forEach(d=>{
-    const diff=Math.round((new Date(d.data)-base)/86400000);
-    if(diff===0)lbl[d.data]="X";
-    else if(diff>=1&&diff<=3)lbl[d.data]=String(diff);
-  })}
-  return lbl;
-}
-
-async function renderGrid(){
-  const cycles=await loadCycles();
-  const cid=Number($("#gridCycleSel").value)||currentCycle;currentCycle=cid;
-  const cyc=cycles.find(c=>c.id==cid);
-  const idx=cycles.findIndex(c=>c.id==cid);
-  $("#ciTitle").textContent="Ciclo "+(idx+1);
-  $("#ciInicio").textContent="Início: "+fmtBRfull(cyc.inicio);
-  const days=(await getAll("days")).filter(d=>d.cycle==cid)
-    .sort((a,b)=>a.data.localeCompare(b.data));
-  const body=$("#gridBody");
-  if(!days.length){body.innerHTML='<div class="empty">Nenhum dia neste ciclo.<br>Toque no + para registrar.</div>';return}
-  const postLabel=buildPostLabels(days);
-  let h='<table class="gtbl"><thead><tr>'
-    +'<th>Dia</th><th>Data</th>'
-    +'<th class="desc" style="text-align:left">Descrição (sinto / vejo)</th>'
-    +'<th>Cor/Símb.</th><th>Ápice</th><th>Regra</th><th>Rel.</th>'
-    +'</tr></thead><tbody>';
-  days.forEach(d=>{
-    const isToday=d.data===todayISO();
-    const isBorra=d.sym==="borra";
-    const cellChar=isBorra?("⠿"+fertChar(d.fert)):(symChar(d.sym)+fertChar(d.fert));
-    const txtc=isBorra?"#000":((d.cor==="vermelho"||d.cor==="verde")?"#fff":"#2b2b3a");
-    const pl=postLabel[d.data]||"";
-    const plStyle=pl==="X"?'background:#fce4ef;color:#e84d8a;font-weight:800'
-      :(pl?'background:#fff7d6;font-weight:700;color:#9a6a36':'');
-    h+='<tr class="clickable '+(isToday?'today':'')+'" data-key="'+d.key+'">'
-      +'<td style="font-weight:700">'+d.diaCiclo+'</td>'
-      +'<td>'+fmtBR(d.data)+'</td>'
-      +'<td class="desc">'+(d.desc||"—")+'</td>'
-      +'<td class="cell sym-cell" style="background:'+colorHex(d.cor)+';color:'+txtc+'">'+cellChar+'</td>'
-      +'<td style="'+plStyle+'">'+pl+'</td>'
-      +'<td>'+(d.rule||"")+'</td>'
-      +'<td class="selo-R">'+(d.rel?"♥":"")+'</td></tr>';
-  });
-  h+="</tbody></table>";body.innerHTML=h;
-  body.querySelectorAll("tr.clickable").forEach(tr=>tr.onclick=()=>openModal(tr.dataset.key));
-}
-
-/* ── comparison table (shared by in-app compare and print) ── */
-function buildCompareHTML(selCycles,allDays,tableClass){
-  if(!selCycles.length)return'<div class="empty">Selecione ao menos um ciclo.</div>';
-  const cdata=selCycles.map(cyc=>{
-    const cd=allDays.filter(d=>d.cycle==cyc.id).sort((a,b)=>a.data.localeCompare(b.data));
-    const map=new Map(cd.map(d=>[d.diaCiclo,d]));
-    return{cyc,cd,map,labels:buildPostLabels(cd)};
-  });
-  const maxDay=Math.max(...cdata.map(c=>c.cd.length?c.cd[c.cd.length-1].diaCiclo:0),0);
-  const N=selCycles.length;
-
-  let h='<table class="'+tableClass+'"><thead><tr>'
-    +'<th rowspan="2" style="width:28px">Dia</th>';
-  cdata.forEach((c,i)=>{
-    if(i>0)h+='<th class="psep sep" rowspan="2"></th>';
-    h+='<th colspan="6" class="ch cyc-h">Ciclo — início '+fmtBRfull(c.cyc.inicio)+'</th>';
-  });
-  h+='</tr><tr>';
-  cdata.forEach((c)=>{
-    h+='<th>Data</th><th>Descrição</th><th>Cor</th><th>Á</th><th>R</th><th>♥</th>';
-  });
+/* ════════════════ GRÁFICO ════════════════ */
+const ROW_OPTS=[1,2,3,4,6,"all"];
+const DEMO={start:"2026-01-01",days:[
+  ["vermelho","cheia"],["vermelho","cheia"],["vermelho","cheia"],["vermelho","borra"],["verde","traco"],["verde","traco"],["verde","traco"],
+  ["amarelo","igual"],["amarelo","igual"],["verde","traco"],["amarelo","igual",0,"rel"],["branco","",1],["branco","",1],["branco","",1,"X"],
+  ["amarelo","igual",0,"1"],["amarelo","igual",0,"2"],["amarelo","igual",0,"3"],["verde","traco"],["verde","traco",0,"rel"],["verde","traco"],["amarelo","igual"],["verde","traco"]]};
+function chartTableHTML(rows,opts={}){
+  const t=todayISO();
+  const from=opts.from||"0000-00-00",to=opts.to||"9999-99-99";
+  const maxD=Math.max(...rows.map(c=>c.maxDay),1);
+  let h='<table class="'+(opts.cls||"chart")+'"><thead><tr><th class="cn">Ciclo</th>';
+  for(let i=1;i<=maxD;i++)h+='<th>'+i+'</th>';
   h+='</tr></thead><tbody>';
-
-  for(let day=1;day<=maxDay;day++){
-    h+='<tr><td style="font-weight:700">'+day+'</td>';
-    cdata.forEach((c,i)=>{
-      if(i>0)h+='<td class="psep sep"></td>';
-      const d=c.map.get(day);
-      if(d){
-        const isBorra=d.sym==="borra";
-        const txtc=isBorra?"#000":((d.cor==="vermelho"||d.cor==="verde")?"#fff":"#2b2b3a");
-        const cellChar=isBorra?("⠿"+fertChar(d.fert)):(symChar(d.sym)+fertChar(d.fert));
-        const pl=c.labels[d.data]||"";
-        const plStyle=pl==="X"?'color:#e84d8a;font-weight:800':(pl?'color:#9a6a36;font-weight:700':'');
-        h+='<td class="c-date cd">'+(d.data?fmtBR(d.data):"")+'</td>'
-          +'<td class="c-desc cd">'+(d.desc||"")+'</td>'
-          +'<td class="csym psym sym-cell" style="background:'+colorHex(d.cor)+';color:'+txtc+'">'+cellChar+'</td>'
-          +'<td class="cap pap" style="'+plStyle+'">'+pl+'</td>'
-          +'<td>'+(d.rule||"")+'</td>'
-          +'<td class="pr">'+(d.rel?"♥":"")+'</td>';
-      }else{
-        h+='<td></td><td class="cd"></td><td class="csym psym"></td><td class="cap pap"></td><td></td><td></td>';
-      }
-    });
+  rows.forEach(c=>{
+    h+='<tr><th class="cn"><b>Ciclo '+c.n+'</b><small>'+brFull(c.start)+'</small><small>'+(c.closed?c.maxDay+" dias":"em curso")+(c.apex?" · X dia "+(diffDays(c.start,c.apex)+1):"")+'</small></th>';
+    for(let i=1;i<=maxD;i++){
+      const date=addDays(c.start,i-1);
+      if(i>c.maxDay||date<from||date>to){h+='<td class="off"></td>';continue}
+      h+='<td>'+cellHTML(S.days[date],date,c,opts.print?null:t)+'</td>';
+    }
     h+='</tr>';
-  }
-  h+='</tbody></table>';
-  return h;
-}
-
-/* ── compare tab ── */
-async function loadCompareSelects(){
-  const cycles=(await getAll("cycles")).sort((a,b)=>a.inicio.localeCompare(b.inicio));
-  ["cmpA","cmpB","cmpC"].forEach((id,si)=>{
-    const sel=$("#"+id);sel.innerHTML='<option value="">— Ciclo '+"ABC"[si]+' —</option>';
-    cycles.forEach((c,i)=>{
-      const o=document.createElement("option");o.value=c.id;
-      o.textContent="Ciclo "+(i+1)+" ("+fmtBR(c.inicio)+")";
-      if(i===cycles.length-3+si&&cycles.length>=3)o.selected=true;
-      else if(i===cycles.length-1&&si===0&&cycles.length<3)o.selected=true;
-      sel.appendChild(o);
-    });
-    if(cycles.length>=2&&si<2){sel.querySelector('option[value="'+cycles[cycles.length-2+si-Math.min(si,1)]?.id+'"]')}
   });
-  if(cycles.length>0){
-    const last=cycles.length;
-    ["cmpA","cmpB","cmpC"].forEach((id,si)=>{
-      const idx=last-3+si;
-      if(idx>=0&&idx<last){
-        const sel=$("#"+id);
-        const opt=[...sel.options].find(o=>Number(o.value)===cycles[idx].id);
-        if(opt)opt.selected=true;
-      }
-    });
-  }
+  return h+'</tbody></table>';
 }
-
-async function renderComparison(){
-  const aids=[$("#cmpA"),$("#cmpB"),$("#cmpC")].map(s=>Number(s.value)||null).filter(Boolean);
-  if(!aids.length){$("#cmpBody").innerHTML='<div class="empty">Selecione ao menos um ciclo.</div>';return}
-  const allCycles=await getAll("cycles");
-  const selCycles=aids.map(id=>allCycles.find(c=>c.id===id)).filter(Boolean);
-  const allDays=await getAll("days");
-  $("#cmpBody").innerHTML=buildCompareHTML(selCycles,allDays,"cmptbl");
+function demoHTML(){
+  let h='<table class="chart"><thead><tr><th class="cn">Exemplo</th>';
+  DEMO.days.forEach((_,i)=>h+='<th>'+(i+1)+'</th>');
+  h+='</tr></thead><tbody><tr><th class="cn"><b>Ciclo 1</b><span class="demo-tag">EXEMPLO</span></th>';
+  DEMO.days.forEach(([cor,sym,fert,x],i)=>{
+    const lab=x&&x!=="rel"?x:"";
+    h+='<td><div class="cell"><div class="lab'+(lab==="X"?" x":"")+'">'+lab+'</div>'
+      +stampHTML({cor,sym,fert:!!fert},{apex:lab==="X"})+'<div class="mk">'+(x==="rel"?"♥":"")+'</div><div class="dm">'+(i+1)+'</div></div></td>';
+  });
+  return h+'</tr></tbody></table>';
 }
-
-/* ── cadastro ── */
-async function loadCad(){
-  const m=await getOne("meta","cadastro");if(!m)return;
-  ["uNome","uNasc","uTel","uObs","iNome","iContato","iCred"].forEach(k=>{if(m[k])$("#"+k).value=m[k]});
-  if(m.uNome)$("#hdrUser").textContent=m.uNome;
-  if(m.gClientId){
-    $("#gClientId").value=m.gClientId;
-    setGMsg("Client ID salvo. Clique em 'Conectar com Google' para ativar o sync.");
-    setSyncStatus("ok","Google Drive configurado");
-    $("#syncBar").style.display="flex";
-  }
-}
-
-async function saveCad(){
-  const m={id:"cadastro"};
-  ["uNome","uNasc","uTel","uObs","iNome","iContato","iCred"].forEach(k=>m[k]=$("#"+k).value.trim());
-  m.gClientId=$("#gClientId").value.trim();
-  await put("meta",m);
-  if(m.uNome)$("#hdrUser").textContent=m.uNome;
-  if(m.gClientId){
-    setSyncStatus("ok","Google Drive configurado");
-    $("#syncBar").style.display="flex";
-    setGMsg("Client ID salvo. Clique em 'Conectar com Google' para ativar o sync.");
+function renderChart(){
+  const cyc=getCycles();
+  $("#rowSeg").innerHTML=ROW_OPTS.map(o=>'<button data-rows="'+o+'" class="'+(String(S.rows)===String(o)?"on":"")+'">'+(o==="all"?"Todas":o)+'</button>').join("");
+  $$("#rowSeg button").forEach(b=>b.onclick=()=>{S.rows=b.dataset.rows==="all"?"all":+b.dataset.rows;save();renderChart()});
+  const wrap=$("#chartWrap");
+  if(!cyc.length){
+    wrap.innerHTML='<div style="padding:14px"><p class="muted" style="margin:0 0 10px">Assim seu gráfico vai aparecer — cada linha é um ciclo, lado a lado para comparar:</p>'
+      +demoHTML()+'<button class="btn pri block" style="margin-top:14px" onclick="go(\'hoje\')">Registrar meu primeiro dia</button></div>';
   }else{
-    setSyncStatus("hide","");
+    const rows=S.rows==="all"?cyc:cyc.slice(-S.rows);
+    wrap.innerHTML=chartTableHTML(rows);
+    wrap.querySelectorAll(".cell").forEach(el=>el.onclick=()=>openDay(el.dataset.date));
   }
-  alert("Cadastro salvo!");
+  $("#legend").innerHTML=legendHTML();
+  renderDetSel(cyc);
+}
+function legendHTML(){
+  return COLORS.map(c=>'<span>'+stampHTML({cor:c.id})+c.nome.toLowerCase()+'</span>').join("")
+    +'<span><b style="color:var(--rosa)">X</b> ápice</span><span><b style="color:var(--acento-esc)">1 2 3</b> pós-ápice</span>'
+    +'<span>○ fértil</span><span style="color:var(--rosa)">♥ relação</span><span><i class="sd" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#8d7ad1"></i> sintoma/nota</span>';
+}
+let detCycle=null;
+function renderDetSel(cyc){
+  const sel=$("#detSel");
+  if(!cyc.length){sel.style.display="none";$("#detBody").innerHTML='<p class="muted">Ainda sem registros.</p>';return}
+  sel.style.display="";
+  if(!detCycle||!cyc.find(c=>c.start===detCycle))detCycle=cyc[cyc.length-1].start;
+  sel.innerHTML=cyc.slice().reverse().map(c=>'<option value="'+c.start+'"'+(c.start===detCycle?" selected":"")+'>Ciclo '+c.n+' ('+br(c.start)+')</option>').join("");
+  sel.onchange=()=>{detCycle=sel.value;renderDet()};
+  renderDet();
+}
+function detTableHTML(c,cls,from,to){
+  const ds=c.dates.filter(d=>(!from||d>=from)&&(!to||d<=to));
+  if(!ds.length)return'<p class="muted">Nenhum dia registrado.</p>';
+  let h='<table class="'+cls+'"><thead><tr><th>Dia</th><th>Data</th><th></th><th>Descrição</th><th>Sintomas / nota</th></tr></thead><tbody>';
+  ds.forEach(date=>{const d=S.days[date];const lab=postLabel(c,date);
+    h+='<tr data-date="'+date+'"><td class="c"><b>'+(diffDays(c.start,date)+1)+'</b></td><td>'+br(date)+'</td>'
+      +'<td class="c">'+stampHTML(d,{apex:lab==="X",xo:lab==="X"})+'</td>'
+      +'<td>'+esc(d.desc||"—")+(lab&&lab!=="X"?' <b style="color:var(--acento-esc)">('+lab+')</b>':"")+(d.rel?' <span style="color:var(--rosa)">♥</span>':"")+(d.rule?' <small>R'+d.rule+'</small>':"")+'</td>'
+      +'<td><div class="tags">'+(d.sintomas||[]).map(s=>'<span class="tag">'+esc(s)+'</span>').join("")+'</div>'+(d.nota?'<small>'+esc(d.nota)+'</small>':"")+'</td></tr>'});
+  return h+'</tbody></table>';
+}
+function renderDet(){
+  const c=getCycles().find(x=>x.start===detCycle);if(!c)return;
+  $("#detBody").innerHTML=detTableHTML(c,"det");
+  $$("#detBody tr[data-date]").forEach(tr=>tr.onclick=()=>openDay(tr.dataset.date));
+}
+function openDay(date){
+  const d=S.days[date];
+  if(!d){if(date>todayISO()){toast("Dia ainda não chegou");return}
+    setFormDate(date);go("hoje");toast("Registrando "+brFull(date));return}
+  const c=cycleOf(date);const lab=postLabel(c,date);
+  const sh=$("#daySheet");
+  sh.innerHTML='<div class="sheet-h"><h3>'+brFull(date)+' · Ciclo '+c.n+', dia '+(diffDays(c.start,date)+1)+'</h3><button class="xbtn" data-close="dayOv">✕</button></div>'
+    +'<div class="preview-box" style="margin-top:0">'+stampHTML(d,{apex:lab==="X",xo:lab==="X"})+'<div class="txt"><b>'+esc(d.desc||"—")+'</b>'
+    +'<span class="muted">'+[lab==="X"?"Ápice":lab?lab+"º dia após o ápice":"",d.rel?"♥ relação":"",d.rule?"Regra "+d.rule:""].filter(Boolean).join(" · ")+'</span></div></div>'
+    +((d.sintomas||[]).length?'<div class="lbl">Sintomas</div><div class="tags">'+d.sintomas.map(s=>'<span class="tag">'+esc(s)+'</span>').join("")+'</div>':"")
+    +(d.nota?'<div class="lbl">Anotação</div><p style="margin:0">'+esc(d.nota)+'</p>':"")
+    +'<button class="btn pri block" style="margin-top:16px" id="editDayBtn">Editar este dia</button>';
+  $("#dayOv").classList.add("show");
+  $("#editDayBtn").onclick=()=>{$("#dayOv").classList.remove("show");setFormDate(date);go("hoje")};
+  bindClose();
 }
 
-/* ── export / PDF ── */
-async function loadExpChecks(){
-  const cycles=(await getAll("cycles")).sort((a,b)=>a.inicio.localeCompare(b.inicio));
-  const days=await getAll("days");
-  const box=$("#expChecks");box.innerHTML="";
-  cycles.forEach((c,i)=>{
-    const cd=days.filter(d=>d.cycle==c.id).sort((a,b)=>a.data.localeCompare(b.data));
-    const fim=cd.length?fmtBRfull(cd[cd.length-1].data):"—";
-    const lbl=document.createElement("label");lbl.className="cycle-check";
-    lbl.innerHTML='<input type="checkbox" value="'+c.id+'"'+(i>=cycles.length-3?' checked':'')+'>'
-      +'<span>Ciclo '+(i+1)+'<small>Início '+fmtBRfull(c.inicio)+' · Fim '+fim+' · '+cd.length+' dias</small></span>';
-    box.appendChild(lbl);
+/* ════════════════ DÚVIDAS / ORIENTAÇÕES ════════════════ */
+let qFilter="pend";
+function renderAcomp(){
+  const p=S.profile;const na=nextAcomp();
+  $("#acompCard").innerHTML='<h2 class="t">Minha instrutora</h2>'
+    +'<p style="margin:0"><b>'+esc(p.instrutora||"—")+'</b>'+(p.instrContato?' · <span class="muted">'+esc(p.instrContato)+'</span>':"")+'</p>'
+    +'<p class="muted" style="margin:4px 0 0">'+(na?"Próximo acompanhamento: <b>"+brFull(na)+"</b>"+(p.horaAcomp?" às "+esc(p.horaAcomp):""):"Defina o dia do acompanhamento no Perfil.")+'</p>';
+}
+function renderQ(){
+  const list=S.duvidas.filter(q=>qFilter==="all"||!q.done).sort((a,b)=>(a.done-b.done)||b.id-a.id);
+  $$("[data-qf]").forEach(b=>b.classList.toggle("on",b.dataset.qf===qFilter));
+  $("#qList").innerHTML=list.length?list.map(q=>'<div class="q'+(q.done?" done":"")+'" data-id="'+q.id+'">'
+    +'<div class="q-top"><input type="checkbox"'+(q.done?" checked":"")+' title="Respondida"><div class="grow" style="flex:1"><div class="q-txt">'+esc(q.text)+'</div>'
+    +'<div class="q-meta">Anotada em '+brFull(q.date)+(q.done?" · respondida":"")+'</div></div></div>'
+    +(q.resposta?'<div class="q-ans"><b>Resposta</b>'+esc(q.resposta)+'</div>':"")
+    +'<div class="q-act"><button data-a="ans">'+(q.resposta?"editar resposta":"anotar resposta")+'</button><button data-a="edit">editar</button><button data-a="del">apagar</button></div></div>').join("")
+    :'<p class="muted">'+(qFilter==="pend"?"Nenhuma dúvida pendente 🙌":"Nenhuma dúvida anotada.")+'</p>';
+  $$("#qList .q").forEach(el=>{
+    const q=S.duvidas.find(x=>x.id==el.dataset.id);
+    el.querySelector("input").onchange=e=>{q.done=e.target.checked;save();renderQ();renderTop()};
+    el.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{
+      const a=b.dataset.a;
+      if(a==="del"){if(confirm("Apagar esta dúvida?")){S.duvidas=S.duvidas.filter(x=>x!==q)}}
+      else if(a==="edit"){const v=prompt("Editar dúvida:",q.text);if(v!==null&&v.trim())q.text=v.trim()}
+      else{const v=prompt("Resposta da instrutora:",q.resposta||"");if(v!==null){q.resposta=v.trim();if(q.resposta)q.done=true}}
+      save();renderQ();renderTop();
+    });
+  });
+}
+function renderO(){
+  const list=S.orient.slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+  $("#oList").innerHTML=list.length?list.map(o=>'<div class="q" data-id="'+o.id+'"><div class="q-meta" style="margin:0 0 3px"><b>'+brFull(o.date)+'</b></div>'
+    +'<div class="q-txt">'+esc(o.text)+'</div><div class="q-act"><button data-a="edit">editar</button><button data-a="del">apagar</button></div></div>').join("")
+    :'<p class="muted">Nenhuma orientação anotada ainda.</p>';
+  $$("#oList .q").forEach(el=>{const o=S.orient.find(x=>x.id==el.dataset.id);
+    el.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{
+      if(b.dataset.a==="del"){if(!confirm("Apagar esta orientação?"))return;S.orient=S.orient.filter(x=>x!==o)}
+      else{const v=prompt("Editar orientação:",o.text);if(v===null||!v.trim())return;o.text=v.trim()}
+      save();renderO();
+    })});
+}
+
+/* ════════════════ CADASTRO ════════════════ */
+function profFormHTML(px){
+  const p=S.profile;
+  const radio=(name,opts,cur)=>'<div class="chips">'+opts.map(o=>'<label class="chip"><input type="radio" name="'+px+name+'" value="'+o+'"'+(cur===o?" checked":"")+'><span>'+o+'</span></label>').join("")+'</div>';
+  return'<div class="fld"><label>Nome</label><input class="in" id="'+px+'nome" value="'+esc(p.nome)+'" placeholder="Seu nome" autocomplete="given-name"></div>'
+    +'<div class="fld"><label>Idade</label><input class="in" id="'+px+'idade" type="number" inputmode="numeric" min="10" max="70" value="'+esc(p.idade)+'" style="max-width:120px"></div>'
+    +'<div class="fld"><label>Estou usando o método para</label>'+radio("objetivo",["Espaçar gestação","Conquistar gestação"],p.objetivo)+'</div>'
+    +'<div class="fld"><label>Já teve filhos?</label>'+radio("filhos",["Não","Sim"],p.filhos)
+    +'<div id="'+px+'qtdWrap" style="margin-top:8px;'+(p.filhos==="Sim"?"":"display:none")+'"><input class="in" id="'+px+'qtdFilhos" type="number" inputmode="numeric" min="1" max="20" placeholder="Quantos?" value="'+esc(p.qtdFilhos)+'" style="max-width:140px"></div></div>'
+    +'<div class="fld"><label>Situação atual</label>'+radio("situacao",["Gestante","Amamentando","Nenhum dos casos"],p.situacao)+'</div>'
+    +'<h3 class="t">Instrutora</h3>'
+    +'<div class="fld"><label>Nome da instrutora</label><input class="in" id="'+px+'instrutora" value="'+esc(p.instrutora)+'"></div>'
+    +'<div class="fld"><label>Contato <small>(opcional)</small></label><input class="in" id="'+px+'instrContato" value="'+esc(p.instrContato)+'" placeholder="WhatsApp / e-mail"></div>'
+    +'<div class="row"><div class="fld grow"><label>Dia do mês do acompanhamento</label><input class="in" id="'+px+'diaAcomp" type="number" inputmode="numeric" min="1" max="31" placeholder="ex.: 10" value="'+esc(p.diaAcomp)+'"></div>'
+    +'<div class="fld grow"><label>Horário <small>(opcional)</small></label><input class="in" id="'+px+'horaAcomp" type="time" value="'+esc(p.horaAcomp)+'"></div></div>'
+    +'<h3 class="t">Lembrete diário</h3>'
+    +'<div class="row"><label class="chip"><input type="checkbox" id="'+px+'lembrete"'+(p.lembrete?" checked":"")+'><span>🔔 Quero ser lembrada</span></label>'
+    +'<input class="in" id="'+px+'horaLembrete" type="time" value="'+esc(p.horaLembrete||"21:00")+'" style="width:130px"></div>';
+}
+function bindProfForm(px){
+  $$('input[name="'+px+'filhos"]').forEach(r=>r.onchange=()=>{$("#"+px+"qtdWrap").style.display=r.value==="Sim"&&r.checked?"":"none"});
+}
+function readProfForm(px){
+  const v=id=>($("#"+px+id)||{}).value||"";
+  const r=n=>(document.querySelector('input[name="'+px+n+'"]:checked')||{}).value||"";
+  const p={...S.profile,nome:v("nome").trim(),idade:v("idade"),objetivo:r("objetivo"),filhos:r("filhos"),qtdFilhos:r("filhos")==="Sim"?v("qtdFilhos"):"",
+    situacao:r("situacao"),instrutora:v("instrutora").trim(),instrContato:v("instrContato").trim(),diaAcomp:v("diaAcomp"),horaAcomp:v("horaAcomp"),
+    lembrete:$("#"+px+"lembrete").checked,horaLembrete:v("horaLembrete")||"21:00"};
+  return p;
+}
+function renderProfile(){
+  $("#profForm").innerHTML=profFormHTML("p_");bindProfForm("p_");
+  renderStarts();renderNotifStatus();
+}
+async function saveProfile(px){
+  const p=readProfForm(px);
+  if(!p.nome){toast("Preencha seu nome");return false}
+  const turnedOn=p.lembrete&&!S.profile.lembrete;
+  S.profile=p;save();refreshAll();
+  if(turnedOn)await askNotif();
+  return true;
+}
+function renderStarts(){
+  const cyc=getCycles();
+  $("#startsList").innerHTML=cyc.length?cyc.slice().reverse().map(c=>'<div class="row" style="justify-content:space-between;border-bottom:1px solid #f0ebe0;padding:6px 0">'
+    +'<span><b>Ciclo '+c.n+'</b> · '+brFull(c.start)+(c.implicit?' <small class="muted">(1º registro)</small>':"")+' <small class="muted">· '+(c.closed?c.maxDay+" dias":"em curso")+'</small></span>'
+    +(c.implicit?"":'<button class="btn ghost sm" data-del-start="'+c.start+'">remover</button>')+'</div>').join("")
+    :'<p class="muted">Nenhum ciclo ainda.</p>';
+  $$("[data-del-start]").forEach(b=>b.onclick=()=>{if(!confirm("Remover o início de ciclo em "+brFull(b.dataset.delStart)+"? Os dias continuam salvos e passam a fazer parte do ciclo anterior."))return;
+    S.starts=S.starts.filter(s=>s!==b.dataset.delStart);save();refreshAll()});
+}
+
+/* ════════════════ NOTIFICAÇÕES ════════════════ */
+let swReg=null;
+if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){
+  navigator.serviceWorker.register("sw.js").then(r=>{swReg=r}).catch(()=>{});
+}
+async function askNotif(){
+  if(!("Notification" in window)){toast("Este navegador não permite notificações — use a agenda");renderNotifStatus();return}
+  const r=await Notification.requestPermission();
+  if(r==="granted"){S.profile.lembrete=true;save();notify("Lembretes ativados 🌸","Vou te lembrar às "+S.profile.horaLembrete+" de registrar o dia.")}
+  else toast("Notificações bloqueadas — use a agenda do celular");
+  renderNotifStatus();
+}
+async function notify(title,body){
+  if(!("Notification" in window)||Notification.permission!=="granted")return false;
+  const o={body,icon:"icon-192.png",badge:"icon-192.png",tag:"mob-lembrete"};
+  try{if(swReg){await swReg.showNotification(title,o);return true}}catch(e){}
+  try{new Notification(title,o);return true}catch(e){return false}
+}
+function checkReminder(){
+  const p=S.profile;if(!p.lembrete||!p.horaLembrete)return;
+  const t=todayISO();if(S.lastNotif===t||S.days[t])return;
+  const[h,m]=p.horaLembrete.split(":").map(Number);const n=new Date();
+  if(n.getHours()*60+n.getMinutes()>=h*60+m){
+    notify("Hora do registro 🌸",(firstName()?firstName()+", c":"C")+"omo foi seu dia? Registre o que sentiu e o que viu.");
+    S.lastNotif=t;save();
+  }
+}
+function renderNotifStatus(){
+  const el=$("#notifStatus");if(!el)return;
+  const perm=("Notification" in window)?Notification.permission:"indisponível";
+  const map={granted:"✅ Notificações permitidas",denied:"🚫 Notificações bloqueadas nas configurações do navegador",default:"Notificações ainda não permitidas",indisponível:"Este navegador não suporta notificações — use a agenda"};
+  el.innerHTML=map[perm]+(S.profile.lembrete?" · lembrete às <b>"+esc(S.profile.horaLembrete)+"</b>":" · lembrete desligado");
+  $("#notifBtn").style.display=perm==="granted"?"none":"";
+}
+function icsDownload(name,ev){
+  const stamp=new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z";
+  const txt=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Grafico MOB//PT-BR","CALSCALE:GREGORIAN","BEGIN:VEVENT",
+    "UID:mob-"+name+"-"+Date.now()+"@grafico-mob","DTSTAMP:"+stamp,"DTSTART:"+ev.start,"DURATION:"+ev.dur,"RRULE:"+ev.rrule,
+    "SUMMARY:"+ev.title,"DESCRIPTION:"+ev.desc,"URL:"+location.href.split("#")[0],
+    "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+ev.title,"TRIGGER:"+ev.alarm,"END:VALARM",
+    ...(ev.alarm2?["BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+ev.title,"TRIGGER:"+ev.alarm2,"END:VALARM"]:[]),
+    "END:VEVENT","END:VCALENDAR"].join("\r\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:"text/calendar"}));
+  a.download=name+".ics";document.body.appendChild(a);a.click();a.remove();
+  toast("Abra o arquivo para adicionar à agenda");
+}
+function icsDaily(){
+  const[h,m]=(S.profile.horaLembrete||"21:00").split(":");
+  icsDownload("lembrete-grafico-mob",{start:todayISO().replace(/-/g,"")+"T"+h+m+"00",dur:"PT5M",rrule:"FREQ=DAILY",
+    title:"🌸 Registrar gráfico MOB",desc:"Registre o que sentiu e o que viu hoje.",alarm:"PT0M"});
+}
+function icsAcomp(){
+  const d=parseInt(S.profile.diaAcomp,10);if(!d){toast("Preencha o dia do acompanhamento no cadastro");return}
+  const na=nextAcomp();const[h,m]=(S.profile.horaAcomp||"09:00").split(":");
+  icsDownload("acompanhamento-mob",{start:na.replace(/-/g,"")+"T"+h+m+"00",dur:"PT1H",rrule:"FREQ=MONTHLY;BYMONTHDAY="+d,
+    title:"📅 Acompanhamento MOB"+(S.profile.instrutora?" com "+S.profile.instrutora:""),desc:"Leve o gráfico em PDF e suas dúvidas.",alarm:"-P1D",alarm2:"-PT1H"});
+}
+
+/* ════════════════ PDF ════════════════ */
+function openPdf(){
+  const cyc=getCycles();
+  if(!cyc.length){toast("Registre alguns dias primeiro");return}
+  $("#pdfCiclos").innerHTML='<div class="chips">'+cyc.slice().reverse().map((c,i)=>'<label class="chip sm"><input type="checkbox" value="'+c.start+'"'+(i<3?" checked":"")+'><span>Ciclo '+c.n+' · '+br(c.start)+'</span></label>').join("")+'</div>';
+  if(!$("#pdfDe").value)$("#pdfDe").value=addDays(todayISO(),-90);
+  if(!$("#pdfAte").value)$("#pdfAte").value=todayISO();
+  $("#pdfQ").checked=S.duvidas.some(q=>!q.done);
+  $("#pdfOv").classList.add("show");bindClose();
+}
+function genPdf(){
+  const mode=document.querySelector('input[name="pdfMode"]:checked').value;
+  const cyc=getCycles();let rows,from=null,to=null,periodo;
+  if(mode==="ciclo"){
+    const sel=$$("#pdfCiclos input:checked").map(i=>i.value);
+    rows=cyc.filter(c=>sel.includes(c.start));
+    if(!rows.length){toast("Escolha pelo menos um ciclo");return}
+    periodo=rows.length===1?"Ciclo "+rows[0].n:"Ciclos "+rows.map(c=>c.n).join(", ");
+  }else{
+    from=$("#pdfDe").value;to=$("#pdfAte").value;
+    if(!from||!to||from>to){toast("Confira as datas");return}
+    rows=cyc.filter(c=>c.start<=to&&addDays(c.start,c.maxDay-1)>=from);
+    if(!rows.length){toast("Nenhum ciclo nesse período");return}
+    periodo=brFull(from)+" a "+brFull(to);
+  }
+  const p=S.profile;
+  const perfil=[p.idade&&p.idade+" anos",p.objetivo,p.filhos==="Sim"?(p.qtdFilhos?p.qtdFilhos+" filho(s)":"tem filhos"):p.filhos==="Não"?"sem filhos":"",p.situacao&&p.situacao!=="Nenhum dos casos"?p.situacao:""].filter(Boolean).join(" · ");
+  let h='<div class="p-head"><div><h1>Gráfico MOB — '+esc(p.nome||"")+'</h1><div style="font-size:8pt;color:#555">'+esc(perfil)+'</div></div>'
+    +'<div class="meta">'+esc(periodo)+'<br>Instrutora: '+esc(p.instrutora||"—")+'<br>Gerado em '+brFull(todayISO())+'</div></div>';
+  h+=chartTableHTML(rows,{cls:"pchart",from,to,print:true});
+  h+='<div class="p-leg">'+legendHTML()+'</div>';
+  if($("#pdfDet").checked){
+    h+='<div class="p-sec"><h2>Registro diário</h2>';
+    rows.forEach(c=>{h+='<div class="p-cyc">Ciclo '+c.n+' — início '+brFull(c.start)+'</div>'+detTableHTML(c,"pdet",from,to)});
+    h+='</div>';
+  }
+  if($("#pdfQ").checked){
+    const qs=S.duvidas.filter(q=>$("#pdfQAll").checked||!q.done).sort((a,b)=>a.id-b.id);
+    h+='<div class="p-sec"><h2>Dúvidas para a instrutora</h2>'+(qs.length?qs.map(q=>'<div class="p-q">'+esc(q.text)+' <small>('+brFull(q.date)+(q.done?", respondida":"")+')</small>'+(q.resposta?'<br><small><b>Resposta:</b> '+esc(q.resposta)+'</small>':"")+'</div>').join(""):'<p>Nenhuma.</p>')+'</div>';
+  }
+  if($("#pdfO").checked){
+    const os=S.orient.slice().sort((a,b)=>a.date.localeCompare(b.date));
+    h+='<div class="p-sec"><h2>Orientações da instrutora</h2>'+(os.length?os.map(o=>'<div class="p-q"><small>'+brFull(o.date)+'</small><br>'+esc(o.text)+'</div>').join(""):'<p>Nenhuma.</p>')+'</div>';
+  }
+  h+='<div class="p-foot">Meu Gráfico MOB · Método de Ovulação Billings</div>';
+  $("#printArea").innerHTML=h;
+  $("#pdfOv").classList.remove("show");
+  const old=document.title;document.title="Grafico-MOB-"+(firstName()||"")+"-"+todayISO();
+  setTimeout(()=>{window.print();document.title=old},150);
+}
+
+/* ════════════════ APRENDER ════════════════ */
+function renderLearn(){
+  const ref=COLORS.map(c=>'<div class="ref">'+stampHTML({cor:c.id})+'<div><b>'+c.nome+'</b><small>'+c.desc+'</small></div></div>').join("")
+    +SYMBOLS.map(s=>'<div class="ref">'+stampHTML({cor:s.id==="cheia"||s.id==="borra"?"vermelho":s.id==="igual"?"amarelo":"verde",sym:s.id})+'<div><b>'+s.nome+'</b><small>'+s.desc+'</small></div></div>').join("")
+    +'<div class="ref">'+stampHTML({cor:"branco",fert:true})+'<div><b>Bolinha aberta</b><small>dia fértil</small></div></div>'
+    +'<div class="ref">'+stampHTML({cor:"branco",fert:true},{apex:true,xo:true})+'<div><b>X — Ápice</b><small>último dia da sensação mais fértil</small></div></div>'
+    +'<div class="ref"><div class="st none" style="color:var(--acento-esc)">1</div><div><b>1, 2, 3</b><small>dias contados após o ápice</small></div></div>'
+    +'<div class="ref"><div class="st none" style="color:var(--rosa)">♥</div><div><b>Relação</b><small>dia com ato conjugal</small></div></div>';
+  const rules=RULES.map(r=>'<div class="rule"><h4>'+r.t+'</h4>'+(r.txt?'<p>'+r.txt+'</p>':'<p><b>Espaçar:</b> '+r.esp+'</p><p><b>Conquistar:</b> '+r.con+'</p>')+'</div>').join("");
+  const sec=(t,b,open)=>'<details class="lrn"'+(open?" open":"")+'><summary>'+t+'</summary><div class="bd">'+b+'</div></details>';
+  $("#learn").innerHTML='<h2 class="t" style="margin-bottom:12px">Como usar o método</h2>'
+  +sec("🌸 O que é o Método Billings",'<p>É um método natural de reconhecimento da fertilidade. A mulher aprende a perceber os sinais do <b>muco cervical</b> pela <b>sensação na vulva</b> ao longo do dia e registra num gráfico.</p><p>Serve tanto para <b>espaçar</b> quanto para <b>conquistar</b> uma gestação, e funciona em ciclos regulares ou irregulares, na amamentação e na pré-menopausa — sempre com acompanhamento de uma instrutora.</p>',true)
+  +sec("👀 Como observar no dia a dia",'<ul><li>Preste atenção à <b>sensação na vulva</b> durante as atividades normais: ao caminhar, sentar, levantar. Ela é seca, úmida, molhada ou escorregadia?</li><li>Observe o que aparece <b>ao se secar</b> com papel ou na roupa íntima (nada, leitoso, turvo, flocoso, clara de ovo).</li><li><b>Não</b> é preciso fazer exame interno. A sensação é o mais importante.</li><li>À noite, registre o <b>mais fértil</b> que percebeu no dia.</li><li>Use suas próprias palavras na descrição — é o que a instrutora quer ouvir.</li></ul>')
+  +sec("🎨 Cores e símbolos do gráfico",'<div class="ref-grid">'+ref+'</div>')
+  +sec("📏 O PBI (Padrão Básico de Infertilidade)",'<p>É o padrão que se repete igual, dia após dia, nos dias inférteis antes da ovulação: pode ser <b>secura</b> (verde) ou uma <b>secreção que não muda</b> (amarelo).</p><p>Qualquer <b>mudança</b> nesse padrão (sensação mais molhada, muco diferente, sangramento) é sinal de <b>possível fertilidade</b>. Aprender o seu PBI leva alguns ciclos — por isso a comparação lado a lado ajuda tanto.</p>')
+  +sec("✖️ O Ápice e a contagem 1, 2, 3",'<p>O <b>Ápice</b> é o <b>último dia</b> da sensação mais fértil (escorregadia/lubrificada). Ele só é reconhecido <b>no dia seguinte</b>, quando a sensação muda. Então você volta e marca <b>X</b> no dia anterior.</p><p>Depois do Ápice, conte <b>1, 2, 3</b>. O app faz essa contagem sozinho quando você marca o X. A fertilidade vai até o fim do 3º dia.</p>')
+  +sec("📋 As 4 regras",rules+'<p class="muted" style="margin-top:8px">Na Regra 03, quando o padrão volta ao PBI, normalmente se contam 3 dias antes de retomar. Confirme sempre os detalhes com sua instrutora.</p>')
+  +sec("🔎 O que observar e levar à instrutora",'<ul><li>Mudanças no seu PBI e dias em que ficou na dúvida do símbolo.</li><li>Dia que você acha que foi o ápice, mas não tem certeza.</li><li>Sangramentos fora da época da menstruação.</li><li>Estresse, doença, viagem, remédios, noites mal dormidas: podem alterar o ciclo — anote em <b>Sintomas</b>.</li><li>Ciclos muito mais curtos ou longos que o habitual.</li><li>Anote as dúvidas na aba <b>Instrutora</b> assim que surgirem.</li></ul>')
+  +sec("📱 Dicas do app",'<ul><li><b>Falar:</b> toque no 🎤 e diga algo como “seca, nada vejo, cólica”. O app preenche sensação, aparência, sintomas e símbolo.</li><li><b>Dias passados:</b> mude a data no topo do registro, ou toque num quadradinho vazio do gráfico.</li><li><b>Comparar:</b> no Gráfico, escolha quantas linhas (ciclos) quer ver lado a lado.</li><li><b>PDF:</b> escolha os ciclos ou um período, e se quer incluir dúvidas e orientações.</li><li><b>Cópia de segurança:</b> os dados ficam só no seu celular. Salve uma cópia no Perfil de vez em quando.</li><li><b>Instalar:</b> no navegador, use “Adicionar à tela inicial” para abrir como app.</li></ul>')
+  +'<p class="disc">Este conteúdo é um resumo para consulta. O aprendizado do método deve ser feito com uma instrutora credenciada, e as orientações dela prevalecem.</p>';
+}
+
+/* ════════════════ ONBOARDING ════════════════ */
+let onbStep=0;
+const SLIDES=[
+  {e:"👀",t:"Observe durante o dia",p:"Preste atenção à <b>sensação na vulva</b> (seca, úmida, molhada, escorregadia) e ao que você <b>vê</b> ao se secar."},
+  {e:"🎤",t:"Registre à noite",p:"Fale ou toque: <i>“seca, nada vejo”</i>. O app preenche a <b>cor e o símbolo</b> sozinho — você só confere.",ex:[["verde","traco"],["amarelo","igual"],["branco","",1],["vermelho","cheia"]]},
+  {e:"📊",t:"Veja seus ciclos lado a lado",p:"Cada linha do gráfico é um ciclo. Marque o <b>X</b> no ápice e o app conta <b>1, 2, 3</b>."},
+  {e:"💬",t:"Leve tudo à instrutora",p:"Anote <b>dúvidas</b> e <b>orientações</b>, e gere o <b>PDF</b> do gráfico para o acompanhamento."}
+];
+function onbRender(){
+  const steps='<div class="onb-steps">'+[0,1,2].map(i=>'<i class="'+(i<=onbStep?"on":"")+'"></i>').join("")+'</div>';
+  const box=$("#onbIn");
+  if(onbStep===0){
+    box.innerHTML=steps+'<div class="onb-hero"><div style="font-size:2.4rem">🌸</div><h1>Bem-vinda!</h1><p>Primeiro, um mini cadastro. Leva 1 minuto.</p></div>'
+      +'<div class="card">'+profFormHTML("o_")+'</div><button class="btn pri block" id="onbNext">Continuar</button>';
+    bindProfForm("o_");
+    $("#onbNext").onclick=async()=>{if(await saveProfile("o_")){onbStep=1;onbSlide=0;onbRender();scrollTo(0,0)}};
+  }else if(onbStep===1){
+    const s=SLIDES[onbSlide];
+    box.innerHTML=steps+'<div class="card"><div class="slide"><div class="emo">'+s.e+'</div><h2>'+s.t+'</h2><p>'+s.p+'</p>'
+      +(s.ex?'<div class="ex">'+s.ex.map(([c,y,f])=>stampHTML({cor:c,sym:y,fert:!!f})).join("")+'</div>':"")
+      +'<div class="onb-steps" style="margin:14px 0 0">'+SLIDES.map((_,i)=>'<i style="width:8px;height:8px;border-radius:50%" class="'+(i===onbSlide?"on":"")+'"></i>').join("")+'</div></div></div>'
+      +'<div class="row">'+(onbSlide>0?'<button class="btn ghost" id="onbBack">Voltar</button>':"")+'<button class="btn pri grow" id="onbNext">'+(onbSlide<SLIDES.length-1?"Próximo":"Ver meu gráfico")+'</button></div>'
+      +'<p style="text-align:center"><button class="btn ghost sm" id="onbSkip">Pular explicação</button></p>';
+    if($("#onbBack"))$("#onbBack").onclick=()=>{onbSlide--;onbRender()};
+    $("#onbNext").onclick=()=>{if(onbSlide<SLIDES.length-1){onbSlide++;onbRender()}else onbFinish()};
+    $("#onbSkip").onclick=onbFinish;
+  }
+}
+let onbSlide=0;
+function onbFinish(){S.onboarded=true;save();document.body.classList.remove("onb");$("#onb").classList.remove("show");go("graf");refreshAll()}
+
+/* ════════════════ MIGRAÇÃO DA VERSÃO ANTERIOR ════════════════ */
+function migrateV1(){
+  return new Promise(res=>{
+    if(!window.indexedDB)return res(false);
+    let req;try{req=indexedDB.open("billings2",1)}catch(e){return res(false)}
+    let created=false;
+    req.onupgradeneeded=e=>{created=true;e.target.transaction.abort()};
+    req.onerror=()=>res(false);
+    req.onsuccess=e=>{
+      const db=e.target.result;
+      if(created||!db.objectStoreNames.contains("days")){db.close();return res(false)}
+      const all=s=>new Promise(r=>{try{const q=db.transaction(s,"readonly").objectStore(s).getAll();q.onsuccess=()=>r(q.result||[]);q.onerror=()=>r([])}catch(e){r([])}});
+      Promise.all([all("cycles"),all("days"),all("meta")]).then(([cycles,days,meta])=>{
+        db.close();
+        if(!days.length&&!meta.length)return res(false);
+        S.starts=[...new Set(cycles.map(c=>c.inicio).filter(Boolean))].sort();
+        days.forEach(d=>{if(!d.data)return;S.days[d.data]={sinto:d.sinto||"",vejo:d.vejo||"",sang:d.sang||"",cor:d.cor||"",sym:d.sym||"",
+          fert:!!d.fert,rule:d.rule||"",apice:!!d.apice,rel:!!d.rel,sintomas:[],nota:"",desc:d.desc||"",ts:Date.now()}});
+        const m=meta.find(x=>x.id==="cadastro");
+        if(m){S.profile.nome=m.uNome||"";S.profile.instrutora=m.iNome||"";S.profile.instrContato=m.iContato||"";
+          if(m.uNasc){const b=parse(m.uNasc),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;S.profile.idade=String(a)}
+          if(m.uObs&&/amament/i.test(m.uObs))S.profile.situacao="Amamentando";}
+        save();res(true);
+      });
+    };
   });
 }
 
-async function genPDF(){
-  const checked=[...document.querySelectorAll('#expChecks input:checked')].map(c=>Number(c.value));
-  if(!checked.length){alert("Selecione pelo menos um ciclo.");return}
-  if(checked.length>3){alert("Selecione no máximo 3 ciclos para comparação lado a lado.");return}
-  const allCycles=(await getAll("cycles")).sort((a,b)=>a.inicio.localeCompare(b.inicio));
-  const selCycles=checked.map(id=>allCycles.find(c=>c.id===id)).filter(Boolean);
-  const allDays=await getAll("days");
-  const meta=await getOne("meta","cadastro")||{};
-  const area=$("#printArea");area.innerHTML="";
-  const tableHTML=buildCompareHTML(selCycles,allDays,"ptbl");
-  const cycleNums=selCycles.map(c=>{const i=allCycles.indexOf(c);return"Ciclo "+(i+1)}).join(", ");
-  area.innerHTML='<div class="pcycle">'
-    +'<div class="phead">'
-    +'<h2>Gráfico MOB — '+cycleNums+'</h2>'
-    +'<small>Usuária: '+(meta.uNome||"—")+(meta.uObs?(" · "+meta.uObs):"")
-    +'<br>Instrutora: '+(meta.iNome||"—")+'</small>'
-    +'</div>'
-    +tableHTML+'</div>';
-  window.print();
+/* ════════════════ BACKUP ════════════════ */
+function exportBackup(){
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:"application/json"}));
+  a.download="grafico-mob-copia-"+todayISO()+".json";document.body.appendChild(a);a.click();a.remove();
+  toast("Cópia salva ✓");
+}
+async function importBackup(file){
+  try{const o=JSON.parse(await file.text());
+    if(!o||typeof o.days!=="object")throw 0;
+    if(!confirm("Substituir os dados deste aparelho pela cópia?"))return;
+    const f=fresh();S={...f,...o,profile:{...f.profile,...(o.profile||{})},onboarded:true};save();
+    toast("Cópia restaurada ✓");setFormDate(todayISO());refreshAll();
+  }catch(e){toast("Arquivo inválido")}
 }
 
-async function exportJSON(){
-  const data={cycles:await getAll("cycles"),days:await getAll("days"),meta:await getAll("meta")};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
-  a.download="billings-backup-"+todayISO()+".json";a.click();
+/* ════════════════ NAVEGAÇÃO ════════════════ */
+function go(v){
+  $$("#bnav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
+  if(v==="graf")renderChart();
+  if(v==="duv"){renderAcomp();renderQ();renderO()}
+  if(v==="perf")renderProfile();
+  scrollTo(0,0);
 }
-async function importJSON(file){
-  try{const d=JSON.parse(await file.text());
-    for(const c of(d.cycles||[]))await put("cycles",c);
-    for(const x of(d.days||[]))await put("days",x);
-    for(const m of(d.meta||[]))await put("meta",m);
-    await renderGrid();await loadCad();alert("Backup importado com sucesso!");
-  }catch(e){alert("Arquivo inválido.")}
-}
-
-/* ── reference ── */
-function renderRef(){
-  let h=COLORS.map(c=>'<div class="ref-card"><div class="ref-color" style="background:'+c.hex
-    +';'+(c.id==='branco'?'border:1px solid #ccc;':'')+'">'
-    +'</div><div><b style="font-size:.85rem">'+c.nome+'</b><small>'+c.desc+'</small></div></div>').join("");
-  h+=SYMBOLS.concat(FERT).map(s=>'<div class="ref-card"><div class="ref-color" style="background:#faf6ee">'
-    +s.ch+'</div><div><b style="font-size:.8rem">'+s.nome.split("—")[0]
-    +'</b><small>'+(s.nome.split("—")[1]||"")+'</small></div></div>').join("");
-  h+='<div class="ref-card"><div class="ref-color" style="background:#fce4ef;font-weight:800;font-size:1rem;color:#e84d8a">X</div>'
-    +'<div><b style="font-size:.8rem">Ápice</b><small>último dia fértil / escorregadio</small></div></div>';
-  h+='<div class="ref-card"><div class="ref-color" style="background:#fff;color:#e84d8a;font-weight:800">♥</div>'
-    +'<div><b style="font-size:.8rem">Relação</b><small>dia com ato conjugal</small></div></div>';
-  $("#refColors").innerHTML=h;
-  $("#refRules").innerHTML=RULES.map(r=>{
-    const inner=r.t?'<p>'+r.t+'</p>'
-      :'<p><span class="sub">Espaçar:</span> '+r.e+'</p>'
-       +'<p style="margin-top:4px"><span class="sub">Conquistar:</span> '+r.c+'</p>';
-    return'<div class="rule"><h4 class="serif">'+r.n+'</h4>'+inner+'</div>';
-  }).join("");
+function bindClose(){$$("[data-close]").forEach(b=>b.onclick=()=>$("#"+b.dataset.close).classList.remove("show"))}
+function refreshAll(){
+  renderTop();
+  if($("#v-graf").classList.contains("on"))renderChart();
+  if($("#v-perf").classList.contains("on"))renderStarts();
+  if($("#v-duv").classList.contains("on")){renderAcomp();renderQ();renderO()}
 }
 
-/* ── tabs ── */
-function switchTab(id){
-  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===id));
-  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id));
-  if(id==="grid")renderGrid();
-  if(id==="compare"){loadCompareSelects();}
-  if(id==="exp")loadExpChecks();
-}
+/* ════════════════ INÍCIO ════════════════ */
+(async function init(){
+  if(isNew){const ok=await migrateV1();if(ok)toast("Seus registros anteriores foram trazidos ✓")}
+  renderLearn();
+  setFormDate(todayISO());
+  renderTop();
 
-/* ── init ── */
-(async function(){
-  await openDB();await loadCad();await renderGrid();renderRef();
-  document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
-  $("#fab").onclick=()=>openModal(null);
-  $("#closeModal").onclick=closeModal;
-  $("#overlay").onclick=e=>{if(e.target===$("#overlay"))closeModal()};
-  $("#updBtn").onclick=saveModal;
-  $("#mDesc").oninput=()=>{M.descEdited=true;M.desc=$("#mDesc").value};
-  $("#delDay").onclick=async()=>{
-    if(M.editKey&&confirm("Apagar este dia?")){
-      await del("days",M.editKey);closeModal();renderGrid();gSave();
-    }
-  };
-  $("#gridCycleSel").onchange=e=>{currentCycle=Number(e.target.value);renderGrid()};
-  $("#newCycle").onclick=async()=>{
-    const c={id:Date.now(),inicio:todayISO()};await put("cycles",c);
-    currentCycle=c.id;renderGrid();gSave();
-  };
-  $("#delCycle").onclick=async()=>{
-    const cycles=await getAll("cycles");
-    if(cycles.length<=1){alert("Não é possível apagar o único ciclo.");return}
-    if(!confirm("Apagar este ciclo e todos os seus dias?"))return;
-    const toDelete=(await getAll("days")).filter(d=>d.cycle==currentCycle);
-    for(const d of toDelete)await del("days",d.key);
-    await del("cycles",currentCycle);
-    currentCycle=null;renderGrid();gSave();
-  };
-  $("#saveCad").onclick=saveCad;
-  $("#gConnectBtn").onclick=async()=>{
-    const clientId=$("#gClientId").value.trim();
-    if(!clientId){setGMsg("Cole o Client ID do Google primeiro.","var(--vermelho)");return}
-    setGMsg("Abrindo autenticação Google…");
-    try{
-      await gSignIn(clientId);
-      setSyncStatus("spin","conectado, salvando…");
-      setGMsg("Conectado! Salvando dados no Drive…","var(--verde)");
-      await gSave();
-      setGMsg("Drive ativo — dados serão salvos automaticamente.","var(--verde)");
-    }catch(e){
-      setGMsg("Erro ao conectar: "+e.message,"var(--vermelho)");
-      setSyncStatus("err","erro ao conectar");
-    }
-  };
-  $("#gRestoreBtn").onclick=async()=>{
-    const clientId=$("#gClientId").value.trim();
-    if(!gToken&&clientId){
-      setGMsg("Conectando ao Google…");
-      try{await gSignIn(clientId)}catch(e){setGMsg("Erro ao conectar: "+e.message,"var(--vermelho)");return}
-    }
-    if(!confirm("Isso vai sobrescrever os dados locais com os dados do Drive. Continuar?"))return;
-    await gRestore();
-  };
-  $("#cmpBtn").onclick=renderComparison;
-  $("#genPDF").onclick=genPDF;
-  $("#exportBtn").onclick=exportJSON;
-  $("#importBtn").onclick=()=>$("#importFile").click();
-  $("#importFile").onchange=e=>{if(e.target.files[0])importJSON(e.target.files[0])};
+  $$("#bnav button").forEach(b=>b.onclick=()=>go(b.dataset.v));
+  $("#fDate").onchange=e=>{if(e.target.value)setFormDate(e.target.value)};
+  $$("[data-qd]").forEach(b=>b.onclick=()=>setFormDate(addDays(todayISO(),+b.dataset.qd)));
+  $("#fVoice").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();if(e.target.value.trim())parseVoice(e.target.value)}};
+  $("#fVoice").onchange=e=>{if(e.target.value.trim())parseVoice(e.target.value)};
+  $("#fDesc").oninput=e=>{F.desc=e.target.value;F.descEdited=true;$("#pvDesc").textContent=F.desc};
+  $("#fNota").oninput=e=>{F.nota=e.target.value};
+  $("#tgNovo").onclick=()=>{F.novo=!F.novo;renderForm()};
+  $("#tgApice").onclick=()=>{F.apice=!F.apice;if(F.apice&&!F.cor&&!F.manual){F.sinto=F.sinto||"Escorregadia";applySuggestion()}renderForm()};
+  $("#tgRel").onclick=()=>{F.rel=!F.rel;renderForm()};
+  $("#saveDayBtn").onclick=saveDay;
+  $("#delDayBtn").onclick=deleteDay;
+
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(SR){
+    let rec=null;
+    $("#micBtn").onclick=()=>{
+      if(rec){rec.stop();return}
+      rec=new SR();rec.lang="pt-BR";rec.interimResults=true;rec.continuous=false;
+      $("#micBtn").classList.add("rec");$("#voiceHint").textContent="Ouvindo… fale o que sentiu e viu.";
+      let final="";
+      rec.onresult=e=>{let s="";for(const r of e.results)s+=r[0].transcript;$("#fVoice").value=s;final=s};
+      rec.onerror=e=>{toast(e.error==="not-allowed"?"Permita o microfone":"Não consegui ouvir")};
+      rec.onend=()=>{$("#micBtn").classList.remove("rec");rec=null;$("#voiceHint").textContent="Toque no 🎤 e fale: “molhada, clara de ovo, estresse”.";if(final.trim())parseVoice(final)};
+      rec.start();
+    };
+  }else{
+    $("#micBtn").style.display="none";
+    $("#voiceHint").textContent="Dica: use o 🎤 do teclado do celular para ditar, e toque em OK.";
+  }
+
+  $("#pdfBtn").onclick=openPdf;
+  $("#pdfGo").onclick=genPdf;
+  $$('input[name="pdfMode"]').forEach(r=>r.onchange=()=>{const c=document.querySelector('input[name="pdfMode"]:checked').value;
+    $("#pdfCiclos").style.display=c==="ciclo"?"":"none";$("#pdfPeriodo").style.display=c==="periodo"?"":"none"});
+  $("#pdfQAll").onchange=e=>{if(e.target.checked)$("#pdfQ").checked=true};
+
+  $("#qAdd").onclick=()=>{const t=$("#qNew").value.trim();if(!t){toast("Escreva a dúvida");return}
+    S.duvidas.push({id:Date.now(),date:todayISO(),text:t,resposta:"",done:false});save();$("#qNew").value="";qFilter="pend";renderQ();renderTop();toast("Dúvida anotada ✓")};
+  $$("[data-qf]").forEach(b=>b.onclick=()=>{qFilter=b.dataset.qf;renderQ()});
+  $("#oDate").value=todayISO();
+  $("#oAdd").onclick=()=>{const t=$("#oNew").value.trim();if(!t){toast("Escreva a orientação");return}
+    S.orient.push({id:Date.now(),date:$("#oDate").value||todayISO(),text:t});save();$("#oNew").value="";renderO();toast("Orientação salva ✓")};
+
+  $("#profSave").onclick=async()=>{if(await saveProfile("p_")){toast("Cadastro salvo ✓");renderProfile()}};
+  $("#notifBtn").onclick=askNotif;
+  $("#icsDaily").onclick=icsDaily;
+  $("#icsAcomp").onclick=icsAcomp;
+  $("#startAdd").onclick=()=>{const v=$("#startNew").value;if(!v)return;if(!S.starts.includes(v))S.starts.push(v);S.starts.sort();save();$("#startNew").value="";refreshAll();toast("Início de ciclo adicionado")};
+  $("#bkExport").onclick=exportBackup;
+  $("#bkImport").onclick=()=>$("#bkFile").click();
+  $("#bkFile").onchange=e=>{if(e.target.files[0])importBackup(e.target.files[0]);e.target.value=""};
+  $("#wipeBtn").onclick=()=>{if(confirm("Apagar TODOS os dados deste aparelho? Faça uma cópia antes.")&&confirm("Tem certeza? Não dá para desfazer.")){localStorage.removeItem(LS);location.reload()}};
+  $$(".ov").forEach(o=>o.onclick=e=>{if(e.target===o)o.classList.remove("show")});
+  bindClose();
+
+  if(!S.onboarded){document.body.classList.add("onb");$("#onb").classList.add("show");onbRender()}
+  else if(location.hash==="#registrar")go("hoje");
+  else go(Object.keys(S.days).length?"hoje":"graf");
+
+  checkReminder();
+  setInterval(checkReminder,60000);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden){checkReminder();renderTop()}});
 })();
 </script>
 </body>
