@@ -432,7 +432,7 @@ h3.sec{font-family:var(--f-display);font-weight:400;font-size:1.25rem;margin:22p
       <div class="seg" id="viewSeg"><button data-view="folha">Folha</button><button data-view="faixa">Faixa</button></div>
       <button class="chip sm" id="descTg">Descrições</button>
       <span class="grow"></span>
-      <button class="btn sec sm" id="pdfBtn"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>PDF</button>
+      <button class="btn sec sm" id="pdfBtn"><svg viewBox="0 0 24 24"><path d="M12 15V4M7 9l5-5 5 5M5 14v6h14v-6"/></svg>Compartilhar PDF</button>
     </div>
     <div class="sheet-wrap" id="sheetWrap"></div>
     <div class="legend" id="legend"></div>
@@ -518,7 +518,8 @@ h3.sec{font-family:var(--f-display);font-weight:400;font-size:1.25rem;margin:22p
 <div class="ov" id="dayOv"><div class="sheet" id="daySheet"></div></div>
 
 <div class="ov" id="pdfOv"><div class="sheet">
-  <div class="sheet-h"><h3>Exportar PDF</h3><button class="xbtn" data-close="pdfOv" aria-label="Fechar">✕</button></div>
+  <div class="sheet-h"><h3>Compartilhar PDF</h3><button class="xbtn" data-close="pdfOv" aria-label="Fechar">✕</button></div>
+  <div id="pdfForm">
   <div class="lbl">Escolher por</div>
   <div class="chips">
     <label class="chip"><input type="radio" name="pdfMode" value="ciclo" checked><span>Ciclos</span></label>
@@ -540,6 +541,15 @@ h3.sec{font-family:var(--f-display);font-weight:400;font-size:1.25rem;margin:22p
   </div>
   <button class="btn pri block" id="pdfGo" style="margin-top:18px">Gerar PDF</button>
   <p class="hint" style="text-align:center">Folha A4 no modelo do gráfico, com até 3 ciclos lado a lado por página.</p>
+  </div>
+  <div id="pdfReady" hidden>
+    <div class="result" style="margin-top:0"><span class="st branco" style="width:40px;height:40px;font-size:.7rem">PDF</span>
+      <div class="txt"><b id="pdfName"></b><span id="pdfInfo"></span></div></div>
+    <button class="btn pri block" id="pdfShare" style="margin-top:16px">Compartilhar (WhatsApp, e-mail…)</button>
+    <button class="btn sec block" id="pdfSave" style="margin-top:8px">Salvar no aparelho</button>
+    <p class="hint" id="pdfShareHint"></p>
+    <button class="btn ghost block" id="pdfBack">Escolher outros ciclos</button>
+  </div>
 </div></div>
 
 <div class="ov" id="dlgOv"><div class="sheet" id="dlgSheet"></div></div>
@@ -1131,12 +1141,40 @@ async function saveFile(filename,data){
   setTimeout(()=>URL.revokeObjectURL(a.href),4000);return true;
 }
 function loadScript(src){return new Promise((res,rej)=>{if(document.querySelector('script[src="'+src+'"]'))return res();const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+let lastPdf=null;
+function canShareFile(){
+  if(IN_CLAUDE||!navigator.canShare||!lastPdf)return false;
+  try{return navigator.canShare({files:[new File([lastPdf.blob],lastPdf.name,{type:"application/pdf"})]})}catch(e){return false}
+}
+function showPdfReady(){
+  $("#pdfForm").hidden=true;$("#pdfReady").hidden=false;
+  $("#pdfName").textContent=lastPdf.name;
+  $("#pdfInfo").textContent=lastPdf.pages+" página"+(lastPdf.pages>1?"s":"")+" · "+Math.max(1,Math.round(lastPdf.blob.size/1024))+" KB";
+  const native=canShareFile();
+  $("#pdfShare").hidden=!native&&!IN_CLAUDE;
+  $("#pdfShare").textContent=native?"Compartilhar (WhatsApp, e-mail…)":"Enviar ou salvar o PDF";
+  $("#pdfSave").hidden=IN_CLAUDE;
+  $("#pdfShareHint").textContent=native?"Abre o menu do celular para escolher o aplicativo.":
+    IN_CLAUDE?"No app Claude do iPhone, abre o menu para escolher o aplicativo (WhatsApp, e-mail…). No Android e no computador, o PDF vai para Downloads: abra o arquivo e toque em Compartilhar.":
+    "Depois de salvar, abra o PDF nos Downloads e toque em Compartilhar para enviar pelo WhatsApp.";
+}
+async function sharePdf(){
+  if(!lastPdf)return;
+  if(canShareFile()){
+    const file=new File([lastPdf.blob],lastPdf.name,{type:"application/pdf"});
+    try{await navigator.share({files:[file],title:"Gráfico MOB",text:"Meu gráfico MOB"+(firstName()?" · "+firstName():"")});toast("Enviado")}
+    catch(e){if(e&&e.name!=="AbortError")toast("Não foi possível abrir o compartilhamento. Use Salvar no aparelho.")}
+    return;
+  }
+  if(await saveFile(lastPdf.name,lastPdf.blob))toast("PDF pronto");
+}
 function openPdf(){
   const cyc=getCycles();if(!cyc.length){toast("Registre alguns dias primeiro");return}
   $("#pdfCiclos").innerHTML='<div class="chips">'+cyc.slice().reverse().map((c,i)=>'<label class="chip sm"><input type="checkbox" value="'+c.start+'"'+(i<3?" checked":"")+'><span>Ciclo '+c.n+' · '+br(c.start)+'</span></label>').join("")+'</div>';
   if(!$("#pdfDe").value)$("#pdfDe").value=addDays(todayISO(),-90);
   if(!$("#pdfAte").value)$("#pdfAte").value=todayISO();
   $("#pdfQ").checked=S.duvidas.some(q=>!q.done);
+  $("#pdfForm").hidden=false;$("#pdfReady").hidden=true;
   $("#pdfOv").classList.add("show");bindClose();
 }
 function pdfPages(){
@@ -1193,8 +1231,8 @@ async function genPdf(){
     }
     stage.innerHTML="";
     const name="grafico-mob-"+(norm(firstName())||"ciclos")+"-"+todayISO()+".pdf";
-    const ok=await saveFile(name,pdf.output("blob"));
-    if(ok){$("#pdfOv").classList.remove("show");toast("PDF pronto")}
+    lastPdf={name,blob:pdf.output("blob"),pages:pages.length};
+    showPdfReady();
   }catch(e){toast("Não foi possível gerar o PDF. Verifique a internet e tente de novo.")}
   btn.disabled=false;btn.textContent="Gerar PDF";
 }
@@ -1346,6 +1384,9 @@ function bindAll(){
   $("#saveDayBtn").onclick=saveDay;$("#delDayBtn").onclick=deleteDay;
   $("#descTg").onclick=()=>{S.prefs.desc=!descOn();save();renderChart()};
   $("#pdfBtn").onclick=openPdf;$("#pdfGo").onclick=genPdf;
+  $("#pdfShare").onclick=sharePdf;
+  $("#pdfSave").onclick=async()=>{if(lastPdf&&await saveFile(lastPdf.name,lastPdf.blob))toast("PDF salvo")};
+  $("#pdfBack").onclick=()=>{$("#pdfForm").hidden=false;$("#pdfReady").hidden=true};
   $$('input[name="pdfMode"]').forEach(r=>r.onchange=()=>{const c=document.querySelector('input[name="pdfMode"]:checked').value;$("#pdfCiclos").hidden=c!=="ciclo";$("#pdfPeriodo").hidden=c!=="periodo"});
   $("#qAdd").onclick=()=>{const t=$("#qNew").value.trim();if(!t){toast("Escreva a dúvida");return}
     S.duvidas.push({id:Date.now(),date:todayISO(),text:t,resposta:"",done:false});save();$("#qNew").value="";qFilter="pend";renderQ();renderTop();toast("Dúvida anotada")};
