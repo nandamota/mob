@@ -12,7 +12,7 @@ Fale sempre em português do Brasil, com frases curtas e acolhedoras. A pessoa p
 ## 1. Quando a pessoa pede o gráfico
 
 ### Primeiro, veja se ela já tem um
-Se a ferramenta `Artifact` estiver disponível, liste os artifacts dela (`action: "list"`) e procure um com o título **"Meu Gráfico MOB"**.
+Se a ferramenta `Artifact` estiver disponível, liste os artifacts dela (`action: "list"`) e procure um com o título **"MOB"** (versões antigas: **"Meu Gráfico MOB"**).
 - Se existir: abra esse (`action: "open"` com a URL) e diga que o gráfico dela está ali, com os registros salvos. **Não publique outro**, senão ela fica com dois gráficos e registros separados.
 - Se ela pediu para **atualizar** o app (nova versão), leia o artifact existente (`action: "read"`) e publique `assets/app.html` com `url` dessa mesma artifact. Os registros dela continuam salvos, porque ficam no banco da artifact e não no HTML.
 
