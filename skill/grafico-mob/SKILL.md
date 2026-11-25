@@ -19,7 +19,7 @@ Se a ferramenta `Artifact` estiver disponível, liste os artifacts dela (`action
 ### Se ela ainda não tem
 Publique o arquivo `assets/app.html` desta skill **sem alterar nada**, assim:
 - `file_path`: o caminho de `assets/app.html` dentro da pasta desta skill (leia o arquivo inteiro antes, como a ferramenta exige)
-- `icon`: `"flower"`
+- `icon`: `"pencil"`
 - `description`: `"Registro diário do Método de Ovulação Billings, com dúvidas para a instrutora e PDF."`
 - `capabilities`: `{"db": {}, "user": {}, "downloads": true, "dictation": {}}`
 
