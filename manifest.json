@@ -1,6 +1,6 @@
 {
   "name": "Meu Gráfico MOB",
-  "short_name": "Gráfico MOB",
+  "short_name": "MOB",
   "description": "Registro diário do Método de Ovulação Billings",
   "start_url": "./",
   "scope": "./",
