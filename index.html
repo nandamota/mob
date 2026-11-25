@@ -581,7 +581,7 @@ const RULE_SHORT={
   "2":{esp:"Durante o PBI: noites alternadas.",con:"Durante o PBI: noites alternadas."},
   "3":{esp:"PBI interrompido: suspender o ato conjugal.",con:"PBI interrompido: aguardar a sensação escorregadia."},
   "4":{esp:"Ápice: aguardar 3 dias; retorno na manhã do 4º.",con:"Escorregadia e até 3 dias após o ápice."},
-  "LS":{esp:"Marcação LS, conforme a instrutora.",con:"Marcação LS, conforme a instrutora."}
+  "LS":{esp:"Líquido seminal: umidade no dia seguinte à relação, não é muco.",con:"Líquido seminal: umidade no dia seguinte à relação, não é muco."}
 };
 function ruleShort(n){const r=RULE_SHORT[n];if(!r)return"";const o=S.profile.objetivo;
   return o==="Conquistar gestação"?r.con:o==="Espaçar gestação"?r.esp:(r.esp===r.con?r.esp:"Espaçar: "+r.esp+" Conquistar: "+r.con)}

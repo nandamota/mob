@@ -19,7 +19,7 @@ Resumo para consulta. O aprendizado do método é feito com uma instrutora crede
 | X | ápice: último dia da sensação mais fértil |
 | 1, 2, 3 | dias contados após o ápice (o app conta sozinho) |
 | R (vermelho, coluna Regra) | dia com relação |
-| LS (coluna Regra) | marcação usada pela instrutora |
+| LS (coluna Regra) | líquido seminal: umidade no dia seguinte à relação, que não deve ser confundida com muco (confirmar com a instrutora) |
 
 Sugestão automática do app: sangramento → vermelho; escorregadia, claro ou clara de ovo → branco com O; seca sem nada → verde; qualquer outra secreção → amarelo. A pessoa pode ajustar.
 
