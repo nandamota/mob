@@ -62,6 +62,50 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
 .stamps{display:flex;gap:5px;margin:4px 0 2px}
 .stamps span{width:22px;height:22px;border-radius:5px;border:1px solid rgba(0,0,0,.14);display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* ilustrações (desenhos simplificados das telas) */
+.journey{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:0 0 22px}
+.journey div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center;font-size:.72rem;font-weight:600;color:var(--muted);line-height:1.25}
+.journey svg{width:26px;height:26px;display:block;margin:0 auto 5px;fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ill{display:flex;gap:12px;overflow-x:auto;padding:14px 2px 6px;margin:6px -2px 0;scroll-snap-type:x mandatory}
+.ill figure{margin:0;flex:0 0 228px;scroll-snap-align:start}
+.ill figcaption{font-size:.76rem;color:var(--muted);text-align:center;margin-top:7px;line-height:1.35}
+.scr{background:#fff;color:#221E26;border:1px solid #DCD6DF;border-radius:22px;padding:10px 12px 14px;box-shadow:0 1px 2px rgba(34,30,38,.05),0 10px 24px rgba(34,30,38,.08);font-size:12px;line-height:1.35;min-height:210px;position:relative}
+.scr .sb{display:flex;justify-content:space-between;font-size:9px;color:#9A94A0;margin-bottom:8px;font-weight:700}
+.scr .url{background:#F1EEF2;border-radius:999px;padding:4px 10px;font-size:10px;color:#6F6877;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.scr .ttl{font-family:var(--f-display);font-size:19px;line-height:1.1;margin:2px 0 8px}
+.scr .sm{font-size:10px;color:#6F6877}
+.mb{display:block;border:1px solid #CFC8D3;border-radius:9px;padding:7px 9px;margin:6px 0;font-weight:600;text-align:center;font-size:11px;background:#fff}
+.mb.dark{background:#221E26;color:#fff;border-color:#221E26}
+.mb.pl{background:#6B3F6E;color:#fff;border-color:#6B3F6E}
+.fld2{border:1px solid #CFC8D3;border-radius:9px;padding:7px 9px;margin:6px 0;color:#A59FAB;font-size:11px}
+.hl{position:relative;box-shadow:0 0 0 2px #6B3F6E,0 0 0 6px rgba(107,63,110,.18)}
+.tap{position:absolute;right:-6px;top:-16px;background:#6B3F6E;color:#fff;font-size:9px;font-weight:700;border-radius:999px;padding:2px 7px;white-space:nowrap;z-index:2}
+.tap::after{content:"";position:absolute;left:50%;bottom:-4px;border:4px solid transparent;border-top-color:#6B3F6E;border-bottom:0;transform:translateX(-50%)}
+.li{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 8px;border-radius:9px;margin:3px 0;font-size:11px}
+.li.sel{background:#F2EAF2;font-weight:700}
+.tg{width:28px;height:16px;border-radius:999px;background:#D8D2DB;position:relative;flex-shrink:0}
+.tg::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:.2s}
+.tg.on{background:#3F8A5F}.tg.on::after{left:14px}
+.file{display:flex;align-items:center;gap:7px;border:1px dashed #A59FAB;border-radius:9px;padding:7px 8px;margin:6px 0;font-size:10.5px;font-weight:600}
+.file i{width:20px;height:24px;border-radius:3px;background:#EFCF63;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:7px;font-weight:800;color:#5a4a00}
+.bub{background:#F1EEF2;border-radius:12px 12px 3px 12px;padding:7px 10px;margin:8px 0 8px auto;width:fit-content;max-width:85%;font-weight:600}
+.reply{font-size:11px;margin:6px 0}
+.card{border:1px solid #DCD6DF;border-radius:11px;padding:8px;margin-top:6px}
+.card .ct{font-family:var(--f-display);font-size:15px}
+.mini{display:flex;gap:3px;margin:6px 0}
+.mini span{width:15px;height:15px;border-radius:3px;border:1px solid rgba(0,0,0,.14);display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:800}
+.r{background:#D66A6A;color:#fff}.g{background:#6DAF86;color:#fff}.y{background:#EFCF63}.w{background:#fff}
+.menu{position:absolute;right:8px;top:44px;width:150px;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:4px 0;font-size:10.5px}
+.menu div{padding:6px 10px}
+.menu div.hl{border-radius:7px;margin:2px 4px}
+.home{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 6px;margin-top:6px}
+.app{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:8.5px;color:#4b4552}
+.app b{width:38px;height:38px;border-radius:11px;display:block}
+.app.mob b{background:#6B3F6E;color:#FBF7FB;font-family:var(--f-display);font-weight:400;font-size:13px;letter-spacing:.04em;display:flex;align-items:center;justify-content:center}
+.sheetm{position:absolute;left:8px;right:8px;bottom:8px;background:#F4F2F5;border-radius:12px;padding:6px}
+.sheetm div{background:#fff;border-radius:8px;padding:6px 9px;margin:3px 0;font-size:10.5px;display:flex;justify-content:space-between}
+.swipe{font-size:.72rem;color:var(--faint);text-align:right;margin-top:2px}
+@media (min-width:720px){.swipe{display:none}}
 </style>
 </head>
 <body>
@@ -70,6 +114,12 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
   <h1>Como instalar o <i>Gráfico MOB</i> no Claude</h1>
   <div class="stamps" aria-hidden="true"><span style="background:#D66A6A;color:#fff">●</span><span style="background:#6DAF86;color:#fff">|</span><span style="background:#EFCF63">=</span><span style="background:#fff">O</span></div>
   <p class="lead">Ao final, você terá o seu próprio gráfico do Método Billings dentro do Claude, com os registros salvos na sua conta e visíveis só para você.</p>
+  <div class="journey" aria-label="Resumo dos passos">
+    <div><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.4-3.6 4.2-5.4 7.5-5.4s6.1 1.8 7.5 5.4"/></svg>1 · Criar conta</div>
+    <div><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="4"/><circle cx="16" cy="12" r="2.4"/></svg>2 · Ligar opção</div>
+    <div><svg viewBox="0 0 24 24"><path d="M12 15V4M7 9l5-5 5 5M5 14v6h14v-6"/></svg>3 · Enviar skill</div>
+    <div><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M4 9h16M4 14.5h16M10 3.5v17"/></svg>4 · Abrir gráfico</div>
+  </div>
 
   <div class="need">
     <b class="t">Antes de começar</b>
@@ -84,6 +134,19 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
 
   <section class="step" id="s1">
     <div class="step-h"><div class="num">1</div><div><h2>Criar a sua conta no Claude</h2><div class="time">3 minutos · pule se já tiver conta</div></div></div>
+    <div class="ill">
+      <figure><div class="scr"><div class="sb"><span>9:41</span><span>●●●</span></div><div class="url"><span>claude.ai</span><span>⟳</span></div>
+        <div class="ttl">Entrar ou criar conta</div>
+        <div class="mb hl"><span class="tap">toque aqui</span>Continuar com Google</div>
+        <div class="sm" style="text-align:center;margin:6px 0">ou</div>
+        <div class="fld2">seu@email.com</div><div class="mb dark">Continuar com e-mail</div></div>
+        <figcaption>Tela de entrada: o jeito mais fácil é com a conta Google.</figcaption></figure>
+      <figure><div class="scr"><div class="sb"><span>9:42</span><span>●●●</span></div><div class="url"><span>Gmail</span><span>✉</span></div>
+        <div class="ttl">Seu código</div><div class="sm">Use este código para entrar no Claude:</div>
+        <div class="mb hl" style="font-size:18px;letter-spacing:.2em;margin-top:10px">482 913</div>
+        <div class="sm" style="margin-top:10px">Não chegou? Veja no spam.</div></div>
+        <figcaption>Se escolheu e-mail, copie o código que chegar.</figcaption></figure>
+    </div><div class="swipe">deslize para o lado →</div>
     <ol class="do">
       <li>Abra o site <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> no navegador (Chrome, Safari ou Edge).</li>
       <li>Toque em <span class="k">Continuar com Google</span> (mais fácil) ou digite seu e-mail.</li>
@@ -98,6 +161,17 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
   <section class="step" id="s2">
     <div class="step-h"><div class="num">2</div><div><h2>Ativar a criação de arquivos</h2><div class="time">1 minuto</div></div></div>
     <p style="margin:10px 0 0">A skill precisa dessa opção ligada para criar o seu gráfico.</p>
+    <div class="ill">
+      <figure><div class="scr"><div class="ttl">Configurações</div>
+        <div class="li">Geral</div><div class="li">Conta</div><div class="li sel hl"><span class="tap">toque aqui</span>Capacidades</div><div class="li">Privacidade</div>
+        <div class="sm" style="margin-top:10px">Clique no seu nome (canto inferior esquerdo) → Configurações</div></div>
+        <figcaption>Abra Configurações e depois Capacidades.</figcaption></figure>
+      <figure><div class="scr"><div class="ttl">Capacidades</div>
+        <div class="li hl"><span class="tap">ligue</span><span>Execução de código e criação de arquivos</span><span class="tg on"></span></div>
+        <div class="li"><span>Busca na web</span><span class="tg"></span></div>
+        <div class="li"><span>Memória</span><span class="tg"></span></div></div>
+        <figcaption>A chave deve ficar verde, como no desenho.</figcaption></figure>
+    </div><div class="swipe">deslize para o lado →</div>
     <ol class="do">
       <li>No claude.ai, clique no seu <b>nome ou foto</b> (canto inferior esquerdo) e depois em <span class="k">Configurações</span>.</li>
       <li>Abra a seção <span class="k">Capacidades</span> (em algumas versões aparece em inglês, <span class="k">Capabilities</span>).</li>
@@ -109,6 +183,21 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
 
   <section class="step" id="s3">
     <div class="step-h"><div class="num">3</div><div><h2>Instalar a skill do Gráfico MOB</h2><div class="time">2 minutos</div></div></div>
+    <div class="ill">
+      <figure><div class="scr"><div class="ttl">Skills</div>
+        <div class="mb pl hl"><span class="tap">toque aqui</span>+ Enviar skill</div>
+        <div class="sm" style="margin-top:8px">Skills ajudam o Claude a fazer tarefas específicas.</div></div>
+        <figcaption>Na parte de Skills, toque em “+” ou “Enviar skill”.</figcaption></figure>
+      <figure><div class="scr"><div class="ttl">Escolher arquivo</div>
+        <div class="file" style="opacity:.55"><i>HTML</i>1-COMECE-AQUI.html</div>
+        <div class="file hl"><span class="tap">este</span><i>ZIP</i>2-grafico-mob.zip</div>
+        <div class="sm" style="margin-top:8px">Envie o .zip inteiro, sem abrir.</div></div>
+        <figcaption>Escolha o arquivo 2-grafico-mob.zip.</figcaption></figure>
+      <figure><div class="scr"><div class="ttl">Skills</div>
+        <div class="li sel hl"><span class="tap">ligada</span><span>grafico-mob</span><span class="tg on"></span></div>
+        <div class="li"><span class="sm">Outras skills…</span><span class="tg"></span></div></div>
+        <figcaption>Confira se a chave da skill está ligada.</figcaption></figure>
+    </div><div class="swipe">deslize para o lado →</div>
     <ol class="do">
       <li>Ainda em <span class="k">Configurações</span>, procure a parte de <span class="k">Skills</span> (às vezes fica em <span class="k">Capacidades</span>, às vezes em <span class="k">Personalizar</span>).</li>
       <li>Clique em <span class="k">+</span> ou <span class="k">Enviar skill</span> (<i>Upload skill</i>).</li>
@@ -121,6 +210,25 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
 
   <section class="step" id="s4">
     <div class="step-h"><div class="num">4</div><div><h2>Criar o seu gráfico</h2><div class="time">3 minutos</div></div></div>
+    <div class="ill">
+      <figure><div class="scr"><div class="mb" style="text-align:left">+ Nova conversa</div>
+        <div class="bub hl"><span class="tap">escreva</span>Quero meu gráfico MOB</div>
+        <div class="reply">Pronto! Criei o seu gráfico:</div>
+        <div class="card"><div class="ct">Meu Gráfico MOB</div><div class="mini"><span class="r">●</span><span class="g">|</span><span class="y">=</span><span class="w">O</span></div><div class="mb pl" style="margin:4px 0 0">Abrir</div></div></div>
+        <figcaption>Peça o gráfico numa conversa nova.</figcaption></figure>
+      <figure><div class="scr"><div class="sm" style="letter-spacing:.1em;font-weight:700">PASSO 1 DE 2 · CADASTRO</div>
+        <div class="ttl">Bem-vinda ao seu <i style="color:#6B3F6E">gráfico</i></div>
+        <div class="fld2">Nome</div><div class="fld2">Idade</div>
+        <div class="mini" style="gap:5px"><span style="width:auto;padding:0 6px;font-weight:600;border-radius:99px">Espaçar</span><span style="width:auto;padding:0 6px;font-weight:600;border-radius:99px">Conquistar</span></div>
+        <div class="mb pl">Continuar</div></div>
+        <figcaption>Na primeira vez: o mini cadastro.</figcaption></figure>
+      <figure><div class="scr"><div class="ttl">Gráfico do ciclo</div>
+        <div class="li" style="background:#F1EEF2;font-weight:700"><span>Dia</span><span>Selo</span><span>Sensação</span><span>Regra</span></div>
+        <div class="li"><span>01</span><span class="mini" style="margin:0"><span class="r">●</span></span><span>Molhada / sangue</span><span>1</span></div>
+        <div class="li"><span>06</span><span class="mini" style="margin:0"><span class="g">|</span></span><span>Seca / nada vejo</span><span>2</span></div>
+        <div class="li"><span>14</span><span class="mini" style="margin:0"><span class="w">O</span></span><span>Escorregadia</span><span style="color:#6B3F6E">X</span></div></div>
+        <figcaption>Depois da explicação, o seu gráfico.</figcaption></figure>
+    </div><div class="swipe">deslize para o lado →</div>
     <ol class="do">
       <li>Volte para o início e clique em <span class="k">Nova conversa</span>.</li>
       <li>Escreva:<span class="say">Quero meu gráfico MOB</span></li>
@@ -138,6 +246,21 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
   <section class="step" id="s5">
     <div class="step-h"><div class="num">+</div><div><h2>Deixar como app no celular</h2><div class="time">Opcional · 1 minuto · recomendado</div></div></div>
     <p style="margin:10px 0 0">Assim o gráfico ganha um ícone na tela inicial e abre direto, como um aplicativo.</p>
+    <div class="ill">
+      <figure><div class="scr"><div class="sb"><span>9:41</span><span>●●●</span></div><div class="url"><span>claude.ai/artifact/…</span><span class="hl" style="border-radius:4px;padding:0 3px;position:relative"><span class="tap">⋮</span>⋮</span></div>
+        <div class="ttl">Meu Gráfico MOB</div><div class="mini"><span class="r">●</span><span class="g">|</span><span class="y">=</span><span class="w">O</span></div>
+        <div class="menu"><div>Nova guia</div><div>Favoritos</div><div>Compartilhar…</div><div class="hl">Adicionar à tela inicial</div><div>Configurações</div></div></div>
+        <figcaption>Android: no Chrome, ⋮ e “Adicionar à tela inicial”.</figcaption></figure>
+      <figure><div class="scr"><div class="ttl">Meu Gráfico MOB</div><div class="mini"><span class="r">●</span><span class="g">|</span><span class="y">=</span><span class="w">O</span></div>
+        <div class="sheetm"><div><span>Copiar</span><span>⧉</span></div><div class="hl"><span>Adicionar à Tela de Início</span><span>⊞</span></div><div><span>Adicionar aos Favoritos</span><span>☆</span></div></div></div>
+        <figcaption>iPhone: no Safari, Compartilhar e “Adicionar à Tela de Início”.</figcaption></figure>
+      <figure><div class="scr" style="background:linear-gradient(160deg,#EDE6F0,#DCD3E2)"><div class="sb"><span>9:43</span><span>●●●</span></div>
+        <div class="home">
+          <div class="app"><b style="background:#25D366"></b>WhatsApp</div><div class="app"><b style="background:#EA4335"></b>Gmail</div><div class="app"><b style="background:#4285F4"></b>Agenda</div><div class="app"><b style="background:#FBBC05"></b>Fotos</div>
+          <div class="app mob hl" style="border-radius:11px"><span class="tap">pronto</span><b>MOB</b>MOB</div><div class="app"><b style="background:#8E8E93"></b>Ajustes</div><div class="app"><b style="background:#34A853"></b>Mapas</div><div class="app"><b style="background:#FF6D00"></b>Música</div>
+        </div></div>
+        <figcaption>O gráfico fica na tela inicial, como um app.</figcaption></figure>
+    </div><div class="swipe">deslize para o lado →</div>
     <p style="margin:14px 0 0"><b>Android, no Chrome</b></p>
     <ol class="do">
       <li>No celular, abra o link do seu gráfico no <b>Chrome</b> e entre na sua conta do Claude, se ele pedir.</li>
