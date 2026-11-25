@@ -17,3 +17,14 @@ head = """<!DOCTYPE html>
 """
 open("index.html", "w", encoding="utf-8").write(head + src + "\n</body>\n</html>\n")
 print("index.html gerado")
+
+# Atualiza a skill com a versão atual do app e gera o .zip para instalar no Claude
+import shutil, os, zipfile
+shutil.copy("app.html", "skill/grafico-mob/assets/app.html")
+os.makedirs("dist", exist_ok=True)
+with zipfile.ZipFile("dist/grafico-mob.zip", "w", zipfile.ZIP_DEFLATED) as z:
+    for root, _, files in os.walk("skill/grafico-mob"):
+        for f in files:
+            full = os.path.join(root, f)
+            z.write(full, os.path.relpath(full, "skill"))
+print("dist/grafico-mob.zip gerado")
