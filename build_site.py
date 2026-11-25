@@ -21,8 +21,8 @@ rep('<title>Como instalar o Gráfico MOB</title>', '''<title>Como instalar o Gr�
 <meta property="og:url" content="''' + SITE_URL + '''">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#6B3F6E">
-<link rel="icon" type="image/png" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">''')
+<link rel="icon" type="image/png" href="favicon-mob.png">
+<link rel="apple-touch-icon" href="apple-touch-icon-mob.png">''')
 
 # no site, a skill é baixada por um botão (não vem num kit)
 rep('''      <li>O arquivo <span class="k">2-grafico-mob.zip</span>, que veio junto com este guia. <b>Não abra nem descompacte esse arquivo.</b> Ele será anexado inteiro no passo 2.</li>''',
@@ -42,7 +42,7 @@ rep('</style>', '''.btn.dl{margin-top:12px;width:100%;justify-content:center}
 
 open("site/index.html", "w", encoding="utf-8").write(g)
 shutil.copy("dist/grafico-mob.zip", "site/grafico-mob.zip")
-for src, dst in [("brand/mob-64.png", "favicon.png"), ("brand/mob-180.png", "apple-touch-icon.png"), ("brand/mob-512.png", "icon-512.png")]:
+for src, dst in [("brand/mob-64.png", "favicon.png"), ("brand/mob-64.png", "favicon-mob.png"), ("brand/mob-180.png", "apple-touch-icon.png"), ("brand/mob-180.png", "apple-touch-icon-mob.png"), ("brand/mob-512.png", "icon-512.png")]:
     shutil.copy(src, "site/" + dst)
 if os.path.exists("site/logo.svg"):
     os.remove("site/logo.svg")
