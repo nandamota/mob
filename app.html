@@ -18,14 +18,14 @@
   --f-body:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --r:14px;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]):not([data-mob="claro"]){
   --bg:#141216; --surface:#1C1A1F; --sunk:#232027;
   --ink:#EDE9EF; --muted:#A39CA9; --faint:#7A7480; --line:#2E2A33; --line-strong:#423C48;
   --accent:#D3A8D4; --accent-ink:#1C1A1F; --accent-soft:#2D2331;
   --ok:#7CC79A; --danger:#E58A85; --danger-soft:#3A2224;
   --s-vermelho:#D66A6A; --s-verde:#6DAF86; --s-amarelo:#EFCF63; --s-branco:#F4F1F5; --s-borda:#6F6877; --s-ink:#221E26;
   --sint:#A99BE6; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
-:root[data-theme="dark"]{
+:root[data-theme="dark"]:not([data-mob="claro"]),:root[data-mob="escuro"]{
   --bg:#141216; --surface:#1C1A1F; --sunk:#232027;
   --ink:#EDE9EF; --muted:#A39CA9; --faint:#7A7480; --line:#2E2A33; --line-strong:#423C48;
   --accent:#D3A8D4; --accent-ink:#1C1A1F; --accent-soft:#2D2331;
@@ -128,7 +128,7 @@ a.btn{text-decoration:none}
 .result .txt{flex:1;min-width:0}
 .result .txt b{display:block;font-size:.92rem}
 .result .txt span{font-size:.8rem;color:var(--muted)}
-.marks{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.marks{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .mark{border:1px solid var(--line-strong);background:var(--surface);border-radius:11px;padding:9px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.72rem;color:var(--muted);font-weight:600}
 .mark b{font-family:var(--f-display);font-weight:400;font-size:1.35rem;line-height:1;color:var(--ink)}
 .mark.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
@@ -142,6 +142,16 @@ details.adj[open] summary::after{content:" –"}
 .savebar{position:sticky;bottom:calc(66px + env(safe-area-inset-bottom,0px));margin-top:16px;display:flex;gap:8px;z-index:5}
 .savebar .pri{flex:1;box-shadow:var(--shadow)}
 
+.rule-leg{display:grid;gap:4px;margin-top:10px}
+.rule-leg div{display:flex;gap:10px;align-items:baseline;font-size:.8rem;color:var(--muted);padding:5px 8px;border-radius:8px}
+.rule-leg div b{min-width:24px;font-family:var(--f-display);font-weight:400;font-size:1.05rem;color:var(--ink)}
+.rule-leg div.on{background:var(--accent-soft);color:var(--ink)}
+.rule-leg div.on b{color:var(--accent)}
+.rec{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line);cursor:pointer}
+.rec:first-child{border-top:0}
+.rec .grow{font-size:.86rem}
+.rec .grow small{display:block;color:var(--muted);font-size:.72rem}
+.editing-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--accent-soft);border-radius:10px;padding:8px 12px;margin-bottom:12px;font-size:.84rem}
 /* selos */
 .st{width:24px;height:24px;border-radius:5px;border:1px solid rgba(0,0,0,.14);display:inline-flex;align-items:center;justify-content:center;
   font-weight:800;font-size:.86rem;line-height:1;color:var(--s-ink);position:relative;vertical-align:middle;font-family:var(--f-body)}
@@ -333,6 +343,7 @@ h3.sec{font-family:var(--f-display);font-weight:400;font-size:1.25rem;margin:22p
     <div id="hojeNotices"></div>
     <div class="stats" id="hojeStats"></div>
     <div class="panel">
+      <div class="editing-bar" id="editBar" hidden><span id="editTxt"></span><button class="btn ghost sm" id="cancelEdit">Voltar para hoje</button></div>
       <div class="row" style="justify-content:space-between;align-items:baseline;margin-bottom:10px">
         <h2 id="formTitle" style="margin:0;font-family:var(--f-display);font-weight:400;font-size:1.5rem">Registrar hoje</h2>
         <span class="muted num" id="formCycle"></span>
@@ -367,17 +378,18 @@ h3.sec{font-family:var(--f-display);font-weight:400;font-size:1.25rem;margin:22p
         <button class="mark" id="mkNovo"><b>1º</b>dia do ciclo</button>
         <button class="mark" id="mkApice"><b>X</b>ápice</button>
         <button class="mark" id="mkRel"><b>R</b>relação</button>
-        <button class="mark" id="mkLs"><b>LS</b>na regra</button>
       </div>
       <div class="hint" id="markHint" hidden></div>
 
+      <div class="lbl">Regra MOB <em>· toque ou fale “regra 2”</em></div>
+      <div class="chips" id="gRule"></div>
+      <div class="rule-leg" id="ruleLeg"></div>
+
       <details class="adj">
-        <summary>Ajustar selo, regra e descrição</summary>
+        <summary>Ajustar selo e descrição</summary>
         <div class="lbl">Cor</div><div class="chips" id="gCor"></div>
         <div class="lbl">Símbolo</div><div class="chips" id="gSym"></div>
         <div class="lbl">Fértil (O)</div><div class="chips" id="gFert"></div>
-        <div class="lbl">Regra MOB</div><div class="chips" id="gRule"></div>
-        <div class="hint" id="ruleHint"></div>
         <div class="lbl">Descrição <em>· gerada automaticamente, pode editar (ex.: ++molhada / claro)</em></div>
         <input class="in" id="fDesc" placeholder="Seca / nada vejo">
       </details>
@@ -391,6 +403,10 @@ h3.sec{font-family:var(--f-display);font-weight:400;font-size:1.25rem;margin:22p
         <button class="btn danger" id="delDayBtn" hidden aria-label="Apagar registro">Apagar</button>
         <button class="btn pri" id="saveDayBtn">Salvar o dia</button>
       </div>
+    </div>
+    <div class="panel" id="recentPanel" hidden>
+      <div class="lbl">Registros recentes <em>· toque para editar</em></div>
+      <div id="recent"></div>
     </div>
   </section>
 
@@ -440,6 +456,10 @@ h3.sec{font-family:var(--f-display);font-weight:400;font-size:1.25rem;margin:22p
   <section class="view" id="v-perfil">
     <div class="vh"><h2>Perfil</h2></div>
     <div class="panel"><div id="profForm"></div><button class="btn pri block" id="profSave">Salvar cadastro</button></div>
+    <div class="panel">
+      <div class="lbl">Aparência</div>
+      <div class="chips" id="themeSeg"></div>
+    </div>
     <div class="panel">
       <div class="lbl">Lembretes</div>
       <p class="muted" style="margin-top:0">Adicione os lembretes na sua agenda do Google. Eles tocam no celular todo dia, mesmo com o app fechado.</p>
@@ -532,6 +552,15 @@ const SINTO=["Seca","Úmida","Molhada","Pegajosa","Escorregadia"];
 const VEJO=["Nada vejo","Muco branco","Turvo","Flocoso","Claro","Clara de ovo"];
 const SANG=["Menstruação","Sangramento","Mancha/borra"];
 const SINTOMAS=["Cólica","Estresse","Dor de cabeça","Inchaço","Seios sensíveis","Dor lombar","Cansaço","Irritação","Insônia","Doença/febre","Viagem","Enjoo","Acne"];
+const RULE_SHORT={
+  "1":{esp:"Forte sangramento: evitar relação.",con:"Forte sangramento: evitar relação."},
+  "2":{esp:"Durante o PBI: noites alternadas.",con:"Durante o PBI: noites alternadas."},
+  "3":{esp:"PBI interrompido: suspender o ato conjugal.",con:"PBI interrompido: aguardar a sensação escorregadia."},
+  "4":{esp:"Ápice: aguardar 3 dias; retorno na manhã do 4º.",con:"Escorregadia e até 3 dias após o ápice."},
+  "LS":{esp:"Marcação LS, conforme a instrutora.",con:"Marcação LS, conforme a instrutora."}
+};
+function ruleShort(n){const r=RULE_SHORT[n];if(!r)return"";const o=S.profile.objetivo;
+  return o==="Conquistar gestação"?r.con:o==="Espaçar gestação"?r.esp:(r.esp===r.con?r.esp:"Espaçar: "+r.esp+" Conquistar: "+r.con)}
 const RULES=[
   {n:"1",t:"Regra 01",txt:"Evitar relação sexual em dias de forte sangramento."},
   {n:"2",t:"Regra 02",txt:"Noites alternadas disponíveis durante o PBI."},
@@ -543,7 +572,7 @@ const RULES=[
 const IN_CLAUDE=!!(window.claude&&typeof window.claude.use==="function");
 const LS_KEY="mob_v2";
 const DEF_PROFILE={nome:"",idade:"",objetivo:"",filhos:"",qtdFilhos:"",situacao:"",instrutora:"",instrContato:"",diaAcomp:"",horaAcomp:"",lembrete:false,horaLembrete:"21:00"};
-function fresh(){return{v:3,onboarded:false,profile:{...DEF_PROFILE},starts:[],days:{},duvidas:[],orient:[],customSint:[],labels:{},prefs:{cols:3,view:"folha",desc:null},lastNotif:"",updated:0}}
+function fresh(){return{v:3,onboarded:false,profile:{...DEF_PROFILE},starts:[],days:{},duvidas:[],orient:[],customSint:[],labels:{},prefs:{cols:3,view:"folha",desc:null,theme:"claro"},lastNotif:"",updated:0}}
 function normalize(o){
   const f=fresh();o=o||{};
   const n={...f,...o,profile:{...f.profile,...(o.profile||{})},labels:{...(o.labels||{})},prefs:{...f.prefs,...(o.prefs||{})}};
@@ -722,6 +751,9 @@ function parseVoice(txt){
   if(done.sang&&!done.vejo)F.vejo="";
   for(const[n,re]of SINT_MAP)if(re.test(t)&&!F.sintomas.includes(n)){F.sintomas.push(n);got.push(n)}
   for(const c of S.customSint)if(t.includes(norm(c))&&!F.sintomas.includes(c)){F.sintomas.push(c);got.push(c)}
+  const rm=t.match(/regra\s*(?:numero\s*)?(1|um|uma|2|dois|duas|3|tres|4|quatro)\b/);
+  if(rm){F.rule={"1":"1",um:"1",uma:"1","2":"2",dois:"2",duas:"2","3":"3",tres:"3","4":"4",quatro:"4"}[rm[1]];got.push("regra "+F.rule)}
+  else if(/\bl\.?\s?s\b|\bele esse\b/.test(t)){F.rule="LS";got.push("LS")}
   if(/apice|\bpico\b/.test(t)){F.apice=true;got.push("ápice")}
   if(/relacao|ato conjugal/.test(t)){F.rel=true;got.push("relação")}
   if(/novo ciclo|primeiro dia/.test(t)){F.novo=true;got.push("1º dia")}
@@ -768,7 +800,9 @@ function renderForm(){
   $("#pvTitle").textContent=stampTitle(F);
   $("#pvDesc").textContent=F.desc||"";
   $("#mkNovo").classList.toggle("on",F.novo);$("#mkApice").classList.toggle("on",F.apice);
-  $("#mkRel").classList.toggle("on",F.rel);$("#mkLs").classList.toggle("on",F.rule==="LS");
+  $("#mkRel").classList.toggle("on",F.rel);
+  $("#editBar").hidden=!(F.editing||!isToday);
+  $("#editTxt").textContent=F.editing?"Editando o registro de "+brFull(F.date):"Registrando um dia passado";
   const mh=$("#markHint");
   mh.hidden=false;
   if(F.novo&&!F.editing&&F.sang==="Menstruação"&&!S.starts.includes(F.date))mh.textContent="Marquei como 1º dia de um novo ciclo porque a menstruação começou. Desmarque se não for.";
@@ -778,9 +812,8 @@ function renderForm(){
   chipGroup($("#gCor"),COLORS.map(c=>({v:c.id,h:'<span class="st '+c.id+'" style="width:14px;height:14px;margin-right:6px"></span>'+c.nome})),v=>F.cor===v,man(v=>F.cor=F.cor===v?"":v));
   chipGroup($("#gSym"),SYMBOLS.map(s=>({v:s.id,h:'<b>'+s.ch+'</b>&nbsp; '+s.desc})),v=>F.sym===v,man(v=>F.sym=F.sym===v?"":v));
   chipGroup($("#gFert"),[{v:"1",h:"Sim"},{v:"0",h:"Não"}],v=>(F.fert?"1":"0")===v,man(v=>F.fert=v==="1"));
-  chipGroup($("#gRule"),[...RULES.map(r=>({v:r.n,h:"Regra "+r.n})),{v:"LS",h:"LS"}],v=>F.rule===v,man(v=>F.rule=F.rule===v?"":v));
-  const r=RULES.find(x=>x.n===F.rule);
-  $("#ruleHint").textContent=r?(r.txt||("Espaçar: "+r.esp+" Conquistar: "+r.con)):"";
+  chipGroup($("#gRule"),["1","2","3","4","LS"].map(n=>({v:n,h:n==="LS"?"LS":"Regra "+n})),v=>F.rule===v,v=>{F.rule=F.rule===v?"":v;renderForm()});
+  $("#ruleLeg").innerHTML=Object.keys(RULE_SHORT).map(n=>'<div class="'+(F.rule===n?"on":"")+'"><b>'+n+'</b><span>'+esc(ruleShort(n))+'</span></div>').join("");
   const all=[...SINTOMAS,...S.customSint];
   chipGroup($("#gSint"),[...all,{v:"__add",h:"+ outro"}],v=>F.sintomas.includes(v),async v=>{
     if(v==="__add"){const n=((await dialog({title:"Novo sintoma",input:"ex.: azia",ok:"Adicionar"}))||"").trim().slice(0,24);
@@ -834,6 +867,12 @@ function renderTop(){
   if(closed.length){st+='<div class="stat"><small>Média dos ciclos</small><b class="num">'+Math.round(closed.reduce((a,x)=>a+x.maxDay,0)/closed.length)+' dias</b></div>'}
   if(cyc.length)st+='<div class="stat"><small>Ciclos registrados</small><b class="num">'+cyc.length+'</b></div>';
   $("#hojeStats").innerHTML=st;$("#hojeStats").hidden=!st;
+  const rk=Object.keys(S.days).sort().reverse().slice(0,7);
+  $("#recentPanel").hidden=!rk.length;
+  $("#recent").innerHTML=rk.map(d=>{const x=S.days[d],cc=cycleOf(d,cyc),lab=postLabel(cc,d);
+    return'<div class="rec" data-date="'+d+'">'+stampHTML(x,{apex:lab==="X"})+'<div class="grow"><b class="num">'+brFull(d)+'</b> · '+esc(x.desc||"—")
+      +'<small>'+[cc?"Ciclo "+cc.n+", dia "+(diffDays(cc.start,d)+1):"",x.rule?(x.rule==="LS"?"LS":"Regra "+x.rule):"",x.rel?"R":"",(x.sintomas||[]).join(", ")].filter(Boolean).map(esc).join(" · ")+'</small></div><span class="btn ghost sm">Editar</span></div>'}).join("");
+  $$("#recent .rec").forEach(el=>el.onclick=()=>{setFormDate(el.dataset.date);window.scrollTo(0,0)});
 }
 
 /* ═══════════ GRÁFICO ═══════════ */
@@ -918,7 +957,8 @@ function renderChart(){
 }
 function legendHTML(){
   return COLORS.map(c=>'<span>'+stampHTML({cor:c.id})+c.nome.toLowerCase()+'</span>').join("")
-    +'<span><b style="color:var(--accent)">O</b>&nbsp;fértil</span><span><b style="color:var(--accent)">X</b>&nbsp;ápice · 1 2 3 após</span><span><b style="color:var(--danger)">R</b>&nbsp;relação</span><span style="color:var(--sint)">sintomas e notas</span>';
+    +'<span style="flex-basis:100%;height:0"></span>'+Object.keys(RULE_SHORT).map(n=>'<span><b style="color:var(--ink)">'+n+'</b>&nbsp;'+esc(ruleShort(n))+'</span>').join("")
+    +'<span style="flex-basis:100%;height:0"></span><span><b style="color:var(--accent)">O</b>&nbsp;fértil</span><span><b style="color:var(--accent)">X</b>&nbsp;ápice · 1 2 3 após</span><span><b style="color:var(--danger)">R</b>&nbsp;relação</span><span style="color:var(--sint)">sintomas e notas</span>';
 }
 async function editLabel(start){
   const v=await dialog({title:"Título do ciclo",text:"Como a instrutora classificou este ciclo?",input:"ex.: Ciclo fértil normal · PBI de secura",value:S.labels[start]||"",ok:"Salvar"});
@@ -929,6 +969,7 @@ async function editLabel(start){
 function openDay(date){
   const d=S.days[date];
   if(!d){if(date>todayISO()){toast("Esse dia ainda não chegou");return}setFormDate(date);go("registrar");toast("Registrando "+brFull(date));return}
+  setFormDate(date);go("registrar");return;
   const c=cycleOf(date),lab=postLabel(c,date);
   $("#daySheet").innerHTML='<div class="sheet-h"><div><div class="muted num">Ciclo '+c.n+' · dia '+(diffDays(c.start,date)+1)+'</div><h3>'+brFull(date)+'</h3></div><button class="xbtn" data-close="dayOv" aria-label="Fechar">✕</button></div>'
     +'<div class="result" style="margin-top:0">'+stampHTML(d,{apex:lab==="X"})+'<div class="txt"><b>'+esc(d.desc||"—")+'</b><span>'
@@ -1015,7 +1056,7 @@ function saveProfile(px){
 }
 function renderProfile(){
   $("#profForm").innerHTML=profFormHTML("p_");bindProfForm("p_");
-  renderStarts();renderReminders();renderStoreNote();
+  renderStarts();renderReminders();renderStoreNote();renderTheme();
 }
 function renderStarts(){
   const cyc=getCycles();
@@ -1228,6 +1269,12 @@ function go(v){
   if(v==="perfil")renderProfile();
   window.scrollTo(0,0);
 }
+function applyTheme(){document.documentElement.setAttribute("data-mob",S.prefs.theme||"claro")}
+function renderTheme(){
+  const opts=[["claro","Claro"],["escuro","Escuro"],["auto","Automático"]];
+  $("#themeSeg").innerHTML=opts.map(([v,l])=>'<button class="chip'+((S.prefs.theme||"claro")===v?" on":"")+'" data-theme-opt="'+v+'">'+l+'</button>').join("");
+  $$("[data-theme-opt]").forEach(b=>b.onclick=()=>{S.prefs.theme=b.dataset.themeOpt;save();applyTheme();renderTheme()});
+}
 function bindClose(){$$("[data-close]").forEach(b=>b.onclick=()=>$("#"+b.dataset.close).classList.remove("show"))}
 function refreshAll(){
   renderTop();
@@ -1281,7 +1328,7 @@ function bindAll(){
   $("#mkNovo").onclick=()=>{F.novo=!F.novo;renderForm()};
   $("#mkApice").onclick=()=>{F.apice=!F.apice;renderForm()};
   $("#mkRel").onclick=()=>{F.rel=!F.rel;renderForm()};
-  $("#mkLs").onclick=()=>{F.rule=F.rule==="LS"?"":"LS";renderForm()};
+  $("#cancelEdit").onclick=()=>setFormDate(todayISO());
   $("#saveDayBtn").onclick=saveDay;$("#delDayBtn").onclick=deleteDay;
   $("#descTg").onclick=()=>{S.prefs.desc=!descOn();save();renderChart()};
   $("#pdfBtn").onclick=openPdf;$("#pdfGo").onclick=genPdf;
@@ -1305,9 +1352,9 @@ function bindAll(){
   bindClose();
 }
 async function boot(){
-  bindAll();renderLearn();setFormDate(todayISO());setupMic();
-  if(IN_CLAUDE&&!hasLocal()){await initCloud()}else if(IN_CLAUDE){initCloud().then(()=>{setFormDate(F.date);refreshAll();renderStoreNote()})}
-  $("#bootLoading").hidden=true;
+  applyTheme();bindAll();renderLearn();setFormDate(todayISO());setupMic();
+  if(IN_CLAUDE&&!hasLocal()){await initCloud()}else if(IN_CLAUDE){initCloud().then(()=>{applyTheme();setFormDate(F.date);refreshAll();renderStoreNote()})}
+  applyTheme();$("#bootLoading").hidden=true;
   renderTop();
   if(!S.onboarded){$("#onb").classList.add("show");onbRender()}
   else{$("#bnav").hidden=false;go(location.hash==="#registrar"||Object.keys(S.days).length?"registrar":"grafico")}
