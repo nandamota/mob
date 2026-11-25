@@ -29,6 +29,7 @@ Depois de publicar, ofereça fixar na barra lateral (`action: "pin"`) para ela a
 3. Lembretes: no Perfil do app há botões para colocar o lembrete diário e o acompanhamento mensal no Google Agenda.
 4. Para ditar: no computador (Chrome), o botão de microfone do app funciona. No celular, use o microfone do teclado.
 5. O link é só dela. Não precisa compartilhar com ninguém, a não ser que queira mostrar à instrutora. Para a instrutora, o melhor é o PDF.
+6. Para ficar como app no celular: abrir o link no Chrome (Android) → ⋮ → "Adicionar à tela inicial" (ou "Instalar app"). No iPhone, abrir no Safari → Compartilhar → "Adicionar à Tela de Início". Mostre o link completo do gráfico para ela copiar.
 
 ### Se a ferramenta `Artifact` não existir (chat comum)
 Crie um artifact HTML com o conteúdo de `assets/app.html`. Nesse modo os registros ficam salvos **só no navegador/aparelho** em que ela usar. Avise com clareza que ela deve usar sempre o mesmo aparelho e fazer de vez em quando **Perfil → Salvar cópia**.
