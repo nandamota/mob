@@ -35,8 +35,3 @@ with zipfile.ZipFile("dist/kit-grafico-mob.zip", "w", zipfile.ZIP_DEFLATED) as z
     z.write("guia/COMECE-AQUI.html", "1-COMECE-AQUI.html")
     z.write("dist/grafico-mob.zip", "2-grafico-mob.zip")
 print("dist/kit-grafico-mob.zip gerado")
-
-# Ícone MOB no kit (passo 3), para criar o atalho na tela inicial
-with zipfile.ZipFile("dist/kit-grafico-mob.zip", "a", zipfile.ZIP_DEFLATED) as z:
-    z.write("icon-512.png", "3-icone-MOB.png")
-print("ícone adicionado ao kit")

@@ -45,6 +45,8 @@ button{cursor:pointer}
 /* topo */
 .top{padding-block:18px 6px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .top-in{max-width:1000px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.brand-row{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-row .logo{width:44px;height:44px;flex-shrink:0}
 .brand small{display:block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .brand h1{margin:2px 0 0;font-family:var(--f-display);font-weight:400;font-size:1.9rem;line-height:1;letter-spacing:-.01em}
 .brand h1 i{color:var(--accent)}
@@ -327,9 +329,27 @@ h3.sec{font-family:var(--f-display);font-weight:400;font-size:1.25rem;margin:22p
 
 <header class="top">
   <div class="top-in">
+    <div class="brand-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="logo" aria-hidden="true">
+  <defs>
+    <path id="mobpetal" d="M46.5 46.5 L27.5 46.5 A19 19 0 1 1 46.5 27.5 L46.5 46.5 Z"/>
+  </defs>
+  <g stroke-width="1.2" stroke-linejoin="round">
+    <use href="#mobpetal" fill="#F6E3A1" stroke="#D9BD62"/>
+    <use href="#mobpetal" fill="#F3B4B0" stroke="#D98580" transform="translate(100 0) scale(-1 1)"/>
+    <use href="#mobpetal" fill="#B9DDC4" stroke="#7FB592" transform="translate(0 100) scale(1 -1)"/>
+    <use href="#mobpetal" fill="#FFFFFF" stroke="#B7ADC0" transform="translate(100 100) scale(-1 -1)"/>
+  </g>
+  <g fill="#4A3F52">
+    <circle cx="40" cy="40" r="2.2"/>
+    <circle cx="60" cy="40" r="2.2"/>
+    <circle cx="40" cy="60" r="2.2"/>
+    <circle cx="60" cy="60" r="2.2"/>
+  </g>
+</svg>
     <div class="brand">
       <small id="hdrSub">Método de Ovulação Billings</small>
       <h1>Meu Gráfico <i>MOB</i></h1>
+    </div>
     </div>
     <div class="today-pill" id="hdrCyc" hidden></div>
   </div>

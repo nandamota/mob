@@ -19,7 +19,7 @@ Se a ferramenta `Artifact` estiver disponível, liste os artifacts dela (`action
 ### Se ela ainda não tem
 Publique o arquivo `assets/app.html` desta skill **sem alterar nada**, assim:
 - `file_path`: o caminho de `assets/app.html` dentro da pasta desta skill (leia o arquivo inteiro antes, como a ferramenta exige)
-- `icon`: `"calendar"`
+- `icon`: `"flower"`
 - `description`: `"Registro diário do Método de Ovulação Billings, com dúvidas para a instrutora e PDF."`
 - `capabilities`: `{"db": {}, "user": {}, "downloads": true, "dictation": {}}`
 
@@ -29,11 +29,7 @@ Depois de publicar, ofereça fixar na barra lateral (`action: "pin"`) para ela a
 3. Lembretes: no Perfil do app há botões para colocar o lembrete diário e o acompanhamento mensal no Google Agenda.
 4. Para ditar: no computador (Chrome), o botão de microfone do app funciona. No celular, use o microfone do teclado.
 5. O link é só dela. Não precisa compartilhar com ninguém, a não ser que queira mostrar à instrutora. Para a instrutora, o melhor é o PDF.
-6. Para ficar como app no celular com o ícone **MOB**: mostre o link completo do gráfico para ela copiar e entregue a imagem `assets/icone-MOB.png` desta skill como arquivo para baixar (copie para a pasta de arquivos de saída e apresente o arquivo). Depois explique:
-   - **Android:** instalar o app gratuito **Shortcut Maker** → **Sites** → colar o link → no ícone, escolher a imagem MOB da galeria → nome **MOB** → **Criar atalho**.
-   - **iPhone:** app **Atalhos** → **+** → **Adicionar Ação** → **Abrir URLs** → colar o link → **Adicionar à Tela de Início** → tocar no ícone → **Escolher Foto** → imagem MOB → nome **MOB** → **Adicionar**.
-   - Jeito mais rápido, mas com o ícone do Claude: no Chrome, ⋮ → "Adicionar à tela inicial" (no iPhone, Safari → Compartilhar → "Adicionar à Tela de Início").
-   O link do Claude não permite trocar o ícone por letras; por isso o atalho com a imagem é o caminho para ter o ícone MOB.
+6. Para ficar como app no celular: mostre o link completo do gráfico para ela copiar. No Android, abrir o link no Chrome → ⋮ → "Adicionar à tela inicial" (ou "Instalar app"). No iPhone, abrir no Safari → Compartilhar → "Adicionar à Tela de Início".
 
 ### Se a ferramenta `Artifact` não existir (chat comum)
 Crie um artifact HTML com o conteúdo de `assets/app.html`. Nesse modo os registros ficam salvos **só no navegador/aparelho** em que ela usar. Avise com clareza que ela deve usar sempre o mesmo aparelho e fazer de vez em quando **Perfil → Salvar cópia**.
