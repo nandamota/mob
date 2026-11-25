@@ -25,8 +25,8 @@ rep('<title>Como instalar o Gráfico MOB</title>', '''<title>Como instalar o Gr�
 <link rel="apple-touch-icon" href="apple-touch-icon.png">''')
 
 # no site, a skill é baixada por um botão (não vem num kit)
-rep('''      <li>O arquivo <span class="k">2-grafico-mob.zip</span>, que veio junto com este guia. <b>Não abra nem descompacte esse arquivo.</b> Ele será enviado inteiro no passo 3.</li>''',
-    '''      <li>O arquivo da skill, que você baixa aqui embaixo. <b>Não abra nem descompacte esse arquivo.</b> Ele será enviado inteiro no passo 3.</li>
+rep('''      <li>O arquivo <span class="k">2-grafico-mob.zip</span>, que veio junto com este guia. <b>Não abra nem descompacte esse arquivo.</b> Ele será anexado inteiro no passo 2.</li>''',
+    '''      <li>O arquivo da skill, que você baixa aqui embaixo. <b>Não abra nem descompacte esse arquivo.</b> Ele será anexado inteiro no passo 2.</li>
     </ul>
     <a class="btn dl" href="grafico-mob.zip" download>
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>

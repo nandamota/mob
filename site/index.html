@@ -127,22 +127,21 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
 <body>
 <div class="wrap">
   <div class="hero-logo"><span class="mob-tile" aria-hidden="true">MOB</span></div>
-  <div class="eyebrow">Passo a passo · cerca de 10 minutos</div>
+  <div class="eyebrow">Passo a passo · pelo celular · cerca de 5 minutos</div>
   <h1>Como instalar o <i>Gráfico MOB</i> no Claude</h1>
-  <p class="lead">Ao final, você terá o seu próprio gráfico do Método Billings dentro do Claude, com os registros salvos na sua conta e visíveis só para você.</p>
-  <div class="journey" aria-label="Resumo dos passos">
-    <div><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.4-3.6 4.2-5.4 7.5-5.4s6.1 1.8 7.5 5.4"/></svg>1 · Criar conta</div>
-    <div><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="4"/><circle cx="16" cy="12" r="2.4"/></svg>2 · Ligar opção</div>
-    <div><svg viewBox="0 0 24 24"><path d="M12 15V4M7 9l5-5 5 5M5 14v6h14v-6"/></svg>3 · Enviar skill</div>
-    <div><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M4 9h16M4 14.5h16M10 3.5v17"/></svg>4 · Abrir gráfico</div>
+  <p class="lead">Ao final, você terá o seu próprio gráfico do Método Billings dentro do app Claude, com os registros salvos na sua conta e visíveis só para você.</p>
+  <div class="journey" aria-label="Resumo dos passos" style="grid-template-columns:repeat(3,1fr)">
+    <div><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>1 · Baixar o app</div>
+    <div><svg viewBox="0 0 24 24"><path d="M20 11.5l-7.6 7.6a5 5 0 0 1-7.1-7.1l8-8a3.3 3.3 0 0 1 4.7 4.7l-8 8a1.7 1.7 0 0 1-2.4-2.4l7.4-7.4"/></svg>2 · Anexar a skill</div>
+    <div><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M4 9h16M4 14.5h16M10 3.5v17"/></svg>3 · Abrir o gráfico</div>
   </div>
 
   <div class="need">
     <b class="t">Antes de começar</b>
     <ul>
+      <li>Seu celular com internet.</li>
       <li>Um e-mail ou uma conta Google.</li>
-      <li>De preferência, um <b>computador</b> para a instalação. Depois, você usa o gráfico no celular normalmente.</li>
-      <li>O arquivo da skill, que você baixa aqui embaixo. <b>Não abra nem descompacte esse arquivo.</b> Ele será enviado inteiro no passo 3.</li>
+      <li>O arquivo da skill, que você baixa aqui embaixo. <b>Não abra nem descompacte esse arquivo.</b> Ele será anexado inteiro no passo 2.</li>
     </ul>
     <a class="btn dl" href="grafico-mob.zip" download>
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
@@ -152,91 +151,71 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
     </ul>
   </div>
 
-  <div class="progress"><span id="progTxt">0 de 4 passos</span><div class="bar"><i id="progBar"></i></div></div>
+  <div class="progress"><span id="progTxt">0 de 3 passos</span><div class="bar"><i id="progBar"></i></div></div>
 
   <section class="step" id="s1">
-    <div class="step-h"><div class="num">1</div><div><h2>Criar a sua conta no Claude</h2><div class="time">3 minutos · pule se já tiver conta</div></div></div>
+    <div class="step-h"><div class="num">1</div><div><h2>Baixar o app Claude e criar a conta</h2><div class="time">3 minutos · pule se já tiver</div></div></div>
     <div class="ill">
-      <figure><div class="scr"><div class="sb"><span>9:41</span><span>●●●</span></div><div class="url"><span>claude.ai</span><span>⟳</span></div>
+      <figure><div class="scr"><div class="sb"><span>9:41</span><span>●●●</span></div><div class="ttl">Play Store</div>
+        <div class="fld2" style="color:#221E26">Claude</div>
+        <div class="li sel"><span style="display:flex;gap:7px;align-items:center"><b style="width:26px;height:26px;border-radius:7px;background:#D97757;display:inline-block"></b>Claude · Anthropic</span></div>
+        <div class="mb pl hl"><span class="tap">toque aqui</span>Instalar</div></div>
+        <figcaption>Procure “Claude” na Play Store ou na App Store.</figcaption></figure>
+      <figure><div class="scr"><div class="sb"><span>9:42</span><span>●●●</span></div>
         <div class="ttl">Entrar ou criar conta</div>
         <div class="mb hl"><span class="tap">toque aqui</span>Continuar com Google</div>
         <div class="sm" style="text-align:center;margin:6px 0">ou</div>
         <div class="fld2">seu@email.com</div><div class="mb dark">Continuar com e-mail</div></div>
-        <figcaption>Tela de entrada: o jeito mais fácil é com a conta Google.</figcaption></figure>
-      <figure><div class="scr"><div class="sb"><span>9:42</span><span>●●●</span></div><div class="url"><span>Gmail</span><span>✉</span></div>
-        <div class="ttl">Seu código</div><div class="sm">Use este código para entrar no Claude:</div>
-        <div class="mb hl" style="font-size:18px;letter-spacing:.2em;margin-top:10px">482 913</div>
-        <div class="sm" style="margin-top:10px">Não chegou? Veja no spam.</div></div>
-        <figcaption>Se escolheu e-mail, copie o código que chegar.</figcaption></figure>
+        <figcaption>Entre com o Google (mais fácil) ou com o e-mail.</figcaption></figure>
     </div><div class="swipe">deslize para o lado →</div>
     <ol class="do">
-      <li>Abra o site <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> no navegador (Chrome, Safari ou Edge).</li>
-      <li>Toque em <span class="k">Continuar com Google</span> (mais fácil) ou digite seu e-mail.</li>
-      <li>Se usou o e-mail, abra sua caixa de entrada: chegará um <b>código</b> ou um <b>link</b> do Claude. Use-o para entrar. Veja também a pasta de spam.</li>
-      <li>Preencha seu nome e confirme que tem mais de 18 anos.</li>
-      <li>Se aparecerem os planos, você pode começar com o <b>gratuito</b>. Veja a observação no passo 3.</li>
+      <li>Abra a <b>Play Store</b> (Android) ou a <b>App Store</b> (iPhone) e procure <b>Claude</b>. O app é da <b>Anthropic</b>.</li>
+      <li>Toque em <span class="k">Instalar</span> (no iPhone, <span class="k">Obter</span>) e abra o app.</li>
+      <li>Toque em <span class="k">Continuar com Google</span> ou digite seu e-mail. Se usou o e-mail, abra a caixa de entrada e use o <b>código</b> que chegar (veja também o spam).</li>
+      <li>Preencha seu nome e confirme que tem mais de 18 anos. Pode começar com o plano <b>gratuito</b>.</li>
     </ol>
-    <div class="tip">Dica: instale também o app <b>Claude</b> no celular (Play Store ou App Store) e entre com a mesma conta. Assim você abre o gráfico com um toque.</div>
-    <label class="check"><input type="checkbox" data-step="s1"> Conta criada e já entrei no Claude</label>
+    <label class="check"><input type="checkbox" data-step="s1"> App instalado e conta criada</label>
   </section>
 
   <section class="step" id="s2">
-    <div class="step-h"><div class="num">2</div><div><h2>Ativar a criação de arquivos</h2><div class="time">1 minuto</div></div></div>
-    <p style="margin:10px 0 0">A skill precisa dessa opção ligada para criar o seu gráfico.</p>
+    <div class="step-h"><div class="num">2</div><div><h2>Anexar a skill numa conversa nova</h2><div class="time">1 minuto</div></div></div>
     <div class="ill">
-      <figure><div class="scr"><div class="ttl">Configurações</div>
-        <div class="li">Geral</div><div class="li">Conta</div><div class="li sel hl"><span class="tap">toque aqui</span>Conectores</div><div class="li">Privacidade</div>
-        <div class="sm" style="margin-top:10px">Clique no seu nome (canto inferior esquerdo) → Configurações</div></div>
-        <figcaption>Abra Configurações e depois Conectores.</figcaption></figure>
-      <figure><div class="scr"><div class="ttl">Conectores</div>
-        <div class="li hl"><span class="tap">ligue</span><span>Execução de código e criação de arquivos</span><span class="tg on"></span></div>
-        <div class="li"><span>Busca na web</span><span class="tg"></span></div>
-        <div class="li"><span>Memória</span><span class="tg"></span></div></div>
-        <figcaption>A chave deve ficar verde, como no desenho.</figcaption></figure>
+      <figure><div class="scr"><div class="mb" style="text-align:left">+ Nova conversa</div>
+        <div style="position:absolute;left:12px;right:12px;bottom:12px">
+          <div class="menu" style="position:static;width:auto;margin-bottom:6px"><div>Câmera</div><div>Fotos</div><div class="hl">Arquivos</div></div>
+          <div class="fld2 hl" style="display:flex;justify-content:space-between;margin:0"><span class="tap">toque no +</span><span><b style="color:#6B3F6E">+</b>&nbsp; Escreva para o Claude</span><span>↑</span></div>
+        </div></div>
+        <figcaption>Numa conversa nova, toque no + e em “Arquivos”.</figcaption></figure>
+      <figure><div class="scr"><div class="ttl">Downloads</div>
+        <div class="file" style="opacity:.55"><i>PDF</i>outro-arquivo.pdf</div>
+        <div class="file hl"><span class="tap">este</span><i>ZIP</i>grafico-mob.zip</div>
+        <div class="sm" style="margin-top:8px">Escolha o .zip inteiro, sem abrir.</div></div>
+        <figcaption>Escolha o arquivo grafico-mob.zip.</figcaption></figure>
+      <figure><div class="scr">
+        <div class="file" style="margin-left:auto;width:fit-content"><i>ZIP</i>grafico-mob.zip</div>
+        <div class="bub">Instale esta skill na minha conta</div>
+        <div class="reply">Pronto, preparei a skill do Gráfico MOB.</div>
+        <div class="card"><div class="ct">grafico-mob</div><div class="sm">Skill</div><div class="mb pl hl" style="margin:6px 0 0"><span class="tap">toque aqui</span>Salvar skill</div></div></div>
+        <figcaption>Envie o pedido e toque no botão para salvar a skill.</figcaption></figure>
     </div><div class="swipe">deslize para o lado →</div>
     <ol class="do">
-      <li>No claude.ai, clique no seu <b>nome ou foto</b> (canto inferior esquerdo) e depois em <span class="k">Configurações</span>.</li>
-      <li>Abra a seção <span class="k">Conectores</span> (em inglês, <span class="k">Connectors</span>).</li>
-      <li>Ligue a chave <span class="k">Execução de código e criação de arquivos</span> (<i>Code execution and file creation</i>).</li>
+      <li>No app Claude, toque em <span class="k">Nova conversa</span>.</li>
+      <li>Toque no <span class="k">+</span> (ou no clipe 📎) ao lado da caixa de texto e escolha <span class="k">Arquivos</span>.</li>
+      <li>Abra a pasta <b>Downloads</b> e escolha <span class="k">grafico-mob.zip</span>, <b>sem descompactar</b>.</li>
+      <li>Escreva <span class="say">Instale esta skill na minha conta</span> e envie.</li>
+      <li>Quando o Claude mostrar a skill, toque no botão para <b>salvar</b> ou <b>adicionar</b> a skill.</li>
     </ol>
-    <div class="tip">Os nomes dos menus mudam um pouco de tempos em tempos. Se não achar, procure por “Conectores” ou “Personalizar”.</div>
-    <label class="check"><input type="checkbox" data-step="s2"> Opção ligada</label>
+    <div class="tip">Não apareceu o botão? Escreva <b>“salve esta skill na minha conta”</b>. Se ainda assim não der, fale com quem te mandou este guia.</div>
+    <label class="check"><input type="checkbox" data-step="s2"> Skill salva</label>
   </section>
 
   <section class="step" id="s3">
-    <div class="step-h"><div class="num">3</div><div><h2>Instalar a skill do Gráfico MOB</h2><div class="time">2 minutos</div></div></div>
-    <div class="ill">
-      <figure><div class="scr"><div class="ttl">Skills</div>
-        <div class="mb pl hl"><span class="tap">toque aqui</span>+ Enviar skill</div>
-        <div class="sm" style="margin-top:8px">Skills ajudam o Claude a fazer tarefas específicas.</div></div>
-        <figcaption>Na parte de Skills, toque em “+” ou “Enviar skill”.</figcaption></figure>
-      <figure><div class="scr"><div class="ttl">Escolher arquivo</div>
-        <div class="file" style="opacity:.55"><i>PDF</i>outro-arquivo.pdf</div>
-        <div class="file hl"><span class="tap">este</span><i>ZIP</i>grafico-mob.zip</div>
-        <div class="sm" style="margin-top:8px">Envie o .zip inteiro, sem abrir.</div></div>
-        <figcaption>Escolha o arquivo grafico-mob.zip.</figcaption></figure>
-      <figure><div class="scr"><div class="ttl">Skills</div>
-        <div class="li sel hl"><span class="tap">ligada</span><span>grafico-mob</span><span class="tg on"></span></div>
-        <div class="li"><span class="sm">Outras skills…</span><span class="tg"></span></div></div>
-        <figcaption>Confira se a chave da skill está ligada.</figcaption></figure>
-    </div><div class="swipe">deslize para o lado →</div>
-    <ol class="do">
-      <li>Ainda em <span class="k">Configurações</span>, procure a parte de <span class="k">Skills</span> (às vezes fica em <span class="k">Conectores</span>, às vezes em <span class="k">Personalizar</span>).</li>
-      <li>Clique em <span class="k">+</span> ou <span class="k">Enviar skill</span> (<i>Upload skill</i>).</li>
-      <li>Escolha o arquivo <span class="k">grafico-mob.zip</span>, <b>sem descompactar</b>.</li>
-      <li>Quando aparecer <b>grafico-mob</b> na lista, confira se a <b>chave ao lado está ligada</b>.</li>
-    </ol>
-    <div class="warn"><b>Não apareceu a opção de Skills ou de enviar skill?</b> Algumas contas gratuitas ainda não podem enviar skills próprias. Nesse caso, fale com quem te mandou este guia antes de assinar qualquer plano. Vocês podem ver juntas a melhor opção.</div>
-    <label class="check"><input type="checkbox" data-step="s3"> Skill instalada e ligada</label>
-  </section>
-
-  <section class="step" id="s4">
-    <div class="step-h"><div class="num">4</div><div><h2>Criar o seu gráfico</h2><div class="time">3 minutos</div></div></div>
+    <div class="step-h"><div class="num">3</div><div><h2>Criar o seu gráfico</h2><div class="time">2 minutos</div></div></div>
     <div class="ill">
       <figure><div class="scr"><div class="mb" style="text-align:left">+ Nova conversa</div>
         <div class="bub hl"><span class="tap">escreva</span>Quero meu gráfico MOB</div>
         <div class="reply">Pronto! Criei o seu gráfico:</div>
-        <div class="card"><div class="ct">Meu Gráfico MOB</div><div class="mini"><span class="r">●</span><span class="g">|</span><span class="y">=</span><span class="w">O</span></div><div class="mb pl" style="margin:4px 0 0">Abrir</div></div></div>
+        <div class="card"><div class="ct">MOB</div><div class="mini"><span class="r">●</span><span class="g">|</span><span class="y">=</span><span class="w">O</span></div><div class="mb pl" style="margin:4px 0 0">Abrir</div></div></div>
         <figcaption>Peça o gráfico numa conversa nova.</figcaption></figure>
       <figure><div class="scr"><div class="sm" style="letter-spacing:.1em;font-weight:700">PASSO 1 DE 2 · CADASTRO</div>
         <div class="ttl">Bem-vinda ao seu <i style="color:#6B3F6E">gráfico</i></div>
@@ -252,87 +231,62 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
         <figcaption>Depois da explicação, o seu gráfico.</figcaption></figure>
     </div><div class="swipe">deslize para o lado →</div>
     <ol class="do">
-      <li>Volte para o início e clique em <span class="k">Nova conversa</span>.</li>
-      <li>Escreva:<span class="say">Quero meu gráfico MOB</span></li>
-      <li>O Claude cria o seu gráfico e mostra o link. Se ele pedir permissão para alguma ação, toque em <span class="k">Permitir</span>.</li>
+      <li>Toque em <span class="k">Nova conversa</span> de novo.</li>
+      <li>Escreva <span class="say">Quero meu gráfico MOB</span> e envie.</li>
+      <li>O Claude cria o seu gráfico. Se ele pedir permissão para alguma ação, toque em <span class="k">Permitir</span>.</li>
       <li>Abra o gráfico. Na primeira vez ele mostra:
         <br>① um <b>mini cadastro</b> (nome, idade, objetivo, instrutora e dia do acompanhamento);
         <br>② uma <b>explicação rápida</b> de como funciona;
         <br>③ o seu <b>gráfico</b>, pronto para o primeiro registro.</li>
-      <li>Peça ao Claude para <b>fixar</b> o gráfico na barra lateral, ou salve o link nos favoritos.</li>
     </ol>
-    <div class="tip">Quando o app pedir permissão para guardar dados ou usar o microfone, toque em <b>Permitir</b>. É isso que salva os seus registros na sua conta.</div>
-    <label class="check"><input type="checkbox" data-step="s4"> Meu gráfico abriu</label>
-  </section>
-
-  <section class="step" id="s5">
-    <div class="step-h"><div class="num">+</div><div><h2>Deixar como app no celular</h2><div class="time">Opcional · 1 minuto · recomendado</div></div></div>
-    <p style="margin:10px 0 0">Assim o gráfico ganha um ícone na tela inicial e abre com um toque, como um aplicativo.</p>
-    <div class="ill">
-      <figure><div class="scr"><div class="sb"><span>9:41</span><span>●●●</span></div><div class="url"><span>claude.ai/artifact/…</span><span class="hl" style="border-radius:4px;padding:0 3px;position:relative"><span class="tap">⋮</span>⋮</span></div>
-        <div class="ttl">Meu Gráfico MOB</div><div class="mini"><span class="r">●</span><span class="g">|</span><span class="y">=</span><span class="w">O</span></div>
-        <div class="menu"><div>Nova guia</div><div>Favoritos</div><div>Compartilhar…</div><div class="hl">Adicionar à tela inicial</div><div>Configurações</div></div></div>
-        <figcaption>Android: no Chrome, ⋮ e “Adicionar à tela inicial”.</figcaption></figure>
-      <figure><div class="scr"><div class="ttl">Meu Gráfico MOB</div><div class="mini"><span class="r">●</span><span class="g">|</span><span class="y">=</span><span class="w">O</span></div>
-        <div class="sheetm"><div><span>Copiar</span><span>⧉</span></div><div class="hl"><span>Adicionar à Tela de Início</span><span>⊞</span></div><div><span>Adicionar aos Favoritos</span><span>☆</span></div></div></div>
-        <figcaption>iPhone: no Safari, Compartilhar e “Adicionar à Tela de Início”.</figcaption></figure>
-    </div><div class="swipe">deslize para o lado →</div>
-    <p style="margin:14px 0 0"><b>Android, no Chrome</b></p>
-    <ol class="do">
-      <li>Abra o link do seu gráfico no <b>Chrome</b> e entre na sua conta do Claude, se ele pedir.</li>
-      <li>Toque nos <span class="k">⋮</span> três pontinhos, no canto superior direito.</li>
-      <li>Toque em <span class="k">Adicionar à tela inicial</span> (em alguns celulares, <span class="k">Instalar app</span>) e depois em <span class="k">Adicionar</span>.</li>
-    </ol>
-    <p style="margin:14px 0 0"><b>iPhone, no Safari</b></p>
-    <ol class="do">
-      <li>Abra o link do seu gráfico no <b>Safari</b> e entre na sua conta do Claude.</li>
-      <li>Toque em <span class="k">Compartilhar</span> (o quadrado com a seta para cima).</li>
-      <li>Toque em <span class="k">Adicionar à Tela de Início</span> e depois em <span class="k">Adicionar</span>.</li>
-    </ol>
-    <div class="tip">Não sabe o link do seu gráfico? Abra uma conversa no Claude e peça: <b>“me passe o link do meu gráfico MOB”</b>.</div>
+    <div class="tip">Quando o app pedir permissão para guardar dados, toque em <b>Permitir</b>. É isso que salva os seus registros na sua conta.</div>
+    <label class="check"><input type="checkbox" data-step="s3"> Meu gráfico abriu</label>
   </section>
 
   <h3>No dia a dia</h3>
   <details open><summary>Como abrir o gráfico de novo</summary><div class="bd">
-    Abra o Claude (site ou app) e toque no gráfico fixado na barra lateral. Se não achar, abra uma nova conversa e escreva <b>“abra meu gráfico MOB”</b>. O Claude abre o mesmo gráfico, com todos os seus registros. <b>Não peça para “criar um novo”</b>, senão você fica com dois gráficos separados.
+    Abra o app Claude, numa conversa nova escreva <b>“abra meu gráfico MOB”</b>. O Claude abre o mesmo gráfico, com todos os seus registros. <b>Não peça para “criar um novo”</b>, senão você fica com dois gráficos separados.
   </div></details>
   <details><summary>Como registrar o dia</summary><div class="bd">
-    À noite, abra o gráfico e escreva ou fale o mais fértil que percebeu, por exemplo <b>“seca, nada vejo, cólica”</b> ou <b>“molhada, muco branco, regra 2”</b>. O app preenche a cor, o símbolo e a regra. Confira e toque em <b>Salvar o dia</b>.
+    À noite, abra o gráfico e escreva o mais fértil que percebeu, por exemplo <b>“seca, nada vejo, cólica”</b> ou <b>“molhada, muco branco, regra 2”</b>. Para ditar, use o microfone do teclado do celular. O app preenche a cor, o símbolo e a regra. Confira e toque em <b>Salvar o dia</b>.
   </div></details>
   <details><summary>Lembrete diário</summary><div class="bd">
-    No app, vá em <b>Perfil → Lembretes</b> e toque em <b>Lembrete diário</b>. Ele abre o Google Agenda com o lembrete pronto, no horário que você escolheu no cadastro. Toque em <b>Salvar</b> na agenda.
+    No gráfico, vá em <b>Perfil → Lembretes</b> e toque em <b>Lembrete diário</b>. Ele abre o Google Agenda com o lembrete pronto, no horário que você escolheu no cadastro. Toque em <b>Salvar</b> na agenda.
+  </div></details>
+  <details><summary>Atalho na tela inicial (opcional)</summary><div class="bd">
+    Peça ao Claude <b>“me passe o link do meu gráfico MOB”</b> e abra o link no <b>Chrome</b> (Android): <span class="k">⋮</span> → <span class="k">Adicionar à tela inicial</span>. No iPhone, abra no <b>Safari</b>: <span class="k">Compartilhar</span> → <span class="k">Adicionar à Tela de Início</span>. O ícone fica com o símbolo de lápis.
   </div></details>
   <details><summary>Onde ficam os meus dados</summary><div class="bd">
     Na sua conta Claude, visíveis só para você. Ninguém mais vê, nem quem te mandou este guia. Para garantir, uma vez por mês vá em <b>Perfil → Salvar cópia</b> e guarde o arquivo no Google Drive ou no seu WhatsApp. <b>Nunca apague o gráfico</b> da sua lista no Claude, porque os registros são apagados junto.
   </div></details>
   <details><summary>Enviar o gráfico para a instrutora</summary><div class="bd">
-    No gráfico, toque em <b>Compartilhar PDF</b>, escolha os ciclos e se quer incluir as suas dúvidas. Depois toque em <b>Compartilhar</b> ou <b>Salvar</b> e envie pelo WhatsApp ou por e-mail.
+    No gráfico, toque em <b>Compartilhar PDF</b>, escolha os ciclos e se quer incluir as suas dúvidas. Depois toque em <b>Compartilhar</b> e envie pelo WhatsApp ou por e-mail. Se no Android o PDF não salvar pelo app, abra o link do gráfico no Chrome e gere por lá.
   </div></details>
 
   <h3>Se algo não der certo</h3>
   <details><summary>O Claude não criou o gráfico, só respondeu com texto</summary><div class="bd">
-    Confira se a skill <b>grafico-mob</b> está com a chave ligada (passo 3) e se a <b>criação de arquivos</b> está ativa (passo 2). Depois abra uma <b>nova conversa</b> e escreva de novo “Quero meu gráfico MOB”.
+    Confira se a skill foi salva (passo 2). Depois abra uma <b>nova conversa</b> e escreva de novo “Quero meu gráfico MOB”.
   </div></details>
-  <details><summary>Deu erro ao enviar o arquivo da skill</summary><div class="bd">
-    Envie o arquivo <b>grafico-mob.zip</b> exatamente como veio, sem descompactar e sem renomear. Se você descompactou sem querer, baixe o arquivo de novo nesta página.
+  <details><summary>Não acho o arquivo da skill para anexar</summary><div class="bd">
+    O arquivo fica na pasta <b>Downloads</b> do celular (no iPhone, app <b>Arquivos → Downloads</b>). Envie o arquivo <b>grafico-mob.zip</b> exatamente como veio, sem descompactar e sem renomear. Se você descompactou sem querer, baixe o arquivo de novo nesta página.
   </div></details>
   <details><summary>Meus registros sumiram</summary><div class="bd">
-    Veja se você está na <b>mesma conta</b> e no <b>mesmo gráfico</b> de sempre (o fixado ou o dos favoritos). Se tiver uma cópia salva, use <b>Perfil → Restaurar cópia</b>.
+    Veja se você está na <b>mesma conta</b> e no <b>mesmo gráfico</b> de sempre. Se tiver uma cópia salva, use <b>Perfil → Restaurar cópia</b>.
   </div></details>
 
   <p class="foot">Este app é um caderno de registro. O aprendizado do Método de Ovulação Billings é feito com uma instrutora credenciada, e as orientações dela prevalecem.</p>
 </div>
 <script>
 (function(){
-  const boxes=[...document.querySelectorAll("[data-step]")];
-  let saved={};try{saved=JSON.parse(localStorage.getItem("mob-guia")||"{}")}catch(e){}
+  const boxes=[...document.querySelectorAll("[data-step]")],N=boxes.length;
+  let saved={};try{saved=JSON.parse(localStorage.getItem("mob-guia2")||"{}")}catch(e){}
   function paint(){
     let n=0;
     boxes.forEach(b=>{const on=b.checked;document.getElementById(b.dataset.step).classList.toggle("done",on);if(on)n++});
-    document.getElementById("progTxt").textContent=n+" de 4 passos"+(n===4?" · tudo pronto!":"");
-    document.getElementById("progBar").style.width=(n/4*100)+"%";
+    document.getElementById("progTxt").textContent=n+" de "+N+" passos"+(n===N?" · tudo pronto!":"");
+    document.getElementById("progBar").style.width=(n/N*100)+"%";
   }
-  boxes.forEach(b=>{b.checked=!!saved[b.dataset.step];b.onchange=()=>{saved[b.dataset.step]=b.checked;try{localStorage.setItem("mob-guia",JSON.stringify(saved))}catch(e){}paint()}});
+  boxes.forEach(b=>{b.checked=!!saved[b.dataset.step];b.onchange=()=>{saved[b.dataset.step]=b.checked;try{localStorage.setItem("mob-guia2",JSON.stringify(saved))}catch(e){}paint()}});
   paint();
 })();
 </script>
