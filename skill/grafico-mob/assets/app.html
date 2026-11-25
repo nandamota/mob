@@ -563,7 +563,7 @@ const SYMBOLS=[
   {id:"traco",ch:"|",nome:"Tracinho",desc:"seca"}
 ];
 const SINTO=["Seca","Úmida","Molhada","Pegajosa","Escorregadia"];
-const VEJO=["Nada vejo","Muco branco","Turvo","Flocoso","Claro","Clara de ovo"];
+const VEJO=["Nada vejo","Muco branco","Muco giz","Turvo","Flocoso","Claro","Clara de ovo"];
 const SANG=["Menstruação","Sangramento","Mancha/borra"];
 const SINTOMAS=["Cólica","Estresse","Dor de cabeça","Inchaço","Seios sensíveis","Dor lombar","Cansaço","Irritação","Insônia","Doença/febre","Viagem","Enjoo","Acne"];
 const RULE_SHORT={
@@ -735,7 +735,7 @@ function suggest(f){
 }
 function buildDesc(f){
   const a=f.sinto||"",b=f.sang==="Menstruação"||f.sang==="Sangramento"?"sangue":f.sang==="Mancha/borra"?"borra":
-    f.vejo==="Nada vejo"?"nada vejo":f.vejo?(f.vejo==="Muco branco"?"m. branco":"m. "+f.vejo.toLowerCase()):"";
+    f.vejo==="Nada vejo"?"nada vejo":f.vejo?(f.vejo==="Muco branco"?"m. branco":f.vejo==="Muco giz"?"m. giz":"m. "+f.vejo.toLowerCase()):"";
   return[a,b].filter(Boolean).join(" / ");
 }
 function stampTitle(f){
@@ -749,7 +749,7 @@ const VOICE_MAP=[
   ["sinto","Escorregadia",/escorreg|lubrific|\blis[ao]\b|deslizand/],["sinto","Molhada",/molhad/],["sinto","Úmida",/umid/],
   ["sinto","Pegajosa",/pegajos|grudent/],["sinto","Seca",/\bsec[ao]s?\b|sequinh|secura/],
   ["vejo","Clara de ovo",/clara de ovo|elastic|estica|\bfio/],["vejo","Claro",/\bclar[ao]\b|transparent/],["vejo","Muco branco",/branc|leitos|cremos/],
-  ["vejo","Turvo",/turv|opac/],["vejo","Flocoso",/floc|grum|pedacinh/],["vejo","Nada vejo",/\bnada\b|nao vi|nao vejo|sem muco/],
+  ["vejo","Muco giz",/\bgiz\b/],["vejo","Turvo",/turv|opac/],["vejo","Flocoso",/floc|grum|pedacinh/],["vejo","Nada vejo",/\bnada\b|nao vi|nao vejo|sem muco/],
   ["sang","Mancha/borra",/borra|mancha|marrom|escape/],["sang","Menstruação",/menstrua|fluxo|desceu/],["sang","Sangramento",/sangr|sangue/]
 ];
 const SINT_MAP=[["Cólica",/colica/],["Estresse",/estress/],["Dor de cabeça",/cabeca|enxaqueca/],["Inchaço",/inchac|inchad/],["Seios sensíveis",/seio|mama|peito/],
@@ -1261,7 +1261,7 @@ function renderLearn(){
   const sec=(n,t,b,open)=>'<details class="lrn"'+(open?" open":"")+'><summary><small>'+n+'</small><span>'+t+'</span></summary><div class="bd">'+b+'</div></details>';
   $("#learn").innerHTML='<div class="vh"><h2>Como usar o método</h2></div>'
   +sec("01","O que é o Método Billings",'<p>É um método natural de reconhecimento da fertilidade. A mulher aprende a perceber o <b>muco cervical</b> pela <b>sensação na vulva</b> ao longo do dia e registra num gráfico.</p><p>Serve para <b>espaçar</b> ou para <b>conquistar</b> uma gestação, em ciclos regulares ou irregulares, na amamentação e na pré-menopausa, sempre com acompanhamento de uma instrutora.</p>',true)
-  +sec("02","Como observar no dia a dia",'<ul><li>Preste atenção à <b>sensação na vulva</b> nas atividades normais: ao caminhar, sentar, levantar. Ela está seca, úmida, molhada ou escorregadia?</li><li>Observe o que aparece <b>ao se secar</b> ou na roupa íntima: nada, muco branco, turvo, flocoso, claro.</li><li>Não é preciso exame interno. A sensação é o principal.</li><li>À noite, registre o <b>mais fértil</b> que percebeu no dia.</li><li>Descreva com suas palavras. É isso que a instrutora quer ler.</li></ul>')
+  +sec("02","Como observar no dia a dia",'<ul><li>Preste atenção à <b>sensação na vulva</b> nas atividades normais: ao caminhar, sentar, levantar. Ela está seca, úmida, molhada ou escorregadia?</li><li>Observe o que aparece <b>ao se secar</b> ou na roupa íntima: nada, muco branco, muco giz, turvo, flocoso, claro.</li><li>Não é preciso exame interno. A sensação é o principal.</li><li>À noite, registre o <b>mais fértil</b> que percebeu no dia.</li><li>Descreva com suas palavras. É isso que a instrutora quer ler.</li></ul>')
   +sec("03","Cores e símbolos do gráfico",'<div class="ref-grid">'+ref+'</div>')
   +sec("04","O PBI · Padrão Básico de Infertilidade",'<p>É o padrão que se repete igual, dia após dia, nos dias inférteis antes da ovulação: <b>secura</b> (verde) ou uma <b>secreção que não muda</b> (amarelo).</p><p>Qualquer <b>mudança</b> nesse padrão é sinal de <b>possível fertilidade</b>. Reconhecer o seu PBI leva alguns ciclos, e comparar os ciclos lado a lado ajuda muito.</p>')
   +sec("05","O ápice e a contagem 1, 2, 3",'<p>O <b>ápice</b> é o <b>último dia</b> da sensação mais fértil (escorregadia, lubrificada). Ele só é reconhecido <b>no dia seguinte</b>, quando a sensação muda. Então você volta ao dia anterior e marca <b>X</b>.</p><p>Depois do ápice contam-se <b>1, 2, 3</b>. O app faz a contagem sozinho quando você marca o X.</p>')

@@ -4,7 +4,7 @@ Resumo para consulta. O aprendizado do método é feito com uma instrutora crede
 
 ## Como observar
 - Durante o dia, nas atividades normais, perceber a **sensação na vulva**: seca, úmida, molhada, pegajosa ou escorregadia.
-- Ao se secar ou na roupa íntima, ver o que aparece: nada, muco branco, turvo, flocoso, claro, clara de ovo.
+- Ao se secar ou na roupa íntima, ver o que aparece: nada, muco branco, muco giz, turvo, flocoso, claro, clara de ovo.
 - Não é preciso exame interno.
 - À noite, registrar o **mais fértil** que percebeu no dia, com as próprias palavras.
 
