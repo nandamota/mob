@@ -68,7 +68,7 @@ details[open] summary::after{content:"–"}
 details .bd{padding:0 16px 14px;font-size:.92rem}
 h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 12px}
 .foot{font-size:.8rem;color:var(--muted);text-align:center;margin-top:30px}
-.hero-logo .logo{width:64px;height:64px;display:block;margin:4px 0 6px}
+.mob-tile{width:64px;height:64px;border-radius:16px;background:#6B3F6E;color:#FBF7FB;font-family:var(--f-display);font-size:21px;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;margin:4px 0 14px;box-shadow:0 4px 14px rgba(107,63,110,.25)}
 .stamps{display:flex;gap:5px;margin:4px 0 2px}
 .stamps span{width:22px;height:22px;border-radius:5px;border:1px solid rgba(0,0,0,.14);display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -126,23 +126,7 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:34px 0 1
 </head>
 <body>
 <div class="wrap">
-  <div class="hero-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="logo" aria-hidden="true">
-  <defs>
-    <path id="mobpetal" d="M46.5 46.5 L27.5 46.5 A19 19 0 1 1 46.5 27.5 L46.5 46.5 Z"/>
-  </defs>
-  <g stroke-width="1.2" stroke-linejoin="round">
-    <use href="#mobpetal" fill="#F6E3A1" stroke="#D9BD62"/>
-    <use href="#mobpetal" fill="#F3B4B0" stroke="#D98580" transform="translate(100 0) scale(-1 1)"/>
-    <use href="#mobpetal" fill="#B9DDC4" stroke="#7FB592" transform="translate(0 100) scale(1 -1)"/>
-    <use href="#mobpetal" fill="#FFFFFF" stroke="#B7ADC0" transform="translate(100 100) scale(-1 -1)"/>
-  </g>
-  <g fill="#4A3F52">
-    <circle cx="40" cy="40" r="2.2"/>
-    <circle cx="60" cy="40" r="2.2"/>
-    <circle cx="40" cy="60" r="2.2"/>
-    <circle cx="60" cy="60" r="2.2"/>
-  </g>
-</svg></div>
+  <div class="hero-logo"><span class="mob-tile" aria-hidden="true">MOB</span></div>
   <div class="eyebrow">Passo a passo · cerca de 10 minutos</div>
   <h1>Como instalar o <i>Gráfico MOB</i> no Claude</h1>
   <p class="lead">Ao final, você terá o seu próprio gráfico do Método Billings dentro do Claude, com os registros salvos na sua conta e visíveis só para você.</p>

@@ -42,8 +42,10 @@ rep('</style>', '''.btn.dl{margin-top:12px;width:100%;justify-content:center}
 
 open("site/index.html", "w", encoding="utf-8").write(g)
 shutil.copy("dist/grafico-mob.zip", "site/grafico-mob.zip")
-for f in ["favicon.png", "apple-touch-icon.png", "icon-512.png", "logo.svg"]:
-    shutil.copy(f, "site/" + f)
+for src, dst in [("brand/mob-64.png", "favicon.png"), ("brand/mob-180.png", "apple-touch-icon.png"), ("brand/mob-512.png", "icon-512.png")]:
+    shutil.copy(src, "site/" + dst)
+if os.path.exists("site/logo.svg"):
+    os.remove("site/logo.svg")
 open("site/README.md", "w", encoding="utf-8").write(
     "# MOB Prático\n\nPasso a passo para instalar o **Gráfico MOB** no Claude.\n\n"
     "- Site: " + SITE_URL + "\n- Skill: `grafico-mob.zip`\n\n"
