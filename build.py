@@ -28,3 +28,10 @@ with zipfile.ZipFile("dist/grafico-mob.zip", "w", zipfile.ZIP_DEFLATED) as z:
             full = os.path.join(root, f)
             z.write(full, os.path.relpath(full, "skill"))
 print("dist/grafico-mob.zip gerado")
+
+# Kit para enviar às amigas: guia (passo 1) + skill (passo 2).
+# A skill vai como .zip separado dentro do kit, porque o Claude só aceita o .zip com a skill sozinha.
+with zipfile.ZipFile("dist/kit-grafico-mob.zip", "w", zipfile.ZIP_DEFLATED) as z:
+    z.write("guia/COMECE-AQUI.html", "1-COMECE-AQUI.html")
+    z.write("dist/grafico-mob.zip", "2-grafico-mob.zip")
+print("dist/kit-grafico-mob.zip gerado")
