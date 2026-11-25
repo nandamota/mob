@@ -3,7 +3,7 @@ index.html (guia), grafico-mob.zip (skill) e ícones.
 Rode depois de build.py."""
 import os, shutil
 
-SITE_URL = "https://nandamota.github.io/mobpratico/"
+SITE_URL = "https://lirio-studio.github.io/mobpratico/"
 os.makedirs("site", exist_ok=True)
 g = open("guia/COMECE-AQUI.html", encoding="utf-8").read()
 
