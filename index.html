@@ -2,524 +2,633 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#9a6a36">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#6B3F6E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Gráfico MOB">
-<title>Meu Gráfico MOB</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23f3e8f0'/%3E%3Cg transform='translate(32,32)'%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85'/%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85' transform='rotate(60)'/%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85' transform='rotate(120)'/%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85' transform='rotate(180)'/%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85' transform='rotate(240)'/%3E%3Cellipse cx='0' cy='-10' rx='6' ry='10' fill='%23e84d8a' opacity='0.85' transform='rotate(300)'/%3E%3Ccircle cx='0' cy='0' r='7' fill='%23f4d955'/%3E%3Ccircle cx='0' cy='0' r='4' fill='%23c8941a'/%3E%3C/g%3E%3C/svg%3E">
-<style>
-:root{
-  --vermelho:#e34b4b;--verde:#4fc07f;--amarelo:#f4d955;--branco:#f7f5ee;
-  --rosa:#e84d8a;--rosa-cl:#fce4ef;--rosa-esc:#a3245a;
-  --tinta:#2b2b3a;--suave:#6a6a7e;--papel:#fbf9f4;--card:#fff;
-  --linha:#e6e0d3;--acento:#c08a4e;--acento-esc:#9a6a36;--creme:#faf6ee;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--papel);
-  color:var(--tinta);line-height:1.45;padding-bottom:calc(76px + env(safe-area-inset-bottom));-webkit-tap-highlight-color:transparent}
-.serif{font-family:Georgia,"Times New Roman",serif}
-button{font-family:inherit;cursor:pointer}
-input,select,textarea{font-family:inherit}
-
-header.top{background:linear-gradient(135deg,#c79560,#9a6a36);color:#fff;
-  padding:calc(12px + env(safe-area-inset-top)) 16px 12px;box-shadow:0 2px 12px rgba(0,0,0,.12)}
-header.top .hin{max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
-header.top h1{font-family:Georgia,serif;font-size:1.2rem;margin:0;font-weight:700}
-header.top p{margin:1px 0 0;font-size:.76rem;opacity:.92}
-.hdr-cyc{background:rgba(255,255,255,.18);border-radius:12px;padding:5px 10px;text-align:center;font-size:.7rem;line-height:1.2;white-space:nowrap}
-.hdr-cyc b{display:block;font-size:1.05rem}
-
-main{max-width:960px;margin:0 auto;padding:14px 16px}
-.view{display:none}.view.on{display:block}
-
-nav.bnav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--linha);
-  display:flex;z-index:40;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 12px rgba(0,0,0,.05)}
-.bnav button{flex:1;background:none;border:0;padding:8px 2px 7px;font-size:.66rem;color:var(--suave);
-  display:flex;flex-direction:column;align-items:center;gap:1px;position:relative}
-.bnav .ic{font-size:1.25rem;line-height:1.2;filter:grayscale(.6);opacity:.75}
-.bnav button.on{color:var(--acento-esc);font-weight:700}
-.bnav button.on .ic{filter:none;opacity:1}
-.badge{position:absolute;top:4px;left:calc(50% + 6px);background:var(--rosa);color:#fff;border-radius:9px;
-  font-size:.58rem;padding:0 5px;min-width:15px;line-height:15px;font-weight:700}
-
-.card{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:14px;margin-bottom:12px}
-h2.t{font-family:Georgia,serif;color:var(--acento-esc);font-size:1.08rem;margin:0 0 10px}
-h3.t{font-family:Georgia,serif;color:var(--acento-esc);font-size:.98rem;margin:16px 0 8px}
-.lbl{font-size:.7rem;font-weight:700;color:var(--suave);text-transform:uppercase;letter-spacing:.5px;margin:16px 0 7px}
-.lbl:first-child{margin-top:0}
-.lbl small{text-transform:none;font-weight:500;letter-spacing:0}
-.muted{color:var(--suave);font-size:.8rem}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.row>.grow{flex:1;min-width:0}
-
-.chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{border:1.5px solid var(--linha);background:#f6f4ef;border-radius:999px;padding:8px 13px;font-size:.86rem;
-  user-select:none;cursor:pointer;color:var(--tinta);line-height:1.2}
-.chip.on,label.chip:has(input:checked){background:var(--rosa-cl);border-color:var(--rosa);color:var(--rosa-esc);font-weight:600}
-label.chip input{position:absolute;opacity:0;pointer-events:none}
-.chip.sm{padding:6px 10px;font-size:.78rem}
-.chip.add{border-style:dashed;background:#fff;color:var(--suave)}
-
-.in{width:100%;padding:11px 12px;border:1px solid var(--linha);border-radius:10px;font-size:16px;background:#fff;color:var(--tinta)}
-textarea.in{min-height:70px;resize:vertical}
-.in:focus{outline:2px solid var(--rosa-cl);border-color:var(--rosa)}
-.fld{margin-bottom:10px}
-.fld>label{display:block;font-size:.76rem;font-weight:600;color:var(--suave);margin-bottom:4px}
-
-.btn{border:0;border-radius:11px;padding:12px 16px;font-size:.95rem;font-weight:700;display:inline-flex;
-  align-items:center;justify-content:center;gap:6px}
-.btn.pri{background:var(--rosa);color:#fff;box-shadow:0 4px 12px rgba(232,77,138,.3)}
-.btn.ok{background:var(--verde);color:#fff}
-.btn.sec{background:#fff;color:var(--acento-esc);border:1.5px solid var(--acento)}
-.btn.ghost{background:none;color:var(--suave);font-weight:600;padding:8px 10px}
-.btn.danger{background:#fff;color:var(--vermelho);border:1.5px solid var(--vermelho)}
-.btn.block{width:100%}
-.btn.sm{padding:8px 12px;font-size:.82rem;border-radius:9px}
-.btn:disabled{opacity:.5}
-
-/* hoje */
-.hello{display:flex;gap:10px;flex-wrap:wrap}
-.stat{flex:1;min-width:120px;background:var(--creme);border:1px solid var(--linha);border-radius:12px;padding:9px 12px}
-.stat small{display:block;color:var(--suave);font-size:.7rem;text-transform:uppercase;letter-spacing:.4px;font-weight:700}
-.stat b{font-family:Georgia,serif;color:var(--acento-esc);font-size:1.05rem}
-.alert{border-radius:12px;padding:10px 12px;font-size:.84rem;margin-bottom:12px;display:flex;gap:9px;align-items:center}
-.alert.rosa{background:var(--rosa-cl);color:var(--rosa-esc)}
-.alert.creme{background:var(--creme);border:1px solid var(--linha);color:var(--tinta)}
-.datebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.datebar input{flex:1;min-width:150px}
-.voice{display:flex;gap:8px;align-items:stretch}
-.voice .in{flex:1}
-.mic{width:50px;border-radius:11px;border:0;background:var(--rosa);color:#fff;font-size:1.3rem;flex-shrink:0}
-.mic.rec{animation:pulse 1s infinite}
-@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(232,77,138,.25)}}
-.preview-box{display:flex;align-items:center;gap:14px;background:var(--creme);border:1px solid var(--linha);border-radius:12px;padding:10px 12px;margin-top:14px}
-.preview-box .st{width:46px;height:46px;font-size:1.4rem;border-radius:9px}
-.preview-box .txt{flex:1;font-size:.84rem}
-.preview-box .txt b{display:block;font-size:.92rem}
-.toggles{display:flex;gap:8px;flex-wrap:wrap}
-.tg{flex:1;min-width:96px;border:1.5px solid var(--linha);background:#f6f4ef;border-radius:12px;padding:9px 6px;
-  text-align:center;font-size:.78rem;color:var(--tinta);display:flex;flex-direction:column;align-items:center;gap:2px}
-.tg .big{font-size:1.2rem;font-weight:800;line-height:1.1}
-.tg.on{border-color:var(--rosa);background:var(--rosa-cl);color:var(--rosa-esc);font-weight:600}
-details.adj{margin-top:12px;border:1px dashed var(--linha);border-radius:12px;padding:8px 12px}
-details.adj summary{font-size:.84rem;color:var(--acento-esc);font-weight:600;cursor:pointer}
-.sw{width:44px;height:38px;border-radius:9px;border:1.5px solid var(--linha);display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem}
-.sw.on{box-shadow:0 0 0 3px var(--rosa)}
-.savebar{position:sticky;bottom:calc(70px + env(safe-area-inset-bottom));margin-top:14px;display:flex;gap:8px;z-index:5}
-.savebar .btn.pri{flex:1}
-
-/* stamps */
-.st{width:26px;height:26px;border-radius:5px;border:1px solid rgba(0,0,0,.18);display:flex;align-items:center;
-  justify-content:center;font-weight:800;font-size:.9rem;line-height:1;position:relative;color:#2b2b3a;
-  -webkit-print-color-adjust:exact;print-color-adjust:exact}
-.st.vermelho{background:var(--vermelho);color:#fff}
-.st.verde{background:var(--verde);color:#fff}
-.st.amarelo{background:var(--amarelo)}
-.st.branco{background:var(--branco);border-color:#bdb6a6}
-.st.none{background:#fff}
-.st.dots{color:#111}
-.st.apx{box-shadow:0 0 0 2px var(--rosa)}
-.st.empty{background:transparent;border:1px dashed #e2dccf}
-.st .xo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--rosa);font-size:1.25em;font-weight:900;opacity:.9}
-
-/* chart */
-.chart-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
-.chart-tools .seg{display:flex;border:1px solid var(--linha);border-radius:10px;overflow:hidden;background:#fff}
-.seg button{border:0;background:none;padding:7px 11px;font-size:.8rem;color:var(--suave)}
-.seg button.on{background:var(--acento);color:#fff;font-weight:700}
-.chart-wrap{overflow:auto;border:1px solid var(--linha);border-radius:12px;background:#fff;max-height:70vh}
-table.chart{border-collapse:separate;border-spacing:0}
-.chart th,.chart td{padding:0}
-.chart thead th{position:sticky;top:0;background:var(--creme);z-index:2;font-size:.62rem;color:var(--suave);
-  font-weight:700;height:22px;border-bottom:1px solid var(--linha);min-width:31px}
-.chart th.cn{position:sticky;left:0;z-index:3;background:#fff;text-align:left;padding:4px 8px;min-width:78px;max-width:78px;
-  border-right:1px solid var(--linha);font-size:.7rem;font-weight:600;color:var(--tinta);border-bottom:1px solid #f0ebe0}
-.chart thead th.cn{z-index:4;background:var(--creme);color:var(--suave)}
-.chart th.cn b{display:block;font-family:Georgia,serif;color:var(--acento-esc);font-size:.84rem}
-.chart th.cn small{color:var(--suave);font-weight:500;font-size:.62rem;display:block;line-height:1.25}
-.chart td{text-align:center;vertical-align:top;border-bottom:1px solid #f0ebe0}
-.chart td.off{background:repeating-linear-gradient(45deg,#fff,#fff 4px,#faf8f3 4px,#faf8f3 8px)}
-.cell{display:flex;flex-direction:column;align-items:center;padding:2px 2px 3px;cursor:pointer}
-.cell .lab{height:13px;font-size:.66rem;font-weight:800;color:var(--acento-esc);line-height:13px}
-.cell .lab.x{color:var(--rosa);font-size:.74rem}
-.cell .mk{height:11px;font-size:.58rem;line-height:11px;color:var(--rosa);white-space:nowrap}
-.cell .mk .r{color:var(--acento-esc);font-weight:700}
-.cell .sd{display:inline-block;width:5px;height:5px;border-radius:50%;background:#8d7ad1;vertical-align:middle;margin-left:1px}
-.cell .dm{font-size:.52rem;color:#b3ad9f;line-height:10px}
-.cell.today .st{outline:2px solid var(--acento);outline-offset:1px}
-.demo-tag{display:inline-block;background:var(--amarelo);color:#5a4a00;border-radius:6px;font-size:.64rem;font-weight:700;padding:1px 6px;margin-left:4px}
-.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font-size:.72rem;color:var(--suave)}
-.legend span{display:inline-flex;align-items:center;gap:5px}
-.legend .st{width:18px;height:18px;font-size:.7rem;border-radius:4px}
-
-table.det{width:100%;border-collapse:collapse;font-size:.8rem}
-.det th,.det td{border-bottom:1px solid #f0ebe0;padding:7px 4px;text-align:left;vertical-align:middle}
-.det th{font-size:.62rem;text-transform:uppercase;color:var(--suave);letter-spacing:.3px}
-.det td.c{text-align:center}
-.det tr{cursor:pointer}
-.det .st{width:22px;height:22px;font-size:.78rem}
-.tags{display:flex;flex-wrap:wrap;gap:3px}
-.tag{background:#efeafb;color:#5b4aa3;border-radius:6px;padding:1px 6px;font-size:.68rem}
-
-/* sheets */
-.ov{position:fixed;inset:0;background:rgba(40,40,55,.5);z-index:60;display:none;align-items:flex-end;justify-content:center}
-.ov.show{display:flex}
-.sheet{background:#fff;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;border-radius:18px 18px 0 0;
-  padding:16px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.25)}
-@media(min-width:640px){.ov{align-items:center}.sheet{border-radius:18px}}
-.sheet-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.sheet-h h3{margin:0;font-family:Georgia,serif;color:var(--acento-esc);font-size:1.05rem}
-.xbtn{border:0;background:#f1eee6;width:36px;height:36px;border-radius:50%;font-size:1rem;color:var(--suave)}
-
-.toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
-  background:#2b2b3a;color:#fff;padding:10px 16px;border-radius:999px;font-size:.86rem;opacity:0;transition:.25s;z-index:90;pointer-events:none;white-space:nowrap}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* dúvidas */
-.q{border:1px solid var(--linha);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff}
-.q.done{background:#f7f9f6;border-color:#d9e8dc}
-.q-top{display:flex;gap:10px;align-items:flex-start}
-.q-top input[type=checkbox]{width:20px;height:20px;accent-color:var(--verde);margin-top:2px;flex-shrink:0}
-.q-txt{flex:1;font-size:.9rem;white-space:pre-wrap}
-.q.done .q-txt{color:var(--suave)}
-.q-meta{font-size:.68rem;color:var(--suave);margin-top:3px}
-.q-ans{margin-top:8px;background:var(--creme);border-radius:9px;padding:8px 10px;font-size:.84rem;white-space:pre-wrap}
-.q-ans b{color:var(--acento-esc);font-size:.7rem;text-transform:uppercase;display:block}
-.q-act{display:flex;gap:4px;justify-content:flex-end;margin-top:4px}
-.q-act button{border:0;background:none;color:var(--suave);font-size:.76rem;padding:4px 6px;text-decoration:underline}
-
-/* aprender */
-details.lrn{background:#fff;border:1px solid var(--linha);border-radius:12px;margin-bottom:8px;overflow:hidden}
-details.lrn summary{padding:12px 14px;font-weight:700;color:var(--acento-esc);font-family:Georgia,serif;list-style:none;display:flex;justify-content:space-between;cursor:pointer}
-details.lrn summary::-webkit-details-marker{display:none}
-details.lrn summary::after{content:"＋";color:var(--acento)}
-details.lrn[open] summary::after{content:"－"}
-details.lrn .bd{padding:0 14px 12px;font-size:.88rem}
-details.lrn .bd p{margin:6px 0}
-details.lrn .bd ul{margin:6px 0;padding-left:18px}
-details.lrn .bd li{margin:3px 0}
-.rule{border-left:4px solid var(--acento);background:var(--creme);border-radius:0 10px 10px 0;padding:9px 12px;margin:8px 0}
-.rule h4{margin:0 0 3px;font-family:Georgia,serif;color:var(--acento-esc);font-size:.92rem}
-.rule p{margin:2px 0;font-size:.84rem;color:var(--tinta)}
-.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
-.ref{display:flex;gap:9px;align-items:center;border:1px solid var(--linha);border-radius:10px;padding:8px}
-.ref .st{flex-shrink:0;width:30px;height:30px}
-.ref b{font-size:.8rem;display:block}
-.ref small{font-size:.72rem;color:var(--suave);line-height:1.25;display:block}
-.disc{font-size:.76rem;color:var(--suave);font-style:italic;text-align:center;margin:14px 6px}
-
-/* onboarding */
-#onb{position:fixed;inset:0;background:var(--papel);z-index:80;overflow-y:auto;display:none}
-#onb.show{display:block}
-body.onb main,body.onb nav.bnav,body.onb header.top{display:none}
-.onb-in{max-width:560px;margin:0 auto;padding:calc(22px + env(safe-area-inset-top)) 18px 30px}
-.onb-steps{display:flex;gap:6px;justify-content:center;margin-bottom:16px}
-.onb-steps i{width:28px;height:5px;border-radius:3px;background:var(--linha)}
-.onb-steps i.on{background:var(--rosa)}
-.onb-hero{text-align:center;margin-bottom:14px}
-.onb-hero h1{font-family:Georgia,serif;color:var(--acento-esc);margin:6px 0 4px;font-size:1.4rem}
-.onb-hero p{color:var(--suave);font-size:.88rem;margin:0}
-.slide{text-align:center;padding:10px 6px}
-.slide .emo{font-size:2.6rem}
-.slide h2{font-family:Georgia,serif;color:var(--acento-esc);font-size:1.15rem;margin:8px 0}
-.slide p{font-size:.92rem;margin:6px 0;color:var(--tinta)}
-.slide .ex{display:flex;justify-content:center;gap:5px;margin:12px 0}
-
-#printArea{display:none}
-@media print{
-  @page{size:A4 landscape;margin:8mm}
-  body{background:#fff;padding:0}
-  body>*:not(#printArea){display:none!important}
-  #printArea{display:block!important;font-size:9pt;color:#222}
-  .p-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #9a6a36;padding-bottom:4px;margin-bottom:8px}
-  .p-head h1{font-family:Georgia,serif;color:#9a6a36;font-size:14pt;margin:0}
-  .p-head .meta{font-size:8pt;text-align:right;line-height:1.4;color:#444}
-  .p-sec{margin-top:10px;page-break-inside:auto}
-  .p-sec h2{font-family:Georgia,serif;color:#9a6a36;font-size:11pt;margin:0 0 5px;border-bottom:1px solid #ddd}
-  table.pchart{border-collapse:collapse;width:100%;table-layout:fixed}
-  .pchart th,.pchart td{border:1px solid #ddd;padding:1px 0;text-align:center;vertical-align:top}
-  .pchart thead th{background:#f3ece0;font-size:6.5pt;color:#555}
-  .pchart th.cn{width:22mm;text-align:left;padding:1px 3px;font-size:7pt;background:#fff}
-  .pchart th.cn small{display:block;font-weight:400;color:#666;font-size:6pt}
-  .pchart tr{page-break-inside:avoid}
-  .pchart .cell{padding:1px 0;cursor:default}
-  .pchart .st{width:15px;height:15px;font-size:7.5pt;border-radius:3px}
-  .pchart .lab{height:9px;font-size:6pt;line-height:9px}
-  .pchart .mk{height:8px;font-size:5.5pt;line-height:8px}
-  .pchart .dm{font-size:5pt;line-height:7px}
-  table.pdet{border-collapse:collapse;width:100%;font-size:7.5pt;margin-bottom:6px}
-  .pdet th,.pdet td{border:1px solid #ddd;padding:2px 4px;text-align:left;vertical-align:top}
-  .pdet th{background:#f3ece0;font-size:6.5pt;text-transform:uppercase}
-  .pdet .st{width:13px;height:13px;font-size:6.5pt;border-radius:3px}
-  .pdet tr{page-break-inside:avoid}
-  .p-cyc{font-weight:700;color:#9a6a36;margin:6px 0 3px;font-size:9pt}
-  .p-q{margin:3px 0;padding:3px 6px;border-left:3px solid #c08a4e;page-break-inside:avoid}
-  .p-q small{color:#666}
-  .p-leg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:7pt;color:#555;margin-top:5px}
-  .p-leg span{display:inline-flex;gap:3px;align-items:center}
-  .p-leg .st{width:11px;height:11px;font-size:6pt}
-  .p-foot{margin-top:10px;font-size:7pt;color:#888;text-align:center}
-}
-</style>
+<link rel="icon" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
 </head>
 <body>
+<title>Meu Gráfico MOB</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: uma folha de registro digital — papel limpo, linhas finas de tinta,
+   e as cores do método como os únicos elementos saturados. */
+:root{
+  --bg:#F7F6F8; --surface:#FFFFFF; --sunk:#F1EEF2;
+  --ink:#221E26; --muted:#6F6877; --faint:#A59FAB; --line:#E6E1E8; --line-strong:#CFC8D3;
+  --accent:#6B3F6E; --accent-ink:#FFFFFF; --accent-soft:#F2EAF2;
+  --ok:#3F8A5F; --danger:#B4443F; --danger-soft:#F8E9E8;
+  --s-vermelho:#D66A6A; --s-verde:#6DAF86; --s-amarelo:#EFCF63; --s-branco:#FFFFFF; --s-borda:#BDB5C2; --s-ink:#221E26;
+  --sint:#7C6BC4;
+  --shadow:0 1px 2px rgba(34,30,38,.05),0 8px 24px rgba(34,30,38,.06);
+  --f-display:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --f-body:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141216; --surface:#1C1A1F; --sunk:#232027;
+  --ink:#EDE9EF; --muted:#A39CA9; --faint:#7A7480; --line:#2E2A33; --line-strong:#423C48;
+  --accent:#D3A8D4; --accent-ink:#1C1A1F; --accent-soft:#2D2331;
+  --ok:#7CC79A; --danger:#E58A85; --danger-soft:#3A2224;
+  --s-vermelho:#D66A6A; --s-verde:#6DAF86; --s-amarelo:#EFCF63; --s-branco:#F4F1F5; --s-borda:#6F6877; --s-ink:#221E26;
+  --sint:#A99BE6; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141216; --surface:#1C1A1F; --sunk:#232027;
+  --ink:#EDE9EF; --muted:#A39CA9; --faint:#7A7480; --line:#2E2A33; --line-strong:#423C48;
+  --accent:#D3A8D4; --accent-ink:#1C1A1F; --accent-soft:#2D2331;
+  --ok:#7CC79A; --danger:#E58A85; --danger-soft:#3A2224;
+  --s-vermelho:#D66A6A; --s-verde:#6DAF86; --s-amarelo:#EFCF63; --s-branco:#F4F1F5; --s-borda:#6F6877; --s-ink:#221E26;
+  --sint:#A99BE6; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  -webkit-tap-highlight-color:transparent;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+button,input,select,textarea{font-family:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* topo */
+.top{padding-block:18px 6px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top-in{max-width:1000px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.brand small{display:block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.brand h1{margin:2px 0 0;font-family:var(--f-display);font-weight:400;font-size:1.9rem;line-height:1;letter-spacing:-.01em}
+.brand h1 i{color:var(--accent)}
+.today-pill{text-align:right;line-height:1.15}
+.today-pill small{display:block;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.today-pill b{font-family:var(--f-display);font-weight:400;font-size:1.7rem;color:var(--accent)}
+.store-note{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:6px;margin-top:6px}
+.store-note i{width:7px;height:7px;border-radius:50%;background:var(--faint);display:inline-block}
+.store-note.cloud i{background:var(--ok)}
+
+main{max-width:1000px;margin:0 auto;padding-block:8px 24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.view{display:none}.view.on{display:block}
+.vh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:10px 0 12px;flex-wrap:wrap}
+.vh h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:1.6rem;line-height:1.1;text-wrap:balance}
+.vh .sub{color:var(--muted);font-size:.82rem}
+
+/* navegação */
+nav.bnav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.bnav-in{max-width:620px;margin:0 auto;display:flex}
+.bnav button{flex:1;border:0;background:none;padding:9px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:.66rem;font-weight:600;color:var(--muted);letter-spacing:.02em;position:relative}
+.bnav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.bnav button.on{color:var(--accent)}
+.bnav button.on::before{content:"";position:absolute;top:0;left:30%;right:30%;height:2px;border-radius:2px;background:var(--accent)}
+.badge{position:absolute;top:5px;left:calc(50% + 7px);min-width:16px;height:16px;border-radius:8px;background:var(--accent);color:var(--accent-ink);
+  font-size:.6rem;line-height:16px;padding:0 4px;font-weight:700}
+
+/* blocos */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.lbl{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:18px 0 8px}
+.lbl:first-child{margin-top:0}
+.lbl em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:500;color:var(--faint)}
+.muted{color:var(--muted);font-size:.82rem}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.grow{flex:1;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;padding:7px 13px;font-size:.86rem;line-height:1.2;
+  user-select:none;cursor:pointer;color:var(--ink);transition:background .15s,border-color .15s}
+.chip:hover{border-color:var(--muted)}
+.chip.on,label.chip:has(input:checked){background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+label.chip{display:inline-flex;align-items:center}
+label.chip input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+.chip.sm{padding:5px 10px;font-size:.78rem}
+.chip.dash{border-style:dashed;color:var(--muted)}
+.in{width:100%;padding:11px 12px;border:1px solid var(--line-strong);border-radius:10px;font-size:16px;background:var(--surface);color:var(--ink)}
+.in::placeholder{color:var(--faint)}
+.in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+textarea.in{min-height:72px;resize:vertical}
+.fld{margin-bottom:12px}
+.fld>label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:5px}
+.fld>label em{font-style:normal;font-weight:500;color:var(--faint)}
+.btn{border:1px solid transparent;border-radius:11px;padding:12px 18px;font-size:.92rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px;letter-spacing:.01em}
+.btn.pri{background:var(--accent);color:var(--accent-ink)}
+.btn.sec{background:var(--surface);border-color:var(--line-strong);color:var(--ink)}
+.btn.ghost{background:none;color:var(--muted);padding:8px 10px;font-weight:600}
+.btn.danger{background:var(--surface);border-color:var(--danger);color:var(--danger)}
+.btn.block{width:100%}
+.btn.sm{padding:8px 12px;font-size:.8rem;border-radius:9px}
+.btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+a.btn{text-decoration:none}
+
+/* registrar */
+.notice{border-radius:12px;padding:11px 14px;font-size:.86rem;margin-bottom:10px;display:block;background:var(--accent-soft);color:var(--ink)}
+.notice b{color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat small{display:block;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stat b{font-family:var(--f-display);font-weight:400;font-size:1.35rem;line-height:1.2}
+.datebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.datebar .in{flex:1;min-width:150px}
+.voice{display:flex;gap:8px}
+.voice .in{flex:1;min-width:0}
+.mic{width:48px;flex-shrink:0;border-radius:11px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center}
+.mic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.mic.rec{animation:pulse 1.2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px var(--accent-soft)}}
+@media (prefers-reduced-motion: reduce){.mic.rec{animation:none}}
+.result{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:16px;background:var(--sunk)}
+.result .st{width:44px;height:44px;font-size:1.3rem;border-radius:9px}
+.result .txt{flex:1;min-width:0}
+.result .txt b{display:block;font-size:.92rem}
+.result .txt span{font-size:.8rem;color:var(--muted)}
+.marks{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mark{border:1px solid var(--line-strong);background:var(--surface);border-radius:11px;padding:9px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.72rem;color:var(--muted);font-weight:600}
+.mark b{font-family:var(--f-display);font-weight:400;font-size:1.35rem;line-height:1;color:var(--ink)}
+.mark.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.mark.on b{color:var(--accent)}
+details.adj{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+details.adj summary{font-size:.84rem;font-weight:600;color:var(--accent);cursor:pointer;list-style:none}
+details.adj summary::-webkit-details-marker{display:none}
+details.adj summary::after{content:" +"}
+details.adj[open] summary::after{content:" –"}
+.hint{font-size:.76rem;color:var(--muted);margin-top:6px}
+.savebar{position:sticky;bottom:calc(66px + env(safe-area-inset-bottom,0px));margin-top:16px;display:flex;gap:8px;z-index:5}
+.savebar .pri{flex:1;box-shadow:var(--shadow)}
+
+/* selos */
+.st{width:24px;height:24px;border-radius:5px;border:1px solid rgba(0,0,0,.14);display:inline-flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.86rem;line-height:1;color:var(--s-ink);position:relative;vertical-align:middle;font-family:var(--f-body)}
+.st.vermelho{background:var(--s-vermelho);color:#fff}
+.st.verde{background:var(--s-verde);color:#fff}
+.st.amarelo{background:var(--s-amarelo)}
+.st.branco{background:var(--s-branco);border-color:var(--s-borda)}
+.st.none{background:var(--surface);border-color:var(--line-strong);color:var(--ink)}
+.st.dots{color:#2a1a1a;letter-spacing:-1px}
+.st.apx{box-shadow:0 0 0 2px var(--accent)}
+.st.empty{background:transparent;border:1px dashed var(--line-strong)}
+
+/* folha (gráfico) */
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:10px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:7px 11px;font-size:.8rem;font-weight:600;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.tool-lbl{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.sheet-wrap{overflow:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);max-height:72vh;-webkit-overflow-scrolling:touch}
+table.folha{border-collapse:separate;border-spacing:0;font-size:.78rem}
+.folha th,.folha td{border-bottom:1px solid var(--line);padding:0;text-align:center;vertical-align:middle;background:var(--surface)}
+.folha thead th{position:sticky;z-index:2;background:var(--sunk);color:var(--muted);font-weight:700;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase}
+.folha thead tr:first-child th{top:0;height:58px}
+.folha thead tr:nth-child(2) th{top:58px;height:24px;border-bottom:1px solid var(--line-strong)}
+.folha .dia{position:sticky;left:0;z-index:1;width:38px;min-width:38px;font-weight:700;color:var(--muted);border-right:1px solid var(--line-strong);font-variant-numeric:tabular-nums}
+.folha thead .dia{z-index:4;line-height:1.15}
+.folha th.ch{text-transform:none;letter-spacing:0;text-align:left;padding:6px 10px;cursor:pointer;border-left:2px solid var(--line-strong);vertical-align:top}
+.folha th.ch .cn{display:block;font-family:var(--f-display);font-weight:400;font-size:1.12rem;color:var(--ink);line-height:1.1}
+.folha th.ch .cd{display:block;font-size:.66rem;font-weight:600;color:var(--muted)}
+.folha th.ch .cl{display:block;font-size:.68rem;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px}
+.folha th.ch .cl.add{color:var(--faint);font-weight:500}
+.folha .g{border-left:2px solid var(--line-strong)}
+.folha td.sel{width:36px;min-width:36px;height:32px;cursor:pointer}
+.folha td.dt{width:40px;min-width:40px;font-variant-numeric:tabular-nums;color:var(--ink);cursor:pointer;font-weight:600}
+.folha td.dt small{color:var(--faint);font-weight:500}
+.folha td.dsc,.folha th.dsc{width:170px;min-width:170px;max-width:170px;text-align:left;padding:4px 8px;cursor:pointer;line-height:1.3}
+.folha td.dsc{font-size:.76rem}
+.folha td.dsc .sx{display:block;font-size:.66rem;color:var(--sint);font-weight:600}
+.folha td.rg{width:44px;min-width:44px;font-weight:700;cursor:pointer;font-size:.74rem;line-height:1.15;padding:2px}
+.rg .pk{color:var(--accent);font-family:var(--f-display);font-weight:400;font-size:1rem}
+.rg .r{color:var(--danger)}
+.rg .n{color:var(--ink)}
+.folha td.off{background:repeating-linear-gradient(45deg,var(--surface),var(--surface) 4px,var(--sunk) 4px,var(--sunk) 8px)}
+.folha td.today{box-shadow:inset 0 0 0 2px var(--accent)}
+.folha tbody tr:hover td:not(.off){background:var(--sunk)}
+.demo-tag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.08em;background:var(--s-amarelo);color:var(--s-ink);border-radius:5px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+
+/* faixa (linhas) */
+table.faixa{border-collapse:separate;border-spacing:0}
+.faixa th,.faixa td{padding:0;background:var(--surface)}
+.faixa thead th{position:sticky;top:0;z-index:2;background:var(--sunk);font-size:.6rem;color:var(--muted);font-weight:700;height:22px;min-width:30px;border-bottom:1px solid var(--line)}
+.faixa th.cn{position:sticky;left:0;z-index:3;text-align:left;padding:4px 10px;min-width:92px;max-width:92px;border-right:1px solid var(--line-strong);border-bottom:1px solid var(--line);font-size:.66rem;color:var(--muted);font-weight:600}
+.faixa thead th.cn{z-index:4}
+.faixa th.cn b{display:block;font-family:var(--f-display);font-weight:400;font-size:1rem;color:var(--ink)}
+.faixa td{text-align:center;vertical-align:top;border-bottom:1px solid var(--line)}
+.faixa td.off{background:repeating-linear-gradient(45deg,var(--surface),var(--surface) 4px,var(--sunk) 4px,var(--sunk) 8px)}
+.fx{display:flex;flex-direction:column;align-items:center;padding:3px 2px;cursor:pointer;gap:1px}
+.fx .l{height:14px;font-size:.8rem;font-family:var(--f-display);color:var(--accent);line-height:14px}
+.fx .m{height:11px;font-size:.6rem;line-height:11px;font-weight:700;color:var(--danger)}
+.fx .d{font-size:.55rem;color:var(--faint);line-height:10px}
+.fx.today .st{outline:2px solid var(--accent);outline-offset:1px}
+
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:12px 2px 0;font-size:.74rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend .st{width:16px;height:16px;font-size:.6rem;border-radius:4px}
+
+/* folhas de diálogo */
+.ov{position:fixed;inset:0;background:rgba(20,18,22,.45);z-index:60;display:none;align-items:flex-end;justify-content:center}
+.ov.show{display:flex}
+.sheet{background:var(--surface);color:var(--ink);width:100%;max-width:560px;max-height:90vh;overflow-y:auto;border-radius:18px 18px 0 0;
+  padding:18px max(18px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));box-shadow:var(--shadow)}
+@media (min-width:640px){.ov{align-items:center}.sheet{border-radius:18px}}
+.sheet-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.sheet-h h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:1.45rem;line-height:1.15}
+.xbtn{border:0;background:var(--sunk);width:34px;height:34px;border-radius:50%;color:var(--muted);flex-shrink:0;font-size:.9rem}
+.sheet-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);background:var(--ink);color:var(--bg);
+  padding:10px 16px;border-radius:999px;font-size:.84rem;opacity:0;transition:.25s;z-index:90;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* instrutora */
+.qi{border-top:1px solid var(--line);padding:12px 0}
+.qi:first-child{border-top:0}
+.qi-top{display:flex;gap:12px;align-items:flex-start}
+.qi-top input{width:20px;height:20px;accent-color:var(--ok);margin-top:2px;flex-shrink:0}
+.qi-txt{font-size:.92rem;white-space:pre-wrap}
+.qi.done .qi-txt{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--faint)}
+.qi-meta{font-size:.7rem;color:var(--faint);margin-top:2px}
+.qi-ans{margin:8px 0 0 32px;padding:8px 12px;border-left:2px solid var(--accent);background:var(--accent-soft);border-radius:0 9px 9px 0;font-size:.86rem;white-space:pre-wrap}
+.qi-ans b{display:block;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.qi-act{display:flex;gap:2px;justify-content:flex-end}
+.qi-act button{border:0;background:none;color:var(--muted);font-size:.76rem;padding:4px 7px;font-weight:600}
+.qi-act button:hover{color:var(--accent)}
+.instr{display:flex;gap:14px;align-items:center}
+.avatar{width:48px;height:48px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-size:1.5rem;flex-shrink:0}
+
+/* aprender */
+.lrn{border-top:1px solid var(--line)}
+.lrn:last-of-type{border-bottom:1px solid var(--line)}
+.lrn summary{padding:15px 2px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.lrn summary::-webkit-details-marker{display:none}
+.lrn summary span{font-family:var(--f-display);font-size:1.25rem;line-height:1.2}
+.lrn summary small{font-size:.66rem;letter-spacing:.12em;color:var(--faint);font-weight:700}
+.lrn summary::after{content:"+";color:var(--accent);font-size:1.2rem;margin-left:auto}
+.lrn[open] summary::after{content:"–"}
+.lrn .bd{padding:0 2px 16px;font-size:.9rem;max-width:68ch}
+.lrn .bd p{margin:6px 0}.lrn .bd ul{margin:6px 0;padding-left:18px}.lrn .bd li{margin:4px 0}
+.rule{border-left:2px solid var(--accent);padding:6px 12px;margin:10px 0}
+.rule h4{margin:0 0 2px;font-size:.9rem}
+.rule p{margin:2px 0;font-size:.86rem}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:10px 0}
+.ref{display:flex;gap:10px;align-items:center;padding:6px 0}
+.ref .st{width:28px;height:28px;flex-shrink:0}
+.ref b{display:block;font-size:.84rem}
+.ref small{display:block;font-size:.74rem;color:var(--muted);line-height:1.3}
+.disc{font-size:.76rem;color:var(--muted);text-align:center;margin:18px 8px}
+
+/* boas-vindas */
+#onb{position:fixed;inset:0;background:var(--bg);z-index:80;overflow-y:auto;display:none}
+#onb.show{display:block}
+.onb-in{max-width:540px;margin:0 auto;padding-block:calc(28px + env(safe-area-inset-top,0px)) 32px;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.steps{display:flex;gap:6px;margin-bottom:22px}
+.steps i{flex:1;height:3px;border-radius:2px;background:var(--line)}
+.steps i.on{background:var(--accent)}
+.onb-h small{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.onb-h h1{font-family:var(--f-display);font-weight:400;font-size:2.4rem;line-height:1.05;margin:6px 0 8px;text-wrap:balance}
+.onb-h h1 i{color:var(--accent)}
+.onb-h p{color:var(--muted);margin:0 0 18px}
+h3.sec{font-family:var(--f-display);font-weight:400;font-size:1.25rem;margin:22px 0 10px}
+.slide{padding:8px 0 4px}
+.slide .n{font-family:var(--f-display);font-size:3.2rem;color:var(--accent);line-height:1}
+.slide h2{font-family:var(--f-display);font-weight:400;font-size:1.8rem;line-height:1.1;margin:8px 0 10px;text-wrap:balance}
+.slide p{font-size:.98rem;margin:0 0 10px;max-width:46ch}
+.slide .ex{display:flex;gap:6px;margin:14px 0}
+.slide .ex .st{width:34px;height:34px;font-size:1rem}
+.loading{display:flex;align-items:center;justify-content:center;min-height:50vh;color:var(--muted);font-size:.9rem}
+
+/* PDF (página branca fixa; cores próprias de papel nos dois temas) */
+#pdfStage{position:fixed;left:-12000px;top:0;width:794px;pointer-events:none}
+.pg{width:794px;height:1123px;padding:38px 34px 30px;background:#fff;color:#221E26;display:flex;flex-direction:column;font-family:var(--f-body);
+  --surface:#FFFFFF;--sunk:#F4F1F5;--ink:#221E26;--muted:#6F6877;--faint:#9A94A0;--line:#E4DFE6;--line-strong:#C9C1CD;--accent:#6B3F6E;--accent-soft:#F3ECF3;--danger:#B4443F;--sint:#6B5BB4;
+  --s-branco:#FFFFFF;--s-borda:#B9B1BE}
+.pg-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:1.5px solid #221E26;padding-bottom:8px;margin-bottom:12px}
+.pg-t{font-family:var(--f-display);font-size:26px;line-height:1}
+.pg-s{font-size:11px;color:#6F6877;margin-top:4px}
+.pg-m{font-size:10.5px;color:#6F6877;text-align:right;line-height:1.45}
+.pg-body{flex:1;min-height:0}
+.pg-f{font-size:9.5px;color:#9A94A0;display:flex;justify-content:space-between;border-top:1px solid #E4DFE6;padding-top:6px;margin-top:8px}
+.pg .folha{width:100%;table-layout:fixed;font-size:10px}
+.pg .folha thead th{position:static;font-size:7.5px}
+.pg .folha thead tr:first-child th{height:44px}
+.pg .folha thead tr:nth-child(2) th{height:18px}
+.pg .folha .dia{position:static;width:28px;min-width:0}
+.pg .folha td.sel{width:auto;min-width:0;height:21px}
+.pg .folha td.dt{width:auto;min-width:0;font-size:9px}
+.pg .folha td.dsc,.pg .folha th.dsc{width:auto;min-width:0;max-width:none;font-size:8.5px;padding:2px 5px;line-height:1.2}
+.pg .folha td.dsc .sx{font-size:7.5px}
+.pg .folha td.rg{width:auto;min-width:0;font-size:8.5px}
+.pg .folha th.ch{padding:4px 6px}
+.pg .folha th.ch .cn{font-size:15px}
+.pg .folha th.ch .cl{max-width:none;font-size:9px}
+.pg .st{width:17px;height:17px;font-size:10px;border-radius:4px}
+.pg .rg .pk{font-size:12px}
+.pg .legend{font-size:9px;margin-top:8px;gap:4px 12px}
+.pg .legend .st{width:12px;height:12px;font-size:7px}
+.pg-q{padding:7px 0;border-bottom:1px solid #E4DFE6;font-size:12px}
+.pg-q small{color:#6F6877}
+.pg-q .a{margin-top:3px;padding-left:10px;border-left:2px solid #6B3F6E;font-size:11px}
+.pg h2{font-family:var(--f-display);font-weight:400;font-size:20px;margin:0 0 8px}
+</style>
 
 <header class="top">
-  <div class="hin">
-    <div>
-      <h1>Meu Gráfico MOB</h1>
-      <p id="hdrSub">Método de Ovulação Billings</p>
+  <div class="top-in">
+    <div class="brand">
+      <small id="hdrSub">Método de Ovulação Billings</small>
+      <h1>Meu Gráfico <i>MOB</i></h1>
     </div>
-    <div class="hdr-cyc" id="hdrCyc" style="display:none"></div>
+    <div class="today-pill" id="hdrCyc" hidden></div>
   </div>
 </header>
 
 <main>
-  <!-- ═════════ HOJE / REGISTRAR ═════════ -->
-  <section class="view on" id="v-hoje">
-    <div id="hojeAlerts"></div>
-    <div class="hello" id="hojeStats" style="margin-bottom:12px"></div>
+  <div id="bootLoading" class="loading">Carregando seus registros…</div>
 
-    <div class="card">
-      <div class="row" style="justify-content:space-between;margin-bottom:8px">
-        <h2 class="t" id="formTitle" style="margin:0">Registrar o dia</h2>
-        <span class="muted" id="formCycleInfo"></span>
+  <!-- REGISTRAR -->
+  <section class="view" id="v-registrar">
+    <div id="hojeNotices"></div>
+    <div class="stats" id="hojeStats"></div>
+    <div class="panel">
+      <div class="row" style="justify-content:space-between;align-items:baseline;margin-bottom:10px">
+        <h2 id="formTitle" style="margin:0;font-family:var(--f-display);font-weight:400;font-size:1.5rem">Registrar hoje</h2>
+        <span class="muted num" id="formCycle"></span>
       </div>
       <div class="datebar">
-        <input class="in" type="date" id="fDate">
+        <input class="in" type="date" id="fDate" aria-label="Data do registro">
         <button class="chip sm" data-qd="0">Hoje</button>
         <button class="chip sm" data-qd="-1">Ontem</button>
       </div>
 
-      <div class="lbl">Fale ou digite como foi o dia <small>(preenche sozinho)</small></div>
+      <div class="lbl">Fale ou escreva como foi o dia <em>· preenche sozinho</em></div>
       <div class="voice">
-        <input class="in" id="fVoice" placeholder="ex.: seca, nada vejo, cólica" enterkeyhint="done" autocomplete="off">
-        <button class="mic" id="micBtn" title="Falar">🎤</button>
+        <input class="in" id="fVoice" placeholder="seca, nada vejo, cólica" enterkeyhint="done" autocomplete="off" aria-label="Descrição rápida">
+        <button class="mic" id="micBtn" title="Falar" aria-label="Falar" hidden><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
       </div>
-      <div class="muted" id="voiceHint" style="margin-top:5px;font-size:.74rem">Toque no 🎤 e fale: “molhada, clara de ovo, estresse”.</div>
+      <div class="hint" id="voiceHint">Escreva e toque em OK no teclado. Você também pode usar o microfone do teclado do celular para ditar.</div>
 
-      <div class="lbl">1º — O que sinto?</div>
+      <div class="lbl">1º · O que sinto</div>
       <div class="chips" id="gSinto"></div>
-      <div class="lbl">2º — O que vejo?</div>
+      <div class="lbl">2º · O que vejo</div>
       <div class="chips" id="gVejo"></div>
       <div class="lbl">Sangramento</div>
       <div class="chips" id="gSang"></div>
 
-      <div class="preview-box">
+      <div class="result">
         <div id="pvStamp"></div>
-        <div class="txt"><b id="pvTitle">—</b><span id="pvDesc" class="muted"></span></div>
+        <div class="txt"><b id="pvTitle">—</b><span id="pvDesc"></span></div>
       </div>
 
       <div class="lbl">Marcar</div>
-      <div class="toggles">
-        <button class="tg" id="tgNovo"><span class="big">①</span>1º dia do ciclo</button>
-        <button class="tg" id="tgApice"><span class="big" style="color:var(--rosa)">X</span>Ápice</button>
-        <button class="tg" id="tgRel"><span class="big" style="color:var(--rosa)">♥</span>Relação</button>
+      <div class="marks">
+        <button class="mark" id="mkNovo"><b>1º</b>dia do ciclo</button>
+        <button class="mark" id="mkApice"><b>X</b>ápice</button>
+        <button class="mark" id="mkRel"><b>R</b>relação</button>
+        <button class="mark" id="mkLs"><b>LS</b>na regra</button>
       </div>
-      <div class="muted" id="novoHint" style="display:none;margin-top:6px;font-size:.76rem"></div>
+      <div class="hint" id="markHint" hidden></div>
 
-      <details class="adj" id="adjBox">
-        <summary>Ajustar símbolo, cor e regra</summary>
+      <details class="adj">
+        <summary>Ajustar selo, regra e descrição</summary>
         <div class="lbl">Cor</div><div class="chips" id="gCor"></div>
         <div class="lbl">Símbolo</div><div class="chips" id="gSym"></div>
-        <div class="lbl">Fértil (bolinha aberta ○)</div><div class="chips" id="gFert"></div>
-        <div class="lbl">Regra aplicada</div><div class="chips" id="gRule"></div>
-        <div class="muted" id="ruleHint" style="margin-top:6px;font-size:.78rem"></div>
-        <div class="lbl">Descrição <small>(gerada automaticamente — pode editar)</small></div>
-        <input class="in" id="fDesc" placeholder="ex.: Seca / nada vejo">
+        <div class="lbl">Fértil (O)</div><div class="chips" id="gFert"></div>
+        <div class="lbl">Regra MOB</div><div class="chips" id="gRule"></div>
+        <div class="hint" id="ruleHint"></div>
+        <div class="lbl">Descrição <em>· gerada automaticamente, pode editar (ex.: ++molhada / claro)</em></div>
+        <input class="in" id="fDesc" placeholder="Seca / nada vejo">
       </details>
 
-      <div class="lbl">Sintomas <small>(se tiver)</small></div>
+      <div class="lbl">Sintomas <em>· se tiver</em></div>
       <div class="chips" id="gSint"></div>
-
-      <div class="lbl">Anotação curta <small>(opcional)</small></div>
-      <input class="in" id="fNota" placeholder="ex.: dormi mal, viagem" maxlength="120">
+      <div class="lbl">Anotação curta <em>· opcional</em></div>
+      <input class="in" id="fNota" maxlength="120" placeholder="dormi mal, viagem…">
 
       <div class="savebar">
-        <button class="btn danger" id="delDayBtn" style="display:none">🗑</button>
+        <button class="btn danger" id="delDayBtn" hidden aria-label="Apagar registro">Apagar</button>
         <button class="btn pri" id="saveDayBtn">Salvar o dia</button>
       </div>
     </div>
   </section>
 
-  <!-- ═════════ GRÁFICO ═════════ -->
-  <section class="view" id="v-graf">
-    <div class="chart-tools">
-      <span class="muted">Linhas:</span>
-      <div class="seg" id="rowSeg"></div>
+  <!-- GRÁFICO -->
+  <section class="view" id="v-grafico">
+    <div class="vh"><h2>Gráfico do ciclo</h2><span class="sub">Toque num dia para ver ou registrar</span></div>
+    <div class="tools">
+      <span class="tool-lbl">Ciclos</span><div class="seg" id="colSeg"></div>
+      <div class="seg" id="viewSeg"><button data-view="folha">Folha</button><button data-view="faixa">Faixa</button></div>
+      <button class="chip sm" id="descTg">Descrições</button>
       <span class="grow"></span>
-      <button class="btn sec sm" id="pdfBtn">📄 PDF</button>
+      <button class="btn sec sm" id="pdfBtn"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>PDF</button>
     </div>
-    <div class="chart-wrap" id="chartWrap"></div>
+    <div class="sheet-wrap" id="sheetWrap"></div>
     <div class="legend" id="legend"></div>
-
-    <div class="card" style="margin-top:14px">
-      <div class="row" style="justify-content:space-between;margin-bottom:6px">
-        <h2 class="t" style="margin:0">Detalhes do ciclo</h2>
-        <select class="in" id="detSel" style="width:auto;padding:7px 10px;font-size:.85rem"></select>
-      </div>
-      <div id="detBody"></div>
-    </div>
   </section>
 
-  <!-- ═════════ DÚVIDAS & INSTRUTORA ═════════ -->
-  <section class="view" id="v-duv">
-    <div class="card" id="acompCard"></div>
-
-    <div class="card">
-      <h2 class="t">Dúvidas para a instrutora</h2>
-      <div class="voice">
-        <textarea class="in" id="qNew" placeholder="Escreva sua dúvida…" style="min-height:50px"></textarea>
-      </div>
+  <!-- INSTRUTORA -->
+  <section class="view" id="v-instrutora">
+    <div class="vh"><h2>Instrutora</h2></div>
+    <div class="panel" id="acompCard"></div>
+    <div class="panel">
+      <div class="lbl">Dúvidas para o acompanhamento</div>
+      <textarea class="in" id="qNew" placeholder="Anote a dúvida assim que ela surgir…" style="min-height:56px" aria-label="Nova dúvida"></textarea>
       <button class="btn pri block" id="qAdd" style="margin-top:8px">Anotar dúvida</button>
-      <div class="row" style="margin:14px 0 8px">
-        <button class="chip sm on" data-qf="pend">Pendentes</button>
+      <div class="row" style="margin:16px 0 4px">
+        <button class="chip sm" data-qf="pend">Pendentes</button>
         <button class="chip sm" data-qf="all">Todas</button>
       </div>
       <div id="qList"></div>
     </div>
-
-    <div class="card">
-      <h2 class="t">Orientações da instrutora</h2>
-      <div class="fld"><input class="in" type="date" id="oDate"></div>
-      <textarea class="in" id="oNew" placeholder="O que a instrutora orientou…"></textarea>
+    <div class="panel">
+      <div class="lbl">Orientações da instrutora</div>
+      <div class="row">
+        <input class="in" type="date" id="oDate" style="max-width:180px" aria-label="Data da orientação">
+      </div>
+      <textarea class="in" id="oNew" placeholder="O que a instrutora orientou…" style="margin-top:8px" aria-label="Nova orientação"></textarea>
       <button class="btn sec block" id="oAdd" style="margin-top:8px">Salvar orientação</button>
-      <div id="oList" style="margin-top:12px"></div>
+      <div id="oList" style="margin-top:8px"></div>
     </div>
   </section>
 
-  <!-- ═════════ APRENDER ═════════ -->
-  <section class="view" id="v-apr">
-    <div id="learn"></div>
-  </section>
+  <!-- APRENDER -->
+  <section class="view" id="v-aprender"><div id="learn"></div></section>
 
-  <!-- ═════════ PERFIL ═════════ -->
-  <section class="view" id="v-perf">
-    <div class="card">
-      <h2 class="t">Meu cadastro</h2>
-      <div id="profForm"></div>
-      <button class="btn ok block" id="profSave" style="margin-top:6px">Salvar cadastro</button>
+  <!-- PERFIL -->
+  <section class="view" id="v-perfil">
+    <div class="vh"><h2>Perfil</h2></div>
+    <div class="panel"><div id="profForm"></div><button class="btn pri block" id="profSave">Salvar cadastro</button></div>
+    <div class="panel">
+      <div class="lbl">Lembretes</div>
+      <p class="muted" style="margin-top:0">Adicione os lembretes na sua agenda do Google. Eles tocam no celular todo dia, mesmo com o app fechado.</p>
+      <a class="btn sec block" id="gcalDaily" target="_blank" rel="noopener">Lembrete diário de registro</a>
+      <a class="btn sec block" id="gcalAcomp" target="_blank" rel="noopener" style="margin-top:8px">Acompanhamento mensal</a>
+      <div id="notifBox" hidden style="margin-top:12px">
+        <button class="btn ghost block" id="notifBtn">Permitir notificações deste app</button>
+        <div class="hint" id="notifStatus"></div>
+      </div>
     </div>
-
-    <div class="card">
-      <h2 class="t">Lembretes</h2>
-      <p class="muted" style="margin-top:0">O app avisa no horário escolhido enquanto estiver aberto ou em segundo plano. Para garantir o aviso <b>todo dia, mesmo com o app fechado</b>, adicione também o lembrete na agenda do celular.</p>
-      <button class="btn sec block" id="notifBtn">🔔 Permitir notificações</button>
-      <button class="btn sec block" id="icsDaily" style="margin-top:8px">📅 Lembrete diário na agenda</button>
-      <button class="btn sec block" id="icsAcomp" style="margin-top:8px">📅 Acompanhamento mensal na agenda</button>
-      <div class="muted" id="notifStatus" style="margin-top:8px;font-size:.76rem"></div>
-    </div>
-
-    <div class="card">
-      <h2 class="t">Inícios de ciclo</h2>
+    <div class="panel">
+      <div class="lbl">Inícios de ciclo</div>
       <p class="muted" style="margin-top:0">Cada ciclo começa no 1º dia da menstruação. Marque “1º dia do ciclo” ao registrar, ou ajuste aqui.</p>
       <div id="startsList"></div>
-      <div class="row" style="margin-top:8px">
-        <input class="in grow" type="date" id="startNew">
+      <div class="row" style="margin-top:10px">
+        <input class="in grow" type="date" id="startNew" aria-label="Novo início de ciclo">
         <button class="btn sec sm" id="startAdd">Adicionar</button>
       </div>
     </div>
-
-    <div class="card">
-      <h2 class="t">Cópia de segurança</h2>
-      <p class="muted" style="margin-top:0">Seus dados ficam só neste celular. Faça uma cópia de vez em quando (e antes de trocar de aparelho).</p>
+    <div class="panel">
+      <div class="lbl">Cópia de segurança</div>
+      <p class="muted" style="margin-top:0" id="storeExplain"></p>
       <div class="row">
-        <button class="btn sec sm grow" id="bkExport">⬇️ Salvar cópia</button>
-        <button class="btn sec sm grow" id="bkImport">⬆️ Restaurar cópia</button>
+        <button class="btn sec sm grow" id="bkExport">Salvar cópia</button>
+        <button class="btn sec sm grow" id="bkImport">Restaurar cópia</button>
       </div>
-      <input type="file" id="bkFile" accept="application/json,.json" style="display:none">
-      <button class="btn ghost block" id="wipeBtn" style="margin-top:10px;color:var(--vermelho)">Apagar todos os dados</button>
+      <input type="file" id="bkFile" accept="application/json,.json" hidden>
+      <button class="btn ghost block" id="wipeBtn" style="margin-top:10px;color:var(--danger)">Apagar todos os dados</button>
     </div>
-    <p class="disc">Este app é um caderno de registro. As decisões sobre o método devem seguir as orientações da sua instrutora credenciada.</p>
+    <p class="disc">Este app é um caderno de registro. As decisões sobre o método seguem as orientações da sua instrutora credenciada.</p>
   </section>
 </main>
 
-<nav class="bnav" id="bnav">
-  <button data-v="hoje" class="on"><span class="ic">✏️</span>Registrar</button>
-  <button data-v="graf"><span class="ic">📊</span>Gráfico</button>
-  <button data-v="duv"><span class="ic">💬</span>Instrutora<span class="badge" id="qBadge" style="display:none"></span></button>
-  <button data-v="apr"><span class="ic">📖</span>Aprender</button>
-  <button data-v="perf"><span class="ic">👤</span>Perfil</button>
-</nav>
+<nav class="bnav" id="bnav" hidden><div class="bnav-in">
+  <button data-v="registrar"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>Registrar</button>
+  <button data-v="grafico"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M4 9h16M4 14.5h16M10 3.5v17"/></svg>Gráfico</button>
+  <button data-v="instrutora"><svg viewBox="0 0 24 24"><path d="M5 5h14v10H10l-5 4z"/></svg>Instrutora<span class="badge" id="qBadge" hidden></span></button>
+  <button data-v="aprender"><svg viewBox="0 0 24 24"><path d="M3.5 5.5h6a2.5 2.5 0 0 1 2.5 2.5v11a2 2 0 0 0-2-2H3.5z"/><path d="M20.5 5.5h-6A2.5 2.5 0 0 0 12 8v11a2 2 0 0 1 2-2h6.5z"/></svg>Aprender</button>
+  <button data-v="perfil"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.4-3.6 4.2-5.4 7.5-5.4s6.1 1.8 7.5 5.4"/></svg>Perfil</button>
+</div></nav>
 
-<!-- detalhe do dia -->
 <div class="ov" id="dayOv"><div class="sheet" id="daySheet"></div></div>
 
-<!-- PDF -->
 <div class="ov" id="pdfOv"><div class="sheet">
-  <div class="sheet-h"><h3>Exportar PDF</h3><button class="xbtn" data-close="pdfOv">✕</button></div>
+  <div class="sheet-h"><h3>Exportar PDF</h3><button class="xbtn" data-close="pdfOv" aria-label="Fechar">✕</button></div>
   <div class="lbl">Escolher por</div>
   <div class="chips">
     <label class="chip"><input type="radio" name="pdfMode" value="ciclo" checked><span>Ciclos</span></label>
     <label class="chip"><input type="radio" name="pdfMode" value="periodo"><span>Período</span></label>
   </div>
   <div id="pdfCiclos" style="margin-top:10px"></div>
-  <div id="pdfPeriodo" style="display:none;margin-top:10px">
+  <div id="pdfPeriodo" hidden style="margin-top:10px">
     <div class="row">
-      <div class="grow fld"><label>De</label><input class="in" type="date" id="pdfDe"></div>
-      <div class="grow fld"><label>Até</label><input class="in" type="date" id="pdfAte"></div>
+      <div class="grow fld"><label for="pdfDe">De</label><input class="in" type="date" id="pdfDe"></div>
+      <div class="grow fld"><label for="pdfAte">Até</label><input class="in" type="date" id="pdfAte"></div>
     </div>
   </div>
   <div class="lbl">Incluir</div>
   <div class="chips">
-    <label class="chip"><input type="checkbox" id="pdfDet" checked><span>Descrição dos dias e sintomas</span></label>
-    <label class="chip"><input type="checkbox" id="pdfQ"><span>Dúvidas</span></label>
-    <label class="chip"><input type="checkbox" id="pdfQAll"><span>…inclusive as já respondidas</span></label>
-    <label class="chip"><input type="checkbox" id="pdfO"><span>Orientações da instrutora</span></label>
+    <label class="chip"><input type="checkbox" id="pdfDet" checked><span>Descrições e sintomas</span></label>
+    <label class="chip"><input type="checkbox" id="pdfQ"><span>Dúvidas pendentes</span></label>
+    <label class="chip"><input type="checkbox" id="pdfQAll"><span>Dúvidas já respondidas</span></label>
+    <label class="chip"><input type="checkbox" id="pdfO"><span>Orientações</span></label>
   </div>
-  <button class="btn pri block" id="pdfGo" style="margin-top:16px">Gerar PDF</button>
-  <p class="muted" style="font-size:.74rem;text-align:center">Abre a tela de impressão: escolha <b>“Salvar como PDF”</b> e depois compartilhe pelo WhatsApp ou e-mail.</p>
+  <button class="btn pri block" id="pdfGo" style="margin-top:18px">Gerar PDF</button>
+  <p class="hint" style="text-align:center">Folha A4 no modelo do gráfico, com até 3 ciclos lado a lado por página.</p>
 </div></div>
 
-<!-- onboarding -->
-<div id="onb"><div class="onb-in" id="onbIn"></div></div>
+<div class="ov" id="dlgOv"><div class="sheet" id="dlgSheet"></div></div>
 
-<div class="toast" id="toast"></div>
-<div id="printArea"></div>
+<div id="onb"><div class="onb-in" id="onbIn"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="pdfStage" aria-hidden="true"></div>
 
 <script>
-/* ════════════════ CONSTANTES DO MÉTODO ════════════════ */
+/* ═══════════ O MÉTODO ═══════════ */
 const COLORS=[
-  {id:"vermelho",nome:"Vermelho",desc:"Sangramento / menstruação"},
-  {id:"verde",nome:"Verde",desc:"Sensação de seca"},
-  {id:"amarelo",nome:"Amarelo",desc:"Fluxo infértil (PBI) e pós-ovulação"},
-  {id:"branco",nome:"Branco",desc:"Dias férteis"}
+  {id:"vermelho",nome:"Vermelho",desc:"menstruação / sangramento"},
+  {id:"verde",nome:"Verde",desc:"sensação de seca"},
+  {id:"amarelo",nome:"Amarelo",desc:"fluxo infértil (PBI) e pós-ovulação"},
+  {id:"branco",nome:"Branco",desc:"dias férteis"}
 ];
 const SYMBOLS=[
-  {id:"cheia",ch:"●",nome:"Bolinha fechada",desc:"sangramento"},
-  {id:"borra",ch:"⠿",nome:"Pontinhos",desc:"manchas / borra"},
+  {id:"cheia",ch:"●",nome:"Bolinha",desc:"sangramento"},
+  {id:"borra",ch:"⁘",nome:"Pontinhos",desc:"manchas / borra"},
   {id:"igual",ch:"=",nome:"Igual",desc:"fluxo infértil (PBI)"},
-  {id:"traco",ch:"❘",nome:"Tracinho",desc:"seco"}
+  {id:"traco",ch:"|",nome:"Tracinho",desc:"seca"}
 ];
 const SINTO=["Seca","Úmida","Molhada","Pegajosa","Escorregadia"];
-const VEJO=["Nada vejo","Clara de ovo","Leitoso","Turvo","Flocoso"];
-const SANG=["Menstruação","Sangramento","Manchas/borra"];
+const VEJO=["Nada vejo","Muco branco","Turvo","Flocoso","Claro","Clara de ovo"];
+const SANG=["Menstruação","Sangramento","Mancha/borra"];
 const SINTOMAS=["Cólica","Estresse","Dor de cabeça","Inchaço","Seios sensíveis","Dor lombar","Cansaço","Irritação","Insônia","Doença/febre","Viagem","Enjoo","Acne"];
 const RULES=[
   {n:"1",t:"Regra 01",txt:"Evitar relação sexual em dias de forte sangramento."},
   {n:"2",t:"Regra 02",txt:"Noites alternadas disponíveis durante o PBI."},
   {n:"3",t:"Regra 03",esp:"PBI interrompido + desejo de espaçar: suspender o ato conjugal.",con:"Esperar a sensação escorregadia (ou de maior fertilidade) para o ato conjugal."},
-  {n:"4",t:"Regra 04 — Ápice",esp:"Após o ápice, manter abstinência por mais 3 dias; retornar na manhã do 4º dia.",con:"Relação quando a vulva estiver escorregadia e inchada, e por 3 dias após o ápice."}
+  {n:"4",t:"Regra 04 · Ápice",esp:"Após o ápice, manter abstinência por mais 3 dias; retornar na manhã do 4º dia.",con:"Relação quando a vulva estiver escorregadia e inchada, e por 3 dias após o ápice."}
 ];
 
-/* ════════════════ ESTADO / ARMAZENAMENTO ════════════════ */
-const LS="mob_v2";
+/* ═══════════ ESTADO ═══════════ */
+const IN_CLAUDE=!!(window.claude&&typeof window.claude.use==="function");
+const LS_KEY="mob_v2";
 const DEF_PROFILE={nome:"",idade:"",objetivo:"",filhos:"",qtdFilhos:"",situacao:"",instrutora:"",instrContato:"",diaAcomp:"",horaAcomp:"",lembrete:false,horaLembrete:"21:00"};
-function fresh(){return{v:2,onboarded:false,profile:{...DEF_PROFILE},starts:[],days:{},duvidas:[],orient:[],customSint:[],rows:3,lastNotif:""}}
-function load(){
-  try{const r=localStorage.getItem(LS);if(r){const o=JSON.parse(r);const f=fresh();
-    return{...f,...o,profile:{...f.profile,...(o.profile||{})}}}}catch(e){}
-  return null;
+function fresh(){return{v:3,onboarded:false,profile:{...DEF_PROFILE},starts:[],days:{},duvidas:[],orient:[],customSint:[],labels:{},prefs:{cols:3,view:"folha",desc:null},lastNotif:"",updated:0}}
+function normalize(o){
+  const f=fresh();o=o||{};
+  const n={...f,...o,profile:{...f.profile,...(o.profile||{})},labels:{...(o.labels||{})},prefs:{...f.prefs,...(o.prefs||{})}};
+  if(o.rows&&!o.prefs)n.prefs.cols=o.rows;delete n.rows;delete n.years;
+  for(const d of Object.values(n.days)){if(d.sang==="Manchas/borra")d.sang="Mancha/borra";if(d.vejo==="Leitoso")d.vejo="Muco branco"}
+  return n;
 }
-let S=load()||fresh();
-const isNew=!localStorage.getItem(LS);
-function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){toast("⚠️ Não foi possível salvar")}}
+function lsRead(){try{return localStorage.getItem(LS_KEY)}catch(e){return null}}
+function lsWrite(v){try{localStorage.setItem(LS_KEY,v);return true}catch(e){return false}}
+let S=(()=>{try{const r=lsRead();return r?normalize(JSON.parse(r)):fresh()}catch(e){return fresh()}})();
+const hasLocal=()=>S.onboarded||Object.keys(S.days).length>0;
 
-/* ════════════════ UTILITÁRIOS ════════════════ */
+/* armazenamento na conta (Claude) com espelho local */
+const cloud={db:null,base:"",ready:false,written:{},timer:null,busy:false,again:false};
+function splitDocs(){
+  const meta={...S};delete meta.days;
+  const years={};for(const[d,v]of Object.entries(S.days)){(years[d.slice(0,4)]||(years[d.slice(0,4)]={}))[d]=v}
+  meta.years=Object.keys(years).sort();
+  const prev=(cloud.written.meta&&JSON.parse(cloud.written.meta).years)||[];
+  for(const y of prev)if(!years[y])years[y]={};
+  return{meta,years};
+}
+function save(){
+  S.updated=Date.now();
+  lsWrite(JSON.stringify(S));
+  if(cloud.db){clearTimeout(cloud.timer);cloud.timer=setTimeout(flushCloud,700)}
+}
+async function flushCloud(){
+  if(!cloud.db)return;
+  if(cloud.busy){cloud.again=true;return}
+  cloud.busy=true;
+  try{
+    const{meta,years}=splitDocs();
+    const docs=[["meta",meta],...Object.entries(years).map(([y,d])=>["y"+y,{days:d}])];
+    for(const[id,body]of docs){
+      const js=JSON.stringify(body);
+      if(cloud.written[id]===js)continue;
+      await cloud.db.doc(cloud.base+id).set(body);
+      cloud.written[id]=js;
+    }
+  }catch(e){
+    if(e&&(e.code==="invalid_argument"||e.code==="not_granted"||e.code==="revoked")){cloud.db=null;renderStoreNote();toast("Salvando só neste aparelho")}
+    else if(e&&e.code==="quota_exceeded")toast("Espaço da conta cheio. Salve uma cópia em Perfil.");
+  }
+  cloud.busy=false;
+  if(cloud.again){cloud.again=false;flushCloud()}
+}
+const withTimeout=(p,ms)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej({code:"timeout"}),ms))]);
+async function initCloud(){
+  if(!IN_CLAUDE)return;
+  try{
+    const[db,user]=await Promise.all([window.claude.use("db"),window.claude.use("user")]);
+    if(!db||!user)return;
+    const uid=await user.id();if(!uid)return;
+    cloud.base="data/users/"+uid+"/";
+    const m=await withTimeout(db.doc(cloud.base+"meta").get(),10000);
+    if(m.exists){
+      const meta=m.data();const days={};
+      for(const y of(meta.years||[])){const ys=await db.doc(cloud.base+"y"+y).get();if(ys.exists){const b=ys.data();cloud.written["y"+y]=JSON.stringify(b);Object.assign(days,b.days||{})}}
+      cloud.written.meta=JSON.stringify(meta);
+      if(!(S.updated>(meta.updated||0)&&hasLocal())){S=normalize({...meta,days});lsWrite(JSON.stringify(S))}
+      cloud.db=db;
+      if(S.updated>(meta.updated||0))flushCloud();
+    }else{
+      cloud.db=db;
+      if(hasLocal())flushCloud();
+    }
+  }catch(e){cloud.db=null}
+}
+
+/* ═══════════ UTILITÁRIOS ═══════════ */
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -532,732 +641,695 @@ const diffDays=(a,b)=>Math.round((parse(b)-parse(a))/864e5);
 const br=s=>s?s.slice(8,10)+"/"+s.slice(5,7):"";
 const brFull=s=>s?s.slice(8,10)+"/"+s.slice(5,7)+"/"+s.slice(0,4):"";
 const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
-let toastT;
-function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2200)}
-const symCh=id=>(SYMBOLS.find(s=>s.id===id)||{}).ch||"";
 const firstName=()=>(S.profile.nome||"").trim().split(/\s+/)[0]||"";
+const symCh=id=>(SYMBOLS.find(s=>s.id===id)||{}).ch||"";
+let toastT;
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2400)}
 
-/* ════════════════ CICLOS ════════════════ */
+/* diálogo próprio (substitui confirm/prompt) */
+function dialog({title,text="",input=null,value="",ok="OK",cancel="Cancelar",danger=false,multiline=false}){
+  return new Promise(res=>{
+    const sh=$("#dlgSheet");
+    sh.innerHTML='<div class="sheet-h"><h3>'+esc(title)+'</h3></div>'+(text?'<p class="muted" style="margin-top:0">'+esc(text)+'</p>':"")
+      +(input!==null?(multiline?'<textarea class="in" id="dlgIn" placeholder="'+esc(input)+'"></textarea>':'<input class="in" id="dlgIn" placeholder="'+esc(input)+'">'):"")
+      +'<div class="sheet-foot"><button class="btn ghost" id="dlgNo">'+esc(cancel)+'</button><button class="btn '+(danger?"danger":"pri")+'" id="dlgOk">'+esc(ok)+'</button></div>';
+    const inp=$("#dlgIn");if(inp){inp.value=value;setTimeout(()=>inp.focus(),50)}
+    const done=v=>{$("#dlgOv").classList.remove("show");res(v)};
+    $("#dlgOk").onclick=()=>done(inp?inp.value:true);
+    $("#dlgNo").onclick=()=>done(inp?null:false);
+    if(inp&&!multiline)inp.onkeydown=e=>{if(e.key==="Enter")done(inp.value)};
+    $("#dlgOv").onclick=e=>{if(e.target.id==="dlgOv")done(inp?null:false)};
+    $("#dlgOv").classList.add("show");
+  });
+}
+
+/* ═══════════ CICLOS ═══════════ */
 function getCycles(){
   let st=[...new Set(S.starts)].sort();
   const dk=Object.keys(S.days).sort();
   if(dk.length&&(!st.length||dk[0]<st[0]))st=[dk[0],...st];
   const today=todayISO();
   return st.map((s,i)=>{
-    const next=st[i+1];
-    const end=next?addDays(next,-1):null;
+    const next=st[i+1];const end=next?addDays(next,-1):null;
     const inC=dk.filter(d=>d>=s&&(!end||d<=end));
     let maxDay=end?diffDays(s,end)+1:(inC.length?diffDays(s,inC[inC.length-1])+1:1);
     if(!end&&today>=s)maxDay=Math.max(maxDay,diffDays(s,today)+1);
-    const apex=inC.find(d=>S.days[d].apice)||null;
-    return{n:i+1,start:s,end,closed:!!next,maxDay,dates:inC,apex,implicit:!S.starts.includes(s)};
+    return{n:i+1,start:s,end,closed:!!next,maxDay,dates:inC,apex:inC.find(d=>S.days[d].apice)||null,implicit:!S.starts.includes(s)};
   });
 }
 function cycleOf(date,cyc=getCycles()){let r=null;for(const c of cyc)if(c.start<=date)r=c;return r}
-function postLabel(c,date){
-  if(!c||!c.apex)return"";const k=diffDays(c.apex,date);
-  return k===0?"X":(k>=1&&k<=3?String(k):"");
-}
+function postLabel(c,date){if(!c||!c.apex)return"";const k=diffDays(c.apex,date);return k===0?"X":(k>=1&&k<=3?String(k):"")}
 const isBleed=d=>d&&(d.sang==="Menstruação"||d.sang==="Sangramento");
 
-/* ════════════════ CARIMBO (SELO) ════════════════ */
+/* ═══════════ SELO ═══════════ */
 function stampHTML(d,opts={}){
-  if(!d)return'<div class="st empty"></div>';
-  const cls=["st",d.cor||"none"];
-  if(d.sym==="borra")cls.push("dots");
-  if(opts.apex)cls.push("apx");
-  const inner=symCh(d.sym)+(d.fert?"○":"");
-  return'<div class="'+cls.join(" ")+'">'+inner+(opts.apex&&opts.xo?'<span class="xo">X</span>':"")+'</div>';
+  if(!d)return'<span class="st empty"></span>';
+  const cls=["st",d.cor||"none"];if(d.sym==="borra")cls.push("dots");if(opts.apex)cls.push("apx");
+  return'<span class="'+cls.join(" ")+'">'+symCh(d.sym)+(d.fert?"O":"")+'</span>';
 }
-function cellHTML(d,date,c,today){
-  const lab=d?postLabel(c,date):"";
-  const mk=d?((d.rel?"♥":"")+(d.rule?'<span class="r">'+d.rule+'</span>':"")+((d.sintomas&&d.sintomas.length)||d.nota?'<i class="sd"></i>':"")):"";
-  return'<div class="cell'+(date===today?" today":"")+'" data-date="'+date+'">'
-    +'<div class="lab'+(lab==="X"?" x":"")+'">'+lab+'</div>'
-    +stampHTML(d,{apex:lab==="X"})
-    +'<div class="mk">'+mk+'</div><div class="dm">'+date.slice(8,10)+'</div></div>';
+function regraHTML(d,lab){
+  const p=[];if(d.rule)p.push('<span class="n">'+esc(d.rule)+'</span>');
+  if(lab)p.push('<span class="pk">'+lab+'</span>');
+  if(d.rel)p.push('<span class="r">R</span>');
+  return p.join(" ");
 }
+function sintHTML(d){const a=[...(d.sintomas||[]),d.nota].filter(Boolean);return a.length?'<span class="sx">'+esc(a.join(" · "))+'</span>':""}
 
-/* ════════════════ SUGESTÃO AUTOMÁTICA ════════════════ */
+/* ═══════════ SUGESTÃO AUTOMÁTICA ═══════════ */
 function suggest(f){
   if(f.sang==="Menstruação"||f.sang==="Sangramento")return{cor:"vermelho",sym:"cheia",fert:false};
-  if(f.sang==="Manchas/borra")return{cor:"vermelho",sym:"borra",fert:false};
-  if(f.sinto==="Escorregadia"||f.vejo==="Clara de ovo")return{cor:"branco",sym:"",fert:true};
+  if(f.sang==="Mancha/borra")return{cor:"vermelho",sym:"borra",fert:false};
+  if(f.sinto==="Escorregadia"||f.vejo==="Clara de ovo"||f.vejo==="Claro")return{cor:"branco",sym:"",fert:true};
   if(f.sinto==="Seca"&&(!f.vejo||f.vejo==="Nada vejo"))return{cor:"verde",sym:"traco",fert:false};
   if(f.sinto||f.vejo)return{cor:"amarelo",sym:"igual",fert:false};
   return null;
 }
 function buildDesc(f){
-  const p=[];
-  if(f.sinto)p.push(f.sinto);
-  if(f.sang)p.push(f.sang.toLowerCase());
-  if(f.vejo==="Nada vejo")p.push("nada vejo");else if(f.vejo)p.push("muco "+f.vejo.toLowerCase());
-  return p.join(" / ");
+  const a=f.sinto||"",b=f.sang==="Menstruação"||f.sang==="Sangramento"?"sangue":f.sang==="Mancha/borra"?"borra":
+    f.vejo==="Nada vejo"?"nada vejo":f.vejo?(f.vejo==="Muco branco"?"m. branco":"m. "+f.vejo.toLowerCase()):"";
+  return[a,b].filter(Boolean).join(" / ");
 }
 function stampTitle(f){
-  const c=COLORS.find(x=>x.id===f.cor);const s=SYMBOLS.find(x=>x.id===f.sym);
+  const c=COLORS.find(x=>x.id===f.cor),s=SYMBOLS.find(x=>x.id===f.sym);
   if(!c&&!s&&!f.fert)return"Escolha o que sente e vê";
-  return[c&&c.nome,s&&s.nome.toLowerCase(),f.fert&&"bolinha aberta (fértil)"].filter(Boolean).join(" · ");
+  return[c&&c.nome,s&&s.nome.toLowerCase(),f.fert&&"fértil (O)"].filter(Boolean).join(" · ");
 }
 
-/* ════════════════ VOZ / TEXTO → CAMPOS ════════════════ */
+/* ═══════════ TEXTO / VOZ → CAMPOS ═══════════ */
 const VOICE_MAP=[
-  ["sinto","Escorregadia",/escorreg|lubrific|liso|lisa|deslizando/],
-  ["sinto","Molhada",/molhad/],
-  ["sinto","Úmida",/umid/],
-  ["sinto","Pegajosa",/pegajos|grudent/],
-  ["sinto","Seca",/\bsec[ao]s?\b|sequinh|secura/],
-  ["vejo","Clara de ovo",/clara de ovo|elastic|transparent|estica|fio/],
-  ["vejo","Leitoso",/leitos|cremos/],
-  ["vejo","Turvo",/turv|opac/],
-  ["vejo","Flocoso",/floc|grum|pedacinh/],
-  ["vejo","Nada vejo",/nada|nao vi|nao vejo|sem muco|nenhum muco/],
-  ["sang","Manchas/borra",/borra|mancha|marrom|escape|spotting/],
-  ["sang","Menstruação",/menstrua|fluxo|regra veio|desceu/],
-  ["sang","Sangramento",/sangr/]
+  ["sinto","Escorregadia",/escorreg|lubrific|\blis[ao]\b|deslizand/],["sinto","Molhada",/molhad/],["sinto","Úmida",/umid/],
+  ["sinto","Pegajosa",/pegajos|grudent/],["sinto","Seca",/\bsec[ao]s?\b|sequinh|secura/],
+  ["vejo","Clara de ovo",/clara de ovo|elastic|estica|\bfio/],["vejo","Claro",/\bclar[ao]\b|transparent/],["vejo","Muco branco",/branc|leitos|cremos/],
+  ["vejo","Turvo",/turv|opac/],["vejo","Flocoso",/floc|grum|pedacinh/],["vejo","Nada vejo",/\bnada\b|nao vi|nao vejo|sem muco/],
+  ["sang","Mancha/borra",/borra|mancha|marrom|escape/],["sang","Menstruação",/menstrua|fluxo|desceu/],["sang","Sangramento",/sangr|sangue/]
 ];
-const SINT_MAP=[["Cólica",/colica/],["Estresse",/estress/],["Dor de cabeça",/cabeca|enxaqueca/],["Inchaço",/inchac|inchad/],
-  ["Seios sensíveis",/seio|mama|peito/],["Dor lombar",/lombar|costas/],["Cansaço",/cansa/],["Irritação",/irrita/],
-  ["Insônia",/insonia|dormi mal/],["Doença/febre",/febre|gripe|doente|doenca/],["Viagem",/viag/],["Enjoo",/enjo/],["Acne",/acne|espinha/]];
+const SINT_MAP=[["Cólica",/colica/],["Estresse",/estress/],["Dor de cabeça",/cabeca|enxaqueca/],["Inchaço",/inchac|inchad/],["Seios sensíveis",/seio|mama|peito/],
+  ["Dor lombar",/lombar|costas/],["Cansaço",/cansa/],["Irritação",/irrita/],["Insônia",/insonia|dormi mal/],["Doença/febre",/febre|gripe|doente|doenca/],
+  ["Viagem",/viag/],["Enjoo",/enjo/],["Acne",/acne|espinha/]];
 function parseVoice(txt){
   const t=norm(txt);const got=[];
   if(/anteontem/.test(t)){setFormDate(addDays(todayISO(),-2));got.push("anteontem")}
   else if(/\bontem\b/.test(t)){setFormDate(addDays(todayISO(),-1));got.push("ontem")}
-  const done={};
   if(!F.desc||F.desc===buildDesc(F))F.descEdited=false;
-  for(const[k,v,re]of VOICE_MAP){if(!done[k]&&re.test(t)){F[k]=v;done[k]=1;got.push(v)}}
-  if(done.sinto||done.vejo||done.sang)F.manual=false;
-  for(const[n,re]of SINT_MAP){if(re.test(t)&&!F.sintomas.includes(n)){F.sintomas.push(n);got.push(n)}}
-  for(const c of S.customSint){if(t.includes(norm(c))&&!F.sintomas.includes(c)){F.sintomas.push(c);got.push(c)}}
-  if(/apice|pico/.test(t)){F.apice=true;got.push("ápice")}
+  const done={};
+  for(const[k,v,re]of VOICE_MAP)if(!done[k]&&re.test(t)){F[k]=v;done[k]=1;got.push(v)}
+  if(done.sang&&!done.vejo)F.vejo="";
+  for(const[n,re]of SINT_MAP)if(re.test(t)&&!F.sintomas.includes(n)){F.sintomas.push(n);got.push(n)}
+  for(const c of S.customSint)if(t.includes(norm(c))&&!F.sintomas.includes(c)){F.sintomas.push(c);got.push(c)}
+  if(/apice|\bpico\b/.test(t)){F.apice=true;got.push("ápice")}
   if(/relacao|ato conjugal/.test(t)){F.rel=true;got.push("relação")}
   if(/novo ciclo|primeiro dia/.test(t)){F.novo=true;got.push("1º dia")}
-  if(done.sinto||done.vejo||done.sang)applySuggestion();
+  if(done.sinto||done.vejo||done.sang){F.manual=false;applySuggestion()}
   autoNovo();renderForm();
-  toast(got.length?"✓ "+got.join(", "):"Não reconheci — toque nas opções abaixo");
+  toast(got.length?"Entendi: "+got.join(", "):"Não reconheci. Toque nas opções abaixo.");
 }
 
-/* ════════════════ FORMULÁRIO DO DIA ════════════════ */
+/* ═══════════ FORMULÁRIO DO DIA ═══════════ */
 let F;
 function emptyF(date){return{date,sinto:"",vejo:"",sang:"",cor:"",sym:"",fert:false,rule:"",apice:false,rel:false,novo:false,sintomas:[],nota:"",desc:"",descEdited:false,manual:false,editing:false}}
 function setFormDate(date){
   const d=S.days[date];
-  if(d){F={...emptyF(date),...JSON.parse(JSON.stringify(d)),date,novo:S.starts.includes(date),descEdited:true,manual:true,editing:true}}
-  else{F=emptyF(date);F.novo=S.starts.includes(date)}
-  $("#fDate").value=date;$("#fVoice").value="";
+  F=d?{...emptyF(date),...JSON.parse(JSON.stringify(d)),date,novo:S.starts.includes(date),descEdited:true,manual:true,editing:true}
+     :{...emptyF(date),novo:S.starts.includes(date)};
+  $("#fDate").value=date;$("#fVoice").value="";$("#fDesc").value=F.desc;$("#fNota").value=F.nota||"";
   renderForm();
 }
 function applySuggestion(){
   if(!F.manual){const s=suggest(F);if(s)Object.assign(F,s);else{F.cor="";F.sym="";F.fert=false}}
-  if(!F.descEdited)F.desc=buildDesc(F);
+  if(!F.descEdited){F.desc=buildDesc(F);$("#fDesc").value=F.desc}
 }
 function autoNovo(){
   if(F.editing||F.sang!=="Menstruação")return;
-  const prev=S.days[addDays(F.date,-1)];
-  const c=cycleOf(F.date);
+  const prev=S.days[addDays(F.date,-1)],c=cycleOf(F.date);
   if(!isBleed(prev)&&(!c||c.start===F.date||diffDays(c.start,F.date)>=10))F.novo=true;
 }
-function chipGroup(el,arr,cur,onPick,opts={}){
+function chipGroup(el,arr,isOn,onPick,cls=""){
   el.innerHTML="";
-  arr.forEach(v=>{
-    const b=document.createElement("button");
-    const val=typeof v==="object"?v.v:v;
-    b.className="chip"+(opts.multi?(cur.includes(val)?" on":""):(cur===val?" on":""));
-    b.innerHTML=typeof v==="object"?v.h:esc(v);
-    b.onclick=()=>onPick(val);
-    el.appendChild(b);
-  });
+  arr.forEach(v=>{const b=document.createElement("button");const val=typeof v==="object"?v.v:v;
+    b.className="chip "+cls+(isOn(val)?" on":"");b.innerHTML=typeof v==="object"?v.h:esc(v);b.onclick=()=>onPick(val);el.appendChild(b)});
 }
 function renderForm(){
-  const cyc=getCycles();
-  const isToday=F.date===todayISO();
-  $("#formTitle").textContent=F.editing?"Editar "+(isToday?"hoje":brFull(F.date)):(isToday?"Registrar hoje":"Registrar "+brFull(F.date));
-  $$("[data-qd]").forEach(b=>b.classList.toggle("on",F.date===addDays(todayISO(),+b.dataset.qd)));
+  const cyc=getCycles(),t=todayISO(),isToday=F.date===t;
+  $("#formTitle").textContent=(F.editing?"Editar ":"Registrar ")+(isToday?"hoje":brFull(F.date));
+  $$("[data-qd]").forEach(b=>b.classList.toggle("on",F.date===addDays(t,+b.dataset.qd)));
   const c=F.novo?null:cycleOf(F.date,cyc);
-  $("#formCycleInfo").textContent=F.novo?"Ciclo novo · dia 1":(c?"Ciclo "+c.n+" · dia "+(diffDays(c.start,F.date)+1):"");
-
-  const pick=k=>v=>{
-    if(!F.desc||F.desc===buildDesc(F))F.descEdited=false;
-    F[k]=F[k]===v?"":v;F.manual=false;applySuggestion();if(k==="sang")autoNovo();renderForm()};
-  chipGroup($("#gSinto"),SINTO,F.sinto,pick("sinto"));
-  chipGroup($("#gVejo"),VEJO,F.vejo,pick("vejo"));
-  chipGroup($("#gSang"),SANG,F.sang,pick("sang"));
-
-  $("#pvStamp").innerHTML=stampHTML(F.cor||F.sym||F.fert?F:null,{apex:F.apice,xo:F.apice});
+  $("#formCycle").textContent=F.novo?"Ciclo novo · dia 1":(c?"Ciclo "+c.n+" · dia "+(diffDays(c.start,F.date)+1):"");
+  const pick=k=>v=>{if(!F.desc||F.desc===buildDesc(F))F.descEdited=false;F[k]=F[k]===v?"":v;F.manual=false;applySuggestion();if(k==="sang")autoNovo();renderForm()};
+  chipGroup($("#gSinto"),SINTO,v=>F.sinto===v,pick("sinto"));
+  chipGroup($("#gVejo"),VEJO,v=>F.vejo===v,pick("vejo"));
+  chipGroup($("#gSang"),SANG,v=>F.sang===v,pick("sang"));
+  $("#pvStamp").innerHTML=stampHTML(F.cor||F.sym||F.fert?F:null,{apex:F.apice});
   $("#pvTitle").textContent=stampTitle(F);
   $("#pvDesc").textContent=F.desc||"";
-
-  $("#tgNovo").classList.toggle("on",F.novo);
-  $("#tgApice").classList.toggle("on",F.apice);
-  $("#tgRel").classList.toggle("on",F.rel);
-  const nh=$("#novoHint");
-  if(F.novo&&!F.editing&&F.sang==="Menstruação"&&!S.starts.includes(F.date)){nh.style.display="block";nh.textContent="Marquei como 1º dia de um novo ciclo porque a menstruação começou. Desmarque se não for."}
-  else if(F.apice){nh.style.display="block";nh.textContent="Ápice = último dia da sensação mais fértil. Os 3 dias seguintes serão contados 1, 2, 3."}
-  else nh.style.display="none";
-
-  const manual=fn=>v=>{fn(v);F.manual=true;renderForm()};
-  chipGroup($("#gCor"),COLORS.map(c=>({v:c.id,h:'<span class="st '+c.id+'" style="width:16px;height:16px;display:inline-flex;vertical-align:middle;margin-right:4px"></span>'+c.nome})),F.cor,manual(v=>F.cor=F.cor===v?"":v));
-  chipGroup($("#gSym"),SYMBOLS.map(s=>({v:s.id,h:'<b>'+s.ch+'</b> '+s.desc})),F.sym,manual(v=>F.sym=F.sym===v?"":v));
-  chipGroup($("#gFert"),[{v:"1",h:"○ Sim"},{v:"0",h:"Não"}],F.fert?"1":"0",manual(v=>F.fert=v==="1"));
-  chipGroup($("#gRule"),RULES.map(r=>({v:r.n,h:"Regra "+r.n})),F.rule,manual(v=>F.rule=F.rule===v?"":v));
+  $("#mkNovo").classList.toggle("on",F.novo);$("#mkApice").classList.toggle("on",F.apice);
+  $("#mkRel").classList.toggle("on",F.rel);$("#mkLs").classList.toggle("on",F.rule==="LS");
+  const mh=$("#markHint");
+  mh.hidden=false;
+  if(F.novo&&!F.editing&&F.sang==="Menstruação"&&!S.starts.includes(F.date))mh.textContent="Marquei como 1º dia de um novo ciclo porque a menstruação começou. Desmarque se não for.";
+  else if(F.apice)mh.textContent="Ápice é o último dia da sensação mais fértil. Os 3 dias seguintes serão contados 1, 2, 3.";
+  else mh.hidden=true;
+  const man=fn=>v=>{fn(v);F.manual=true;renderForm()};
+  chipGroup($("#gCor"),COLORS.map(c=>({v:c.id,h:'<span class="st '+c.id+'" style="width:14px;height:14px;margin-right:6px"></span>'+c.nome})),v=>F.cor===v,man(v=>F.cor=F.cor===v?"":v));
+  chipGroup($("#gSym"),SYMBOLS.map(s=>({v:s.id,h:'<b>'+s.ch+'</b>&nbsp; '+s.desc})),v=>F.sym===v,man(v=>F.sym=F.sym===v?"":v));
+  chipGroup($("#gFert"),[{v:"1",h:"Sim"},{v:"0",h:"Não"}],v=>(F.fert?"1":"0")===v,man(v=>F.fert=v==="1"));
+  chipGroup($("#gRule"),[...RULES.map(r=>({v:r.n,h:"Regra "+r.n})),{v:"LS",h:"LS"}],v=>F.rule===v,man(v=>F.rule=F.rule===v?"":v));
   const r=RULES.find(x=>x.n===F.rule);
-  $("#ruleHint").textContent=r?(r.txt||("Espaçar: "+r.esp+" · Conquistar: "+r.con)):"";
-  if(document.activeElement!==$("#fDesc"))$("#fDesc").value=F.desc;
-
+  $("#ruleHint").textContent=r?(r.txt||("Espaçar: "+r.esp+" Conquistar: "+r.con)):"";
   const all=[...SINTOMAS,...S.customSint];
-  chipGroup($("#gSint"),[...all,{v:"__add",h:"＋ outro"}],F.sintomas,v=>{
-    if(v==="__add"){const n=(prompt("Novo sintoma (curto):")||"").trim().slice(0,24);
+  chipGroup($("#gSint"),[...all,{v:"__add",h:"+ outro"}],v=>F.sintomas.includes(v),async v=>{
+    if(v==="__add"){const n=((await dialog({title:"Novo sintoma",input:"ex.: azia",ok:"Adicionar"}))||"").trim().slice(0,24);
       if(n){if(!all.includes(n)){S.customSint.push(n);save()}if(!F.sintomas.includes(n))F.sintomas.push(n)}}
     else F.sintomas=F.sintomas.includes(v)?F.sintomas.filter(x=>x!==v):[...F.sintomas,v];
     renderForm();
-  },{multi:true});
-  $$("#gSint .chip").forEach(b=>b.classList.add("sm"));
-  if(document.activeElement!==$("#fNota"))$("#fNota").value=F.nota||"";
-  $("#delDayBtn").style.display=F.editing?"inline-flex":"none";
+  },"sm");
+  $("#gSint .chip:last-child").classList.add("dash");
+  $("#delDayBtn").hidden=!F.editing;
 }
 function saveDay(){
-  const date=F.date;if(!date){toast("Escolha a data");return}
-  if(date>todayISO()){toast("Não dá para registrar dia futuro");return}
-  if(!F.sinto&&!F.vejo&&!F.sang&&!F.cor&&!F.sym&&!F.fert&&!F.rel&&!F.apice&&!F.sintomas.length&&!F.nota){toast("Escolha pelo menos o que sente ou vê");return}
-  const rec={sinto:F.sinto,vejo:F.vejo,sang:F.sang,cor:F.cor,sym:F.sym,fert:!!F.fert,rule:F.rule,apice:!!F.apice,rel:!!F.rel,
-    sintomas:[...F.sintomas],nota:(F.nota||"").trim(),desc:(F.desc||"").trim(),ts:Date.now()};
-  S.days[date]=rec;
-  S.starts=S.starts.filter(s=>s!==date);
-  if(F.novo)S.starts.push(date);
-  S.starts.sort();
-  if(rec.apice){const c=cycleOf(date);for(const d of c.dates)if(d!==date&&S.days[d].apice)S.days[d].apice=false}
-  save();
-  toast("Dia salvo ✓");
-  refreshAll();
-  if(date===todayISO()){setFormDate(date)}else{setFormDate(todayISO())}
+  const date=F.date;
+  if(!date){toast("Escolha a data");return}
+  if(date>todayISO()){toast("Esse dia ainda não chegou");return}
+  if(!F.sinto&&!F.vejo&&!F.sang&&!F.cor&&!F.sym&&!F.fert&&!F.rel&&!F.apice&&!F.rule&&!F.sintomas.length&&!F.nota){toast("Escolha pelo menos o que sente ou vê");return}
+  S.days[date]={sinto:F.sinto,vejo:F.vejo,sang:F.sang,cor:F.cor,sym:F.sym,fert:!!F.fert,rule:F.rule,apice:!!F.apice,rel:!!F.rel,
+    sintomas:[...F.sintomas],nota:(F.nota||"").trim(),desc:(F.desc||"").trim()};
+  S.starts=S.starts.filter(s=>s!==date);if(F.novo)S.starts.push(date);S.starts.sort();
+  if(F.apice){const c=cycleOf(date);for(const d of c.dates)if(d!==date&&S.days[d].apice)S.days[d].apice=false}
+  save();toast("Dia salvo");refreshAll();setFormDate(todayISO());
 }
-function deleteDay(){
-  if(!F.editing||!confirm("Apagar o registro de "+brFull(F.date)+"?"))return;
-  delete S.days[F.date];S.starts=S.starts.filter(s=>s!==F.date);save();toast("Registro apagado");
-  setFormDate(todayISO());refreshAll();
+async function deleteDay(){
+  if(!F.editing)return;
+  if(!await dialog({title:"Apagar registro?",text:"O registro de "+brFull(F.date)+" será apagado.",ok:"Apagar",danger:true}))return;
+  delete S.days[F.date];S.starts=S.starts.filter(s=>s!==F.date);save();toast("Registro apagado");setFormDate(todayISO());refreshAll();
 }
 
-/* ════════════════ TOPO / HOJE ════════════════ */
+/* ═══════════ TOPO E RESUMO ═══════════ */
 function nextAcomp(){
   const d=parseInt(S.profile.diaAcomp,10);if(!d)return null;
   const now=new Date();let y=now.getFullYear(),m=now.getMonth();
-  const mk=(y,m)=>{const last=new Date(y,m+1,0).getDate();return new Date(y,m,Math.min(d,last))};
+  const mk=(y,m)=>new Date(y,m,Math.min(d,new Date(y,m+1,0).getDate()));
   let dt=mk(y,m);if(isoOf(dt)<todayISO()){m++;if(m>11){m=0;y++}dt=mk(y,m)}
   return isoOf(dt);
 }
 function renderTop(){
-  const cyc=getCycles();const t=todayISO();const c=cycleOf(t,cyc);
-  $("#hdrSub").textContent=S.profile.nome?("Olá, "+firstName()+" 🌸"):"Método de Ovulação Billings";
+  const cyc=getCycles(),t=todayISO(),c=cycleOf(t,cyc);
+  $("#hdrSub").textContent=firstName()?"Olá, "+firstName():"Método de Ovulação Billings";
   const hc=$("#hdrCyc");
-  if(c){hc.style.display="block";hc.innerHTML="Ciclo "+c.n+"<b>dia "+(diffDays(c.start,t)+1)+"</b>"}else hc.style.display="none";
-
+  if(c){hc.hidden=false;hc.innerHTML='<small>Ciclo '+c.n+'</small><b class="num">dia '+(diffDays(c.start,t)+1)+'</b>'}else hc.hidden=true;
   const pend=S.duvidas.filter(q=>!q.done).length;
-  const bd=$("#qBadge");bd.style.display=pend?"block":"none";bd.textContent=pend;
-
-  let al="";
-  if(!S.days[t])al+='<div class="alert rosa">🌸 <span>Você ainda não registrou hoje. À noite, anote o mais fértil que percebeu no dia.</span></div>';
+  const bd=$("#qBadge");bd.hidden=!pend;bd.textContent=pend;
+  let n="";
+  if(!S.days[t])n+='<div class="notice">Você ainda não registrou hoje. À noite, anote o <b>mais fértil</b> que percebeu no dia.</div>';
   const na=nextAcomp();
-  if(na){const k=diffDays(t,na);if(k<=3)al+='<div class="alert creme">📅 <span>Acompanhamento '+(k===0?"<b>hoje</b>":k===1?"<b>amanhã</b>":"em <b>"+k+" dias</b> ("+br(na)+")")+(pend?" · você tem <b>"+pend+" dúvida"+(pend>1?"s":"")+"</b> anotada"+(pend>1?"s":""):"")+'.</span></div>'}
-  $("#hojeAlerts").innerHTML=al;
-
+  if(na){const k=diffDays(t,na);if(k<=3)n+='<div class="notice">Acompanhamento '+(k===0?"<b>hoje</b>":k===1?"<b>amanhã</b>":"em <b>"+k+" dias</b> ("+br(na)+")")+(pend?". Você tem <b>"+pend+" dúvida"+(pend>1?"s":"")+"</b> anotada"+(pend>1?"s":"")+".":".")+'</div>'}
+  $("#hojeNotices").innerHTML=n;
   let st="";
-  if(c){
-    if(c.apex){const k=diffDays(c.apex,t);
-      st+='<div class="stat"><small>Ápice</small><b>dia '+(diffDays(c.start,c.apex)+1)+(k>=1&&k<=3?' · hoje é '+k+'º':"")+'</b></div>'}
-  }
+  if(c&&c.apex){const k=diffDays(c.apex,t);st+='<div class="stat"><small>Ápice</small><b class="num">dia '+(diffDays(c.start,c.apex)+1)+(k>=1&&k<=3?" · "+k+"º após":"")+'</b></div>'}
   const closed=cyc.filter(x=>x.closed&&!x.implicit);
-  if(closed.length){const avg=Math.round(closed.reduce((a,x)=>a+x.maxDay,0)/closed.length);
-    st+='<div class="stat"><small>Média dos ciclos</small><b>'+avg+' dias</b></div>'}
-  $("#hojeStats").innerHTML=st;$("#hojeStats").style.display=st?"flex":"none";
+  if(closed.length){st+='<div class="stat"><small>Média dos ciclos</small><b class="num">'+Math.round(closed.reduce((a,x)=>a+x.maxDay,0)/closed.length)+' dias</b></div>'}
+  if(cyc.length)st+='<div class="stat"><small>Ciclos registrados</small><b class="num">'+cyc.length+'</b></div>';
+  $("#hojeStats").innerHTML=st;$("#hojeStats").hidden=!st;
 }
 
-/* ════════════════ GRÁFICO ════════════════ */
-const ROW_OPTS=[1,2,3,4,6,"all"];
-const DEMO={start:"2026-01-01",days:[
-  ["vermelho","cheia"],["vermelho","cheia"],["vermelho","cheia"],["vermelho","borra"],["verde","traco"],["verde","traco"],["verde","traco"],
-  ["amarelo","igual"],["amarelo","igual"],["verde","traco"],["amarelo","igual",0,"rel"],["branco","",1],["branco","",1],["branco","",1,"X"],
-  ["amarelo","igual",0,"1"],["amarelo","igual",0,"2"],["amarelo","igual",0,"3"],["verde","traco"],["verde","traco",0,"rel"],["verde","traco"],["amarelo","igual"],["verde","traco"]]};
-function chartTableHTML(rows,opts={}){
-  const t=todayISO();
-  const from=opts.from||"0000-00-00",to=opts.to||"9999-99-99";
-  const maxD=Math.max(...rows.map(c=>c.maxDay),1);
-  let h='<table class="'+(opts.cls||"chart")+'"><thead><tr><th class="cn">Ciclo</th>';
-  for(let i=1;i<=maxD;i++)h+='<th>'+i+'</th>';
+/* ═══════════ GRÁFICO ═══════════ */
+const COL_OPTS=[1,2,3,4,6,"all"];
+const getDay=date=>S.days[date];
+function folhaHTML(rows,o={}){
+  const get=o.get||getDay,desc=!!o.desc,t=o.print?null:todayISO();
+  const from=o.from||"0000-00-00",to=o.to||"9999-99-99";
+  const d0=o.d0||1,d1=o.d1||Math.max(...rows.map(c=>c.maxDay),1);
+  let h='<table class="folha"><thead><tr><th class="dia" rowspan="2">Dia do<br>ciclo</th>';
+  rows.forEach(c=>{
+    const lbl=(o.labels||S.labels)[c.start];
+    h+='<th class="ch" colspan="'+(desc?4:3)+'" data-start="'+c.start+'"><span class="cn">Ciclo '+c.n+(o.demo?'<span class="demo-tag">EXEMPLO</span>':"")+'</span>'
+      +'<span class="cd num">'+brFull(c.start)+(c.closed?" · "+c.maxDay+" dias":" · em curso")+'</span>'
+      +(lbl?'<span class="cl">'+esc(lbl)+'</span>':(o.print||o.demo?"":'<span class="cl add">+ título do ciclo</span>'))+'</th>';
+  });
+  h+='</tr><tr>';
+  rows.forEach(()=>{h+='<th class="g">Selo</th><th>Data</th>'+(desc?'<th class="dsc">Sensação / fluxo</th>':"")+'<th>Regra</th>'});
+  h+='</tr></thead><tbody>';
+  for(let i=d0;i<=d1;i++){
+    h+='<tr><td class="dia">'+pad(i)+'</td>';
+    rows.forEach(c=>{
+      const date=addDays(c.start,i-1);
+      if(i>c.maxDay||date<from||date>to){h+='<td class="g off"></td><td class="off"></td>'+(desc?'<td class="off"></td>':"")+'<td class="off"></td>';return}
+      const d=get(date),lab=d?postLabel(c,date):"",dd=' data-date="'+date+'"';
+      h+='<td class="g sel'+(date===t?" today":"")+'"'+dd+'>'+stampHTML(d,{apex:lab==="X"})+'</td>'
+        +'<td class="dt"'+dd+'>'+date.slice(8,10)+'<small>/'+date.slice(5,7)+'</small></td>'
+        +(desc?'<td class="dsc"'+dd+'>'+(d?esc(d.desc||"")+sintHTML(d):"")+'</td>':"")
+        +'<td class="rg"'+dd+'>'+(d?regraHTML(d,lab):"")+'</td>';
+    });
+    h+='</tr>';
+  }
+  return h+'</tbody></table>';
+}
+function faixaHTML(rows){
+  const t=todayISO(),maxD=Math.max(...rows.map(c=>c.maxDay),1);
+  let h='<table class="faixa"><thead><tr><th class="cn">Ciclo</th>';
+  for(let i=1;i<=maxD;i++)h+='<th class="num">'+i+'</th>';
   h+='</tr></thead><tbody>';
   rows.forEach(c=>{
-    h+='<tr><th class="cn"><b>Ciclo '+c.n+'</b><small>'+brFull(c.start)+'</small><small>'+(c.closed?c.maxDay+" dias":"em curso")+(c.apex?" · X dia "+(diffDays(c.start,c.apex)+1):"")+'</small></th>';
+    h+='<tr><th class="cn"><b>Ciclo '+c.n+'</b>'+brFull(c.start)+'<br>'+(c.closed?c.maxDay+" dias":"em curso")+'</th>';
     for(let i=1;i<=maxD;i++){
-      const date=addDays(c.start,i-1);
-      if(i>c.maxDay||date<from||date>to){h+='<td class="off"></td>';continue}
-      h+='<td>'+cellHTML(S.days[date],date,c,opts.print?null:t)+'</td>';
+      const date=addDays(c.start,i-1);if(i>c.maxDay){h+='<td class="off"></td>';continue}
+      const d=S.days[date],lab=d?postLabel(c,date):"";
+      h+='<td><div class="fx'+(date===t?" today":"")+'" data-date="'+date+'"><span class="l">'+lab+'</span>'+stampHTML(d,{apex:lab==="X"})
+        +'<span class="m">'+(d?(d.rel?"R":"")+(d.rule&&d.rule.length<3?'<span style="color:var(--ink)">'+esc(d.rule)+'</span>':""):"")+'</span><span class="d num">'+date.slice(8,10)+'</span></div></td>';
     }
     h+='</tr>';
   });
   return h+'</tbody></table>';
 }
-function demoHTML(){
-  let h='<table class="chart"><thead><tr><th class="cn">Exemplo</th>';
-  DEMO.days.forEach((_,i)=>h+='<th>'+(i+1)+'</th>');
-  h+='</tr></thead><tbody><tr><th class="cn"><b>Ciclo 1</b><span class="demo-tag">EXEMPLO</span></th>';
-  DEMO.days.forEach(([cor,sym,fert,x],i)=>{
-    const lab=x&&x!=="rel"?x:"";
-    h+='<td><div class="cell"><div class="lab'+(lab==="X"?" x":"")+'">'+lab+'</div>'
-      +stampHTML({cor,sym,fert:!!fert},{apex:lab==="X"})+'<div class="mk">'+(x==="rel"?"♥":"")+'</div><div class="dm">'+(i+1)+'</div></div></td>';
-  });
-  return h+'</tr></tbody></table>';
-}
+/* ciclo de exemplo, no modelo da folha CENPLAFAM */
+const DEMO=(()=>{const start="2026-01-01",days={},lbl={};
+  const seq=[["vermelho","cheia",0,"Molhada / sangue","1"],["vermelho","cheia",0,"Molhada / sangue","1"],["vermelho","cheia",0,"Molhada / sangue","1"],["vermelho","borra",0,"Úmida / borra","1"],["vermelho","borra",0,"Úmida / borra","1"],
+    ["verde","traco",0,"Seca / nada vejo","2"],["verde","traco",0,"Seca / nada vejo","2"],["verde","traco",0,"Seca / nada vejo","2"],["verde","traco",0,"Seca / nada vejo","2"],
+    ["branco","",1,"Úmida / nada vejo","3"],["branco","",1,"Úmida / m. branco","3"],["branco","",1,"Molhada / m. branco","3"],["branco","",1,"+ Molhada / m. turvo","3"],["branco","",1,"++ Molhada / m. claro","3"],["branco","",1,"Escorregadia / m. claro","3",1],
+    ["branco","",1,"Úmida / flocoso",""],["branco","",1,"Úmida / nada vejo",""],["amarelo","igual",0,"Seca / nada vejo",""],["verde","traco",0,"Seca / nada vejo","",0,1],["verde","traco",0,"Seca / nada vejo","LS"],["verde","traco",0,"Seca / nada vejo","",0,1],["verde","traco",0,"Seca / nada vejo","LS"]];
+  seq.forEach(([cor,sym,fert,desc,rule,ap,rel],i)=>{days[addDays(start,i)]={cor,sym,fert:!!fert,desc,rule,apice:!!ap,rel:!!rel}});
+  lbl[start]="Ciclo fértil normal · PBI de secura";
+  return{cycle:{n:1,start,closed:true,maxDay:seq.length,dates:Object.keys(days),apex:addDays(start,14)},days,lbl};
+})();
+function descOn(){return S.prefs.desc===null?window.innerWidth>=720:S.prefs.desc}
 function renderChart(){
   const cyc=getCycles();
-  $("#rowSeg").innerHTML=ROW_OPTS.map(o=>'<button data-rows="'+o+'" class="'+(String(S.rows)===String(o)?"on":"")+'">'+(o==="all"?"Todas":o)+'</button>').join("");
-  $$("#rowSeg button").forEach(b=>b.onclick=()=>{S.rows=b.dataset.rows==="all"?"all":+b.dataset.rows;save();renderChart()});
-  const wrap=$("#chartWrap");
+  $("#colSeg").innerHTML=COL_OPTS.map(o=>'<button data-cols="'+o+'" class="'+(String(S.prefs.cols)===String(o)?"on":"")+'">'+(o==="all"?"Todos":o)+'</button>').join("");
+  $$("#colSeg button").forEach(b=>b.onclick=()=>{S.prefs.cols=b.dataset.cols==="all"?"all":+b.dataset.cols;save();renderChart()});
+  $$("#viewSeg button").forEach(b=>{b.classList.toggle("on",b.dataset.view===S.prefs.view);b.onclick=()=>{S.prefs.view=b.dataset.view;save();renderChart()}});
+  $("#descTg").classList.toggle("on",descOn());$("#descTg").hidden=S.prefs.view!=="folha";
+  const wrap=$("#sheetWrap");
   if(!cyc.length){
-    wrap.innerHTML='<div style="padding:14px"><p class="muted" style="margin:0 0 10px">Assim seu gráfico vai aparecer — cada linha é um ciclo, lado a lado para comparar:</p>'
-      +demoHTML()+'<button class="btn pri block" style="margin-top:14px" onclick="go(\'hoje\')">Registrar meu primeiro dia</button></div>';
+    wrap.innerHTML='<div style="padding:16px"><p class="muted" style="margin:0 0 12px">Assim seu gráfico vai ficar. Cada ciclo é uma coluna, lado a lado, como na folha da instrutora.</p>'
+      +'<div style="overflow-x:auto">'+folhaHTML([DEMO.cycle],{desc:true,get:d=>DEMO.days[d],demo:true,labels:DEMO.lbl,print:true})+'</div>'
+      +'<button class="btn pri block" style="margin-top:14px" id="firstDayBtn">Registrar meu primeiro dia</button></div>';
+    $("#firstDayBtn").onclick=()=>go("registrar");
   }else{
-    const rows=S.rows==="all"?cyc:cyc.slice(-S.rows);
-    wrap.innerHTML=chartTableHTML(rows);
-    wrap.querySelectorAll(".cell").forEach(el=>el.onclick=()=>openDay(el.dataset.date));
+    const rows=S.prefs.cols==="all"?cyc:cyc.slice(-S.prefs.cols);
+    wrap.innerHTML=S.prefs.view==="faixa"?faixaHTML(rows):folhaHTML(rows,{desc:descOn()});
+    wrap.querySelectorAll("[data-date]").forEach(el=>el.onclick=()=>openDay(el.dataset.date));
+    wrap.querySelectorAll("th.ch").forEach(el=>el.onclick=()=>editLabel(el.dataset.start));
   }
   $("#legend").innerHTML=legendHTML();
-  renderDetSel(cyc);
 }
 function legendHTML(){
   return COLORS.map(c=>'<span>'+stampHTML({cor:c.id})+c.nome.toLowerCase()+'</span>').join("")
-    +'<span><b style="color:var(--rosa)">X</b> ápice</span><span><b style="color:var(--acento-esc)">1 2 3</b> pós-ápice</span>'
-    +'<span>○ fértil</span><span style="color:var(--rosa)">♥ relação</span><span><i class="sd" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#8d7ad1"></i> sintoma/nota</span>';
+    +'<span><b style="color:var(--accent)">O</b>&nbsp;fértil</span><span><b style="color:var(--accent)">X</b>&nbsp;ápice · 1 2 3 após</span><span><b style="color:var(--danger)">R</b>&nbsp;relação</span><span style="color:var(--sint)">sintomas e notas</span>';
 }
-let detCycle=null;
-function renderDetSel(cyc){
-  const sel=$("#detSel");
-  if(!cyc.length){sel.style.display="none";$("#detBody").innerHTML='<p class="muted">Ainda sem registros.</p>';return}
-  sel.style.display="";
-  if(!detCycle||!cyc.find(c=>c.start===detCycle))detCycle=cyc[cyc.length-1].start;
-  sel.innerHTML=cyc.slice().reverse().map(c=>'<option value="'+c.start+'"'+(c.start===detCycle?" selected":"")+'>Ciclo '+c.n+' ('+br(c.start)+')</option>').join("");
-  sel.onchange=()=>{detCycle=sel.value;renderDet()};
-  renderDet();
-}
-function detTableHTML(c,cls,from,to){
-  const ds=c.dates.filter(d=>(!from||d>=from)&&(!to||d<=to));
-  if(!ds.length)return'<p class="muted">Nenhum dia registrado.</p>';
-  let h='<table class="'+cls+'"><thead><tr><th>Dia</th><th>Data</th><th></th><th>Descrição</th><th>Sintomas / nota</th></tr></thead><tbody>';
-  ds.forEach(date=>{const d=S.days[date];const lab=postLabel(c,date);
-    h+='<tr data-date="'+date+'"><td class="c"><b>'+(diffDays(c.start,date)+1)+'</b></td><td>'+br(date)+'</td>'
-      +'<td class="c">'+stampHTML(d,{apex:lab==="X",xo:lab==="X"})+'</td>'
-      +'<td>'+esc(d.desc||"—")+(lab&&lab!=="X"?' <b style="color:var(--acento-esc)">('+lab+')</b>':"")+(d.rel?' <span style="color:var(--rosa)">♥</span>':"")+(d.rule?' <small>R'+d.rule+'</small>':"")+'</td>'
-      +'<td><div class="tags">'+(d.sintomas||[]).map(s=>'<span class="tag">'+esc(s)+'</span>').join("")+'</div>'+(d.nota?'<small>'+esc(d.nota)+'</small>':"")+'</td></tr>'});
-  return h+'</tbody></table>';
-}
-function renderDet(){
-  const c=getCycles().find(x=>x.start===detCycle);if(!c)return;
-  $("#detBody").innerHTML=detTableHTML(c,"det");
-  $$("#detBody tr[data-date]").forEach(tr=>tr.onclick=()=>openDay(tr.dataset.date));
+async function editLabel(start){
+  const v=await dialog({title:"Título do ciclo",text:"Como a instrutora classificou este ciclo?",input:"ex.: Ciclo fértil normal · PBI de secura",value:S.labels[start]||"",ok:"Salvar"});
+  if(v===null)return;
+  if(v.trim())S.labels[start]=v.trim().slice(0,60);else delete S.labels[start];
+  save();renderChart();
 }
 function openDay(date){
   const d=S.days[date];
-  if(!d){if(date>todayISO()){toast("Dia ainda não chegou");return}
-    setFormDate(date);go("hoje");toast("Registrando "+brFull(date));return}
-  const c=cycleOf(date);const lab=postLabel(c,date);
-  const sh=$("#daySheet");
-  sh.innerHTML='<div class="sheet-h"><h3>'+brFull(date)+' · Ciclo '+c.n+', dia '+(diffDays(c.start,date)+1)+'</h3><button class="xbtn" data-close="dayOv">✕</button></div>'
-    +'<div class="preview-box" style="margin-top:0">'+stampHTML(d,{apex:lab==="X",xo:lab==="X"})+'<div class="txt"><b>'+esc(d.desc||"—")+'</b>'
-    +'<span class="muted">'+[lab==="X"?"Ápice":lab?lab+"º dia após o ápice":"",d.rel?"♥ relação":"",d.rule?"Regra "+d.rule:""].filter(Boolean).join(" · ")+'</span></div></div>'
-    +((d.sintomas||[]).length?'<div class="lbl">Sintomas</div><div class="tags">'+d.sintomas.map(s=>'<span class="tag">'+esc(s)+'</span>').join("")+'</div>':"")
+  if(!d){if(date>todayISO()){toast("Esse dia ainda não chegou");return}setFormDate(date);go("registrar");toast("Registrando "+brFull(date));return}
+  const c=cycleOf(date),lab=postLabel(c,date);
+  $("#daySheet").innerHTML='<div class="sheet-h"><div><div class="muted num">Ciclo '+c.n+' · dia '+(diffDays(c.start,date)+1)+'</div><h3>'+brFull(date)+'</h3></div><button class="xbtn" data-close="dayOv" aria-label="Fechar">✕</button></div>'
+    +'<div class="result" style="margin-top:0">'+stampHTML(d,{apex:lab==="X"})+'<div class="txt"><b>'+esc(d.desc||"—")+'</b><span>'
+    +[lab==="X"?"Ápice":lab?lab+"º dia após o ápice":"",d.rel?"Relação":"",d.rule?(d.rule==="LS"?"LS":"Regra "+d.rule):""].filter(Boolean).join(" · ")+'</span></div></div>'
+    +((d.sintomas||[]).length?'<div class="lbl">Sintomas</div><div class="chips">'+d.sintomas.map(s=>'<span class="chip sm">'+esc(s)+'</span>').join("")+'</div>':"")
     +(d.nota?'<div class="lbl">Anotação</div><p style="margin:0">'+esc(d.nota)+'</p>':"")
-    +'<button class="btn pri block" style="margin-top:16px" id="editDayBtn">Editar este dia</button>';
-  $("#dayOv").classList.add("show");
-  $("#editDayBtn").onclick=()=>{$("#dayOv").classList.remove("show");setFormDate(date);go("hoje")};
-  bindClose();
+    +'<button class="btn pri block" style="margin-top:18px" id="editDayBtn">Editar este dia</button>';
+  $("#dayOv").classList.add("show");bindClose();
+  $("#editDayBtn").onclick=()=>{$("#dayOv").classList.remove("show");setFormDate(date);go("registrar")};
 }
 
-/* ════════════════ DÚVIDAS / ORIENTAÇÕES ════════════════ */
+/* ═══════════ INSTRUTORA ═══════════ */
 let qFilter="pend";
 function renderAcomp(){
-  const p=S.profile;const na=nextAcomp();
-  $("#acompCard").innerHTML='<h2 class="t">Minha instrutora</h2>'
-    +'<p style="margin:0"><b>'+esc(p.instrutora||"—")+'</b>'+(p.instrContato?' · <span class="muted">'+esc(p.instrContato)+'</span>':"")+'</p>'
-    +'<p class="muted" style="margin:4px 0 0">'+(na?"Próximo acompanhamento: <b>"+brFull(na)+"</b>"+(p.horaAcomp?" às "+esc(p.horaAcomp):""):"Defina o dia do acompanhamento no Perfil.")+'</p>';
+  const p=S.profile,na=nextAcomp();
+  $("#acompCard").innerHTML='<div class="instr"><div class="avatar">'+esc((p.instrutora||"?").trim()[0]||"?").toUpperCase()+'</div><div class="grow">'
+    +'<div style="font-weight:700">'+esc(p.instrutora||"Instrutora não informada")+'</div>'
+    +(p.instrContato?'<div class="muted" style="user-select:all">'+esc(p.instrContato)+'</div>':"")
+    +'<div class="muted">'+(na?"Próximo acompanhamento: <b style=\"color:var(--ink)\">"+brFull(na)+"</b>"+(p.horaAcomp?" às "+esc(p.horaAcomp):""):"Defina o dia do acompanhamento no Perfil.")+'</div></div></div>';
 }
 function renderQ(){
-  const list=S.duvidas.filter(q=>qFilter==="all"||!q.done).sort((a,b)=>(a.done-b.done)||b.id-a.id);
   $$("[data-qf]").forEach(b=>b.classList.toggle("on",b.dataset.qf===qFilter));
-  $("#qList").innerHTML=list.length?list.map(q=>'<div class="q'+(q.done?" done":"")+'" data-id="'+q.id+'">'
-    +'<div class="q-top"><input type="checkbox"'+(q.done?" checked":"")+' title="Respondida"><div class="grow" style="flex:1"><div class="q-txt">'+esc(q.text)+'</div>'
-    +'<div class="q-meta">Anotada em '+brFull(q.date)+(q.done?" · respondida":"")+'</div></div></div>'
-    +(q.resposta?'<div class="q-ans"><b>Resposta</b>'+esc(q.resposta)+'</div>':"")
-    +'<div class="q-act"><button data-a="ans">'+(q.resposta?"editar resposta":"anotar resposta")+'</button><button data-a="edit">editar</button><button data-a="del">apagar</button></div></div>').join("")
-    :'<p class="muted">'+(qFilter==="pend"?"Nenhuma dúvida pendente 🙌":"Nenhuma dúvida anotada.")+'</p>';
-  $$("#qList .q").forEach(el=>{
-    const q=S.duvidas.find(x=>x.id==el.dataset.id);
+  const list=S.duvidas.filter(q=>qFilter==="all"||!q.done).sort((a,b)=>(a.done-b.done)||b.id-a.id);
+  $("#qList").innerHTML=list.length?list.map(q=>'<div class="qi'+(q.done?" done":"")+'" data-id="'+q.id+'"><div class="qi-top"><input type="checkbox" aria-label="Respondida"'+(q.done?" checked":"")+'>'
+    +'<div class="grow"><div class="qi-txt">'+esc(q.text)+'</div><div class="qi-meta num">'+brFull(q.date)+(q.done?" · respondida":"")+'</div></div></div>'
+    +(q.resposta?'<div class="qi-ans"><b>Resposta</b>'+esc(q.resposta)+'</div>':"")
+    +'<div class="qi-act"><button data-a="ans">'+(q.resposta?"Editar resposta":"Anotar resposta")+'</button><button data-a="edit">Editar</button><button data-a="del">Apagar</button></div></div>').join("")
+    :'<p class="muted" style="margin:10px 0 0">'+(qFilter==="pend"?"Nenhuma dúvida pendente.":"Nenhuma dúvida anotada.")+'</p>';
+  $$("#qList .qi").forEach(el=>{
+    const q=S.duvidas.find(x=>String(x.id)===el.dataset.id);
     el.querySelector("input").onchange=e=>{q.done=e.target.checked;save();renderQ();renderTop()};
-    el.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{
+    el.querySelectorAll("[data-a]").forEach(b=>b.onclick=async()=>{
       const a=b.dataset.a;
-      if(a==="del"){if(confirm("Apagar esta dúvida?")){S.duvidas=S.duvidas.filter(x=>x!==q)}}
-      else if(a==="edit"){const v=prompt("Editar dúvida:",q.text);if(v!==null&&v.trim())q.text=v.trim()}
-      else{const v=prompt("Resposta da instrutora:",q.resposta||"");if(v!==null){q.resposta=v.trim();if(q.resposta)q.done=true}}
+      if(a==="del"){if(!await dialog({title:"Apagar dúvida?",text:q.text,ok:"Apagar",danger:true}))return;S.duvidas=S.duvidas.filter(x=>x!==q)}
+      else if(a==="edit"){const v=await dialog({title:"Editar dúvida",input:"",value:q.text,multiline:true,ok:"Salvar"});if(v===null||!v.trim())return;q.text=v.trim()}
+      else{const v=await dialog({title:"Resposta da instrutora",text:q.text,input:"O que ela respondeu…",value:q.resposta||"",multiline:true,ok:"Salvar"});if(v===null)return;q.resposta=v.trim();if(q.resposta)q.done=true}
       save();renderQ();renderTop();
     });
   });
 }
 function renderO(){
   const list=S.orient.slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
-  $("#oList").innerHTML=list.length?list.map(o=>'<div class="q" data-id="'+o.id+'"><div class="q-meta" style="margin:0 0 3px"><b>'+brFull(o.date)+'</b></div>'
-    +'<div class="q-txt">'+esc(o.text)+'</div><div class="q-act"><button data-a="edit">editar</button><button data-a="del">apagar</button></div></div>').join("")
-    :'<p class="muted">Nenhuma orientação anotada ainda.</p>';
-  $$("#oList .q").forEach(el=>{const o=S.orient.find(x=>x.id==el.dataset.id);
-    el.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{
-      if(b.dataset.a==="del"){if(!confirm("Apagar esta orientação?"))return;S.orient=S.orient.filter(x=>x!==o)}
-      else{const v=prompt("Editar orientação:",o.text);if(v===null||!v.trim())return;o.text=v.trim()}
+  $("#oList").innerHTML=list.length?list.map(o=>'<div class="qi" data-id="'+o.id+'"><div class="qi-meta num" style="margin:0 0 3px">'+brFull(o.date)+'</div><div class="qi-txt">'+esc(o.text)+'</div>'
+    +'<div class="qi-act"><button data-a="edit">Editar</button><button data-a="del">Apagar</button></div></div>').join("")
+    :'<p class="muted" style="margin:10px 0 0">Nenhuma orientação anotada ainda.</p>';
+  $$("#oList .qi").forEach(el=>{const o=S.orient.find(x=>String(x.id)===el.dataset.id);
+    el.querySelectorAll("[data-a]").forEach(b=>b.onclick=async()=>{
+      if(b.dataset.a==="del"){if(!await dialog({title:"Apagar orientação?",ok:"Apagar",danger:true}))return;S.orient=S.orient.filter(x=>x!==o)}
+      else{const v=await dialog({title:"Editar orientação",input:"",value:o.text,multiline:true,ok:"Salvar"});if(v===null||!v.trim())return;o.text=v.trim()}
       save();renderO();
     })});
 }
 
-/* ════════════════ CADASTRO ════════════════ */
+/* ═══════════ CADASTRO ═══════════ */
 function profFormHTML(px){
   const p=S.profile;
   const radio=(name,opts,cur)=>'<div class="chips">'+opts.map(o=>'<label class="chip"><input type="radio" name="'+px+name+'" value="'+o+'"'+(cur===o?" checked":"")+'><span>'+o+'</span></label>').join("")+'</div>';
-  return'<div class="fld"><label>Nome</label><input class="in" id="'+px+'nome" value="'+esc(p.nome)+'" placeholder="Seu nome" autocomplete="given-name"></div>'
-    +'<div class="fld"><label>Idade</label><input class="in" id="'+px+'idade" type="number" inputmode="numeric" min="10" max="70" value="'+esc(p.idade)+'" style="max-width:120px"></div>'
+  return'<div class="fld"><label for="'+px+'nome">Nome</label><input class="in" id="'+px+'nome" value="'+esc(p.nome)+'" autocomplete="given-name"></div>'
+    +'<div class="fld"><label for="'+px+'idade">Idade</label><input class="in num" id="'+px+'idade" type="number" inputmode="numeric" min="10" max="70" value="'+esc(p.idade)+'" style="max-width:110px"></div>'
     +'<div class="fld"><label>Estou usando o método para</label>'+radio("objetivo",["Espaçar gestação","Conquistar gestação"],p.objetivo)+'</div>'
     +'<div class="fld"><label>Já teve filhos?</label>'+radio("filhos",["Não","Sim"],p.filhos)
-    +'<div id="'+px+'qtdWrap" style="margin-top:8px;'+(p.filhos==="Sim"?"":"display:none")+'"><input class="in" id="'+px+'qtdFilhos" type="number" inputmode="numeric" min="1" max="20" placeholder="Quantos?" value="'+esc(p.qtdFilhos)+'" style="max-width:140px"></div></div>'
+    +'<div id="'+px+'qtdWrap" style="margin-top:8px"'+(p.filhos==="Sim"?"":" hidden")+'><input class="in num" id="'+px+'qtdFilhos" type="number" inputmode="numeric" min="1" max="20" placeholder="Quantos?" value="'+esc(p.qtdFilhos)+'" style="max-width:140px" aria-label="Quantos filhos"></div></div>'
     +'<div class="fld"><label>Situação atual</label>'+radio("situacao",["Gestante","Amamentando","Nenhum dos casos"],p.situacao)+'</div>'
-    +'<h3 class="t">Instrutora</h3>'
-    +'<div class="fld"><label>Nome da instrutora</label><input class="in" id="'+px+'instrutora" value="'+esc(p.instrutora)+'"></div>'
-    +'<div class="fld"><label>Contato <small>(opcional)</small></label><input class="in" id="'+px+'instrContato" value="'+esc(p.instrContato)+'" placeholder="WhatsApp / e-mail"></div>'
-    +'<div class="row"><div class="fld grow"><label>Dia do mês do acompanhamento</label><input class="in" id="'+px+'diaAcomp" type="number" inputmode="numeric" min="1" max="31" placeholder="ex.: 10" value="'+esc(p.diaAcomp)+'"></div>'
-    +'<div class="fld grow"><label>Horário <small>(opcional)</small></label><input class="in" id="'+px+'horaAcomp" type="time" value="'+esc(p.horaAcomp)+'"></div></div>'
-    +'<h3 class="t">Lembrete diário</h3>'
-    +'<div class="row"><label class="chip"><input type="checkbox" id="'+px+'lembrete"'+(p.lembrete?" checked":"")+'><span>🔔 Quero ser lembrada</span></label>'
-    +'<input class="in" id="'+px+'horaLembrete" type="time" value="'+esc(p.horaLembrete||"21:00")+'" style="width:130px"></div>';
+    +'<h3 class="sec">Instrutora</h3>'
+    +'<div class="fld"><label for="'+px+'instrutora">Nome da instrutora</label><input class="in" id="'+px+'instrutora" value="'+esc(p.instrutora)+'"></div>'
+    +'<div class="fld"><label for="'+px+'instrContato">Contato <em>· opcional</em></label><input class="in" id="'+px+'instrContato" value="'+esc(p.instrContato)+'" placeholder="WhatsApp ou e-mail"></div>'
+    +'<div class="row" style="align-items:flex-end"><div class="fld grow"><label for="'+px+'diaAcomp">Dia do mês do acompanhamento</label><input class="in num" id="'+px+'diaAcomp" type="number" inputmode="numeric" min="1" max="31" placeholder="ex.: 10" value="'+esc(p.diaAcomp)+'"></div>'
+    +'<div class="fld grow"><label for="'+px+'horaAcomp">Horário <em>· opcional</em></label><input class="in num" id="'+px+'horaAcomp" type="time" value="'+esc(p.horaAcomp)+'"></div></div>'
+    +'<h3 class="sec">Lembrete diário</h3>'
+    +'<div class="row"><label class="chip"><input type="checkbox" id="'+px+'lembrete"'+(p.lembrete?" checked":"")+'><span>Quero ser lembrada às</span></label>'
+    +'<input class="in num" id="'+px+'horaLembrete" type="time" value="'+esc(p.horaLembrete||"21:00")+'" style="width:130px" aria-label="Horário do lembrete"></div>';
 }
-function bindProfForm(px){
-  $$('input[name="'+px+'filhos"]').forEach(r=>r.onchange=()=>{$("#"+px+"qtdWrap").style.display=r.value==="Sim"&&r.checked?"":"none"});
-}
+function bindProfForm(px){$$('input[name="'+px+'filhos"]').forEach(r=>r.onchange=()=>{$("#"+px+"qtdWrap").hidden=!(r.value==="Sim"&&r.checked)})}
 function readProfForm(px){
-  const v=id=>($("#"+px+id)||{}).value||"";
-  const r=n=>(document.querySelector('input[name="'+px+n+'"]:checked')||{}).value||"";
-  const p={...S.profile,nome:v("nome").trim(),idade:v("idade"),objetivo:r("objetivo"),filhos:r("filhos"),qtdFilhos:r("filhos")==="Sim"?v("qtdFilhos"):"",
+  const v=id=>($("#"+px+id)||{}).value||"",r=n=>(document.querySelector('input[name="'+px+n+'"]:checked')||{}).value||"";
+  return{...S.profile,nome:v("nome").trim(),idade:v("idade"),objetivo:r("objetivo"),filhos:r("filhos"),qtdFilhos:r("filhos")==="Sim"?v("qtdFilhos"):"",
     situacao:r("situacao"),instrutora:v("instrutora").trim(),instrContato:v("instrContato").trim(),diaAcomp:v("diaAcomp"),horaAcomp:v("horaAcomp"),
     lembrete:$("#"+px+"lembrete").checked,horaLembrete:v("horaLembrete")||"21:00"};
-  return p;
+}
+function saveProfile(px){
+  const p=readProfForm(px);
+  if(!p.nome){toast("Preencha seu nome");$("#"+px+"nome").focus();return false}
+  S.profile=p;save();refreshAll();return true;
 }
 function renderProfile(){
   $("#profForm").innerHTML=profFormHTML("p_");bindProfForm("p_");
-  renderStarts();renderNotifStatus();
-}
-async function saveProfile(px){
-  const p=readProfForm(px);
-  if(!p.nome){toast("Preencha seu nome");return false}
-  const turnedOn=p.lembrete&&!S.profile.lembrete;
-  S.profile=p;save();refreshAll();
-  if(turnedOn)await askNotif();
-  return true;
+  renderStarts();renderReminders();renderStoreNote();
 }
 function renderStarts(){
   const cyc=getCycles();
-  $("#startsList").innerHTML=cyc.length?cyc.slice().reverse().map(c=>'<div class="row" style="justify-content:space-between;border-bottom:1px solid #f0ebe0;padding:6px 0">'
-    +'<span><b>Ciclo '+c.n+'</b> · '+brFull(c.start)+(c.implicit?' <small class="muted">(1º registro)</small>':"")+' <small class="muted">· '+(c.closed?c.maxDay+" dias":"em curso")+'</small></span>'
-    +(c.implicit?"":'<button class="btn ghost sm" data-del-start="'+c.start+'">remover</button>')+'</div>').join("")
-    :'<p class="muted">Nenhum ciclo ainda.</p>';
-  $$("[data-del-start]").forEach(b=>b.onclick=()=>{if(!confirm("Remover o início de ciclo em "+brFull(b.dataset.delStart)+"? Os dias continuam salvos e passam a fazer parte do ciclo anterior."))return;
+  $("#startsList").innerHTML=cyc.length?cyc.slice().reverse().map(c=>'<div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding:8px 0">'
+    +'<span class="num"><b>Ciclo '+c.n+'</b> · '+brFull(c.start)+' <span class="muted">· '+(c.implicit?"1º registro":c.closed?c.maxDay+" dias":"em curso")+'</span></span>'
+    +(c.implicit?"":'<button class="btn ghost sm" data-del-start="'+c.start+'">Remover</button>')+'</div>').join(""):'<p class="muted">Nenhum ciclo ainda.</p>';
+  $$("[data-del-start]").forEach(b=>b.onclick=async()=>{
+    if(!await dialog({title:"Remover início de ciclo?",text:"Os dias continuam salvos e passam a fazer parte do ciclo anterior.",ok:"Remover",danger:true}))return;
     S.starts=S.starts.filter(s=>s!==b.dataset.delStart);save();refreshAll()});
 }
 
-/* ════════════════ NOTIFICAÇÕES ════════════════ */
+/* ═══════════ LEMBRETES ═══════════ */
+function gcalURL({title,details,date,time,mins,rrule}){
+  const[h,m]=(time||"21:00").split(":").map(Number);
+  const st=parse(date);st.setHours(h,m,0,0);const en=new Date(st.getTime()+mins*60000);
+  const f=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+"T"+pad(d.getHours())+pad(d.getMinutes())+"00";
+  let tz="America/Sao_Paulo";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||tz}catch(e){}
+  return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(title)+"&details="+encodeURIComponent(details)
+    +"&dates="+f(st)+"/"+f(en)+"&ctz="+encodeURIComponent(tz)+"&recur="+encodeURIComponent("RRULE:"+rrule);
+}
+function renderReminders(){
+  const p=S.profile;
+  $("#gcalDaily").href=gcalURL({title:"Registrar gráfico MOB",details:"Registre o que sentiu e o que viu hoje.",date:todayISO(),time:p.horaLembrete||"21:00",mins:5,rrule:"FREQ=DAILY"});
+  $("#gcalDaily").textContent="Lembrete diário às "+(p.horaLembrete||"21:00");
+  const d=parseInt(p.diaAcomp,10),ga=$("#gcalAcomp");
+  if(d){ga.hidden=false;ga.href=gcalURL({title:"Acompanhamento MOB"+(p.instrutora?" com "+p.instrutora:""),details:"Levar o gráfico em PDF e as dúvidas anotadas.",date:nextAcomp(),time:p.horaAcomp||"09:00",mins:60,rrule:"FREQ=MONTHLY;BYMONTHDAY="+d});
+    ga.textContent="Acompanhamento todo dia "+d}else ga.hidden=true;
+  const nb=$("#notifBox");nb.hidden=IN_CLAUDE||!("Notification" in window);
+  if(!nb.hidden){const perm=Notification.permission;$("#notifBtn").hidden=perm==="granted";
+    $("#notifStatus").textContent=perm==="granted"?"Notificações permitidas: o app avisa no horário quando estiver aberto ou em segundo plano.":perm==="denied"?"Notificações bloqueadas nas configurações do navegador.":""}
+}
+/* notificações só na versão instalada (GitHub Pages) */
 let swReg=null;
-if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){
-  navigator.serviceWorker.register("sw.js").then(r=>{swReg=r}).catch(()=>{});
-}
-async function askNotif(){
-  if(!("Notification" in window)){toast("Este navegador não permite notificações — use a agenda");renderNotifStatus();return}
-  const r=await Notification.requestPermission();
-  if(r==="granted"){S.profile.lembrete=true;save();notify("Lembretes ativados 🌸","Vou te lembrar às "+S.profile.horaLembrete+" de registrar o dia.")}
-  else toast("Notificações bloqueadas — use a agenda do celular");
-  renderNotifStatus();
-}
+if(!IN_CLAUDE&&"serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js").then(r=>{swReg=r}).catch(()=>{});
 async function notify(title,body){
-  if(!("Notification" in window)||Notification.permission!=="granted")return false;
-  const o={body,icon:"icon-192.png",badge:"icon-192.png",tag:"mob-lembrete"};
-  try{if(swReg){await swReg.showNotification(title,o);return true}}catch(e){}
-  try{new Notification(title,o);return true}catch(e){return false}
+  if(IN_CLAUDE||!("Notification" in window)||Notification.permission!=="granted")return;
+  const o={body,icon:"icon-192.png",tag:"mob-lembrete"};
+  try{if(swReg){await swReg.showNotification(title,o);return}}catch(e){}
+  try{new Notification(title,o)}catch(e){}
 }
 function checkReminder(){
-  const p=S.profile;if(!p.lembrete||!p.horaLembrete)return;
+  const p=S.profile;if(IN_CLAUDE||!p.lembrete)return;
   const t=todayISO();if(S.lastNotif===t||S.days[t])return;
-  const[h,m]=p.horaLembrete.split(":").map(Number);const n=new Date();
-  if(n.getHours()*60+n.getMinutes()>=h*60+m){
-    notify("Hora do registro 🌸",(firstName()?firstName()+", c":"C")+"omo foi seu dia? Registre o que sentiu e o que viu.");
-    S.lastNotif=t;save();
-  }
-}
-function renderNotifStatus(){
-  const el=$("#notifStatus");if(!el)return;
-  const perm=("Notification" in window)?Notification.permission:"indisponível";
-  const map={granted:"✅ Notificações permitidas",denied:"🚫 Notificações bloqueadas nas configurações do navegador",default:"Notificações ainda não permitidas",indisponível:"Este navegador não suporta notificações — use a agenda"};
-  el.innerHTML=map[perm]+(S.profile.lembrete?" · lembrete às <b>"+esc(S.profile.horaLembrete)+"</b>":" · lembrete desligado");
-  $("#notifBtn").style.display=perm==="granted"?"none":"";
-}
-function icsDownload(name,ev){
-  const stamp=new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z";
-  const txt=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Grafico MOB//PT-BR","CALSCALE:GREGORIAN","BEGIN:VEVENT",
-    "UID:mob-"+name+"-"+Date.now()+"@grafico-mob","DTSTAMP:"+stamp,"DTSTART:"+ev.start,"DURATION:"+ev.dur,"RRULE:"+ev.rrule,
-    "SUMMARY:"+ev.title,"DESCRIPTION:"+ev.desc,"URL:"+location.href.split("#")[0],
-    "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+ev.title,"TRIGGER:"+ev.alarm,"END:VALARM",
-    ...(ev.alarm2?["BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+ev.title,"TRIGGER:"+ev.alarm2,"END:VALARM"]:[]),
-    "END:VEVENT","END:VCALENDAR"].join("\r\n");
-  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:"text/calendar"}));
-  a.download=name+".ics";document.body.appendChild(a);a.click();a.remove();
-  toast("Abra o arquivo para adicionar à agenda");
-}
-function icsDaily(){
-  const[h,m]=(S.profile.horaLembrete||"21:00").split(":");
-  icsDownload("lembrete-grafico-mob",{start:todayISO().replace(/-/g,"")+"T"+h+m+"00",dur:"PT5M",rrule:"FREQ=DAILY",
-    title:"🌸 Registrar gráfico MOB",desc:"Registre o que sentiu e o que viu hoje.",alarm:"PT0M"});
-}
-function icsAcomp(){
-  const d=parseInt(S.profile.diaAcomp,10);if(!d){toast("Preencha o dia do acompanhamento no cadastro");return}
-  const na=nextAcomp();const[h,m]=(S.profile.horaAcomp||"09:00").split(":");
-  icsDownload("acompanhamento-mob",{start:na.replace(/-/g,"")+"T"+h+m+"00",dur:"PT1H",rrule:"FREQ=MONTHLY;BYMONTHDAY="+d,
-    title:"📅 Acompanhamento MOB"+(S.profile.instrutora?" com "+S.profile.instrutora:""),desc:"Leve o gráfico em PDF e suas dúvidas.",alarm:"-P1D",alarm2:"-PT1H"});
+  const[h,m]=(p.horaLembrete||"21:00").split(":").map(Number),n=new Date();
+  if(n.getHours()*60+n.getMinutes()>=h*60+m){notify("Hora do registro",(firstName()?firstName()+", c":"C")+"omo foi seu dia? Registre o que sentiu e o que viu.");S.lastNotif=t;save()}
 }
 
-/* ════════════════ PDF ════════════════ */
+/* ═══════════ ARQUIVOS (PDF e cópia) ═══════════ */
+async function saveFile(filename,data){
+  if(IN_CLAUDE){
+    const dl=await window.claude.use("downloads");
+    if(!dl){toast("Não é possível salvar arquivos nesta tela");return false}
+    try{await dl.save({filename,data});return true}
+    catch(e){const c=e&&e.code;toast(c==="declined"?"Download cancelado":c==="host_unavailable"?"Abra no navegador ou no computador para salvar o arquivo":c==="rate_limited"?"Aguarde um instante e tente de novo":"Não foi possível salvar o arquivo");return false}
+  }
+  const blob=data instanceof Blob?data:new Blob([data]);
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);return true;
+}
+function loadScript(src){return new Promise((res,rej)=>{if(document.querySelector('script[src="'+src+'"]'))return res();const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
 function openPdf(){
-  const cyc=getCycles();
-  if(!cyc.length){toast("Registre alguns dias primeiro");return}
+  const cyc=getCycles();if(!cyc.length){toast("Registre alguns dias primeiro");return}
   $("#pdfCiclos").innerHTML='<div class="chips">'+cyc.slice().reverse().map((c,i)=>'<label class="chip sm"><input type="checkbox" value="'+c.start+'"'+(i<3?" checked":"")+'><span>Ciclo '+c.n+' · '+br(c.start)+'</span></label>').join("")+'</div>';
   if(!$("#pdfDe").value)$("#pdfDe").value=addDays(todayISO(),-90);
   if(!$("#pdfAte").value)$("#pdfAte").value=todayISO();
   $("#pdfQ").checked=S.duvidas.some(q=>!q.done);
   $("#pdfOv").classList.add("show");bindClose();
 }
-function genPdf(){
-  const mode=document.querySelector('input[name="pdfMode"]:checked').value;
-  const cyc=getCycles();let rows,from=null,to=null,periodo;
+function pdfPages(){
+  const mode=document.querySelector('input[name="pdfMode"]:checked').value,cyc=getCycles();
+  let rows,from=null,to=null,periodo;
   if(mode==="ciclo"){
-    const sel=$$("#pdfCiclos input:checked").map(i=>i.value);
-    rows=cyc.filter(c=>sel.includes(c.start));
-    if(!rows.length){toast("Escolha pelo menos um ciclo");return}
+    const sel=$$("#pdfCiclos input:checked").map(i=>i.value);rows=cyc.filter(c=>sel.includes(c.start));
+    if(!rows.length){toast("Escolha pelo menos um ciclo");return null}
     periodo=rows.length===1?"Ciclo "+rows[0].n:"Ciclos "+rows.map(c=>c.n).join(", ");
   }else{
     from=$("#pdfDe").value;to=$("#pdfAte").value;
-    if(!from||!to||from>to){toast("Confira as datas");return}
+    if(!from||!to||from>to){toast("Confira as datas");return null}
     rows=cyc.filter(c=>c.start<=to&&addDays(c.start,c.maxDay-1)>=from);
-    if(!rows.length){toast("Nenhum ciclo nesse período");return}
+    if(!rows.length){toast("Nenhum ciclo nesse período");return null}
     periodo=brFull(from)+" a "+brFull(to);
+  }
+  const desc=$("#pdfDet").checked,bodies=[];
+  for(let i=0;i<rows.length;i+=3){
+    const grp=rows.slice(i,i+3),maxD=Math.max(...grp.map(c=>c.maxDay));
+    const per=desc?30:42;
+    for(let d0=1;d0<=maxD;d0+=per)bodies.push(folhaHTML(grp,{desc,from,to,print:true,d0,d1:Math.min(maxD,d0+per-1)})+'<div class="legend">'+legendHTML()+'</div>');
+  }
+  const blocks=(title,items)=>{let cur=[],len=0;const out=[];
+    items.forEach(it=>{const l=it.length+120;if(cur.length&&len+l>3200){out.push(cur);cur=[];len=0}cur.push(it);len+=l});
+    if(cur.length)out.push(cur);if(!out.length)out.push(['<p>Nenhuma.</p>']);
+    out.forEach((c,i)=>bodies.push('<h2>'+title+(i?" (cont.)":"")+'</h2>'+c.join("")))};
+  if($("#pdfQ").checked||$("#pdfQAll").checked){
+    const qs=S.duvidas.filter(q=>q.done?$("#pdfQAll").checked:$("#pdfQ").checked).sort((a,b)=>a.id-b.id);
+    blocks("Dúvidas para a instrutora",qs.map(q=>'<div class="pg-q">'+esc(q.text)+' <small>· '+brFull(q.date)+(q.done?" · respondida":"")+'</small>'+(q.resposta?'<div class="a">'+esc(q.resposta)+'</div>':"")+'</div>'));
+  }
+  if($("#pdfO").checked){
+    blocks("Orientações da instrutora",S.orient.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(o=>'<div class="pg-q"><small>'+brFull(o.date)+'</small><br>'+esc(o.text)+'</div>'));
   }
   const p=S.profile;
   const perfil=[p.idade&&p.idade+" anos",p.objetivo,p.filhos==="Sim"?(p.qtdFilhos?p.qtdFilhos+" filho(s)":"tem filhos"):p.filhos==="Não"?"sem filhos":"",p.situacao&&p.situacao!=="Nenhum dos casos"?p.situacao:""].filter(Boolean).join(" · ");
-  let h='<div class="p-head"><div><h1>Gráfico MOB — '+esc(p.nome||"")+'</h1><div style="font-size:8pt;color:#555">'+esc(perfil)+'</div></div>'
-    +'<div class="meta">'+esc(periodo)+'<br>Instrutora: '+esc(p.instrutora||"—")+'<br>Gerado em '+brFull(todayISO())+'</div></div>';
-  h+=chartTableHTML(rows,{cls:"pchart",from,to,print:true});
-  h+='<div class="p-leg">'+legendHTML()+'</div>';
-  if($("#pdfDet").checked){
-    h+='<div class="p-sec"><h2>Registro diário</h2>';
-    rows.forEach(c=>{h+='<div class="p-cyc">Ciclo '+c.n+' — início '+brFull(c.start)+'</div>'+detTableHTML(c,"pdet",from,to)});
-    h+='</div>';
+  return bodies.map((b,i)=>'<div class="pg"><div class="pg-h"><div><div class="pg-t">Gráfico do ciclo · '+esc(p.nome||"")+'</div><div class="pg-s">'+esc(perfil)+'</div></div>'
+    +'<div class="pg-m">'+esc(periodo)+'<br>Instrutora: '+esc(p.instrutora||"—")+'<br>Gerado em '+brFull(todayISO())+'</div></div>'
+    +'<div class="pg-body">'+b+'</div><div class="pg-f"><span>Meu Gráfico MOB · Método de Ovulação Billings</span><span>'+(i+1)+' / '+bodies.length+'</span></div></div>');
+}
+async function genPdf(){
+  const pages=pdfPages();if(!pages)return;
+  const btn=$("#pdfGo");btn.disabled=true;btn.textContent="Gerando…";
+  try{
+    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+    try{await document.fonts.ready}catch(e){}
+    const pdf=new window.jspdf.jsPDF({unit:"mm",format:"a4",orientation:"portrait"});
+    const stage=$("#pdfStage");
+    for(let i=0;i<pages.length;i++){
+      stage.innerHTML=pages[i];
+      const cv=await window.html2canvas(stage.firstElementChild,{scale:2,backgroundColor:"#ffffff",logging:false});
+      if(i)pdf.addPage();
+      pdf.addImage(cv.toDataURL("image/jpeg",0.9),"JPEG",0,0,210,297);
+    }
+    stage.innerHTML="";
+    const name="grafico-mob-"+(norm(firstName())||"ciclos")+"-"+todayISO()+".pdf";
+    const ok=await saveFile(name,pdf.output("blob"));
+    if(ok){$("#pdfOv").classList.remove("show");toast("PDF pronto")}
+  }catch(e){toast("Não foi possível gerar o PDF. Verifique a internet e tente de novo.")}
+  btn.disabled=false;btn.textContent="Gerar PDF";
+}
+async function exportBackup(){
+  const ok=await saveFile("grafico-mob-copia-"+todayISO()+".json",JSON.stringify(S,null,1));
+  if(ok)toast("Cópia salva");
+}
+async function importBackup(file){
+  let o;try{o=JSON.parse(await file.text())}catch(e){toast("Arquivo inválido");return}
+  let next=null;
+  if(o&&o.days&&!Array.isArray(o.days))next=normalize({...o,onboarded:true});
+  else if(o&&Array.isArray(o.days)){ /* cópia da 1ª versão do app */
+    next=fresh();next.onboarded=true;Object.assign(next.profile,S.profile);next.starts=[...new Set((o.cycles||[]).map(c=>c.inicio).filter(Boolean))].sort();
+    o.days.forEach(d=>{if(d.data)next.days[d.data]={sinto:d.sinto||"",vejo:d.vejo||"",sang:d.sang||"",cor:d.cor||"",sym:d.sym||"",fert:!!d.fert,rule:d.rule||"",apice:!!d.apice,rel:!!d.rel,sintomas:[],nota:"",desc:d.desc||""}});
+    const m=(o.meta||[]).find(x=>x.id==="cadastro");if(m){next.profile.nome=next.profile.nome||m.uNome||"";next.profile.instrutora=next.profile.instrutora||m.iNome||""}
+    next=normalize(next);
   }
-  if($("#pdfQ").checked){
-    const qs=S.duvidas.filter(q=>$("#pdfQAll").checked||!q.done).sort((a,b)=>a.id-b.id);
-    h+='<div class="p-sec"><h2>Dúvidas para a instrutora</h2>'+(qs.length?qs.map(q=>'<div class="p-q">'+esc(q.text)+' <small>('+brFull(q.date)+(q.done?", respondida":"")+')</small>'+(q.resposta?'<br><small><b>Resposta:</b> '+esc(q.resposta)+'</small>':"")+'</div>').join(""):'<p>Nenhuma.</p>')+'</div>';
-  }
-  if($("#pdfO").checked){
-    const os=S.orient.slice().sort((a,b)=>a.date.localeCompare(b.date));
-    h+='<div class="p-sec"><h2>Orientações da instrutora</h2>'+(os.length?os.map(o=>'<div class="p-q"><small>'+brFull(o.date)+'</small><br>'+esc(o.text)+'</div>').join(""):'<p>Nenhuma.</p>')+'</div>';
-  }
-  h+='<div class="p-foot">Meu Gráfico MOB · Método de Ovulação Billings</div>';
-  $("#printArea").innerHTML=h;
-  $("#pdfOv").classList.remove("show");
-  const old=document.title;document.title="Grafico-MOB-"+(firstName()||"")+"-"+todayISO();
-  setTimeout(()=>{window.print();document.title=old},150);
+  if(!next){toast("Arquivo inválido");return}
+  if(!await dialog({title:"Restaurar cópia?",text:"Os dados deste aparelho serão substituídos pelos da cópia ("+Object.keys(next.days).length+" dias registrados).",ok:"Restaurar",danger:true}))return;
+  S=next;save();toast("Cópia restaurada");setFormDate(todayISO());refreshAll();
+}
+function renderStoreNote(){
+  const el=$("#storeExplain");if(!el)return;
+  el.textContent=cloud.db?"Seus registros ficam salvos na sua conta Claude, visíveis só para você. Uma cópia extra é bom para guardar o histórico fora do app.":"Seus registros ficam salvos só neste aparelho. Faça uma cópia de vez em quando e antes de trocar de celular.";
 }
 
-/* ════════════════ APRENDER ════════════════ */
+/* ═══════════ APRENDER ═══════════ */
 function renderLearn(){
   const ref=COLORS.map(c=>'<div class="ref">'+stampHTML({cor:c.id})+'<div><b>'+c.nome+'</b><small>'+c.desc+'</small></div></div>').join("")
-    +SYMBOLS.map(s=>'<div class="ref">'+stampHTML({cor:s.id==="cheia"||s.id==="borra"?"vermelho":s.id==="igual"?"amarelo":"verde",sym:s.id})+'<div><b>'+s.nome+'</b><small>'+s.desc+'</small></div></div>').join("")
-    +'<div class="ref">'+stampHTML({cor:"branco",fert:true})+'<div><b>Bolinha aberta</b><small>dia fértil</small></div></div>'
-    +'<div class="ref">'+stampHTML({cor:"branco",fert:true},{apex:true,xo:true})+'<div><b>X — Ápice</b><small>último dia da sensação mais fértil</small></div></div>'
-    +'<div class="ref"><div class="st none" style="color:var(--acento-esc)">1</div><div><b>1, 2, 3</b><small>dias contados após o ápice</small></div></div>'
-    +'<div class="ref"><div class="st none" style="color:var(--rosa)">♥</div><div><b>Relação</b><small>dia com ato conjugal</small></div></div>';
+    +SYMBOLS.map(s=>'<div class="ref">'+stampHTML({cor:s.id==="cheia"||s.id==="borra"?"vermelho":s.id==="igual"?"amarelo":"verde",sym:s.id})+'<div><b>'+s.nome+' ('+s.ch+')</b><small>'+s.desc+'</small></div></div>').join("")
+    +'<div class="ref">'+stampHTML({cor:"branco",fert:true})+'<div><b>O</b><small>dia fértil, selo branco</small></div></div>'
+    +'<div class="ref">'+stampHTML({cor:"branco",fert:true},{apex:true})+'<div><b>X · Ápice</b><small>último dia da sensação mais fértil</small></div></div>'
+    +'<div class="ref"><span class="st none" style="color:var(--accent);font-family:var(--f-display);font-weight:400;font-size:1rem">1</span><div><b>1, 2, 3</b><small>dias contados após o ápice</small></div></div>'
+    +'<div class="ref"><span class="st none" style="color:var(--danger)">R</span><div><b>R</b><small>dia com relação</small></div></div>';
   const rules=RULES.map(r=>'<div class="rule"><h4>'+r.t+'</h4>'+(r.txt?'<p>'+r.txt+'</p>':'<p><b>Espaçar:</b> '+r.esp+'</p><p><b>Conquistar:</b> '+r.con+'</p>')+'</div>').join("");
-  const sec=(t,b,open)=>'<details class="lrn"'+(open?" open":"")+'><summary>'+t+'</summary><div class="bd">'+b+'</div></details>';
-  $("#learn").innerHTML='<h2 class="t" style="margin-bottom:12px">Como usar o método</h2>'
-  +sec("🌸 O que é o Método Billings",'<p>É um método natural de reconhecimento da fertilidade. A mulher aprende a perceber os sinais do <b>muco cervical</b> pela <b>sensação na vulva</b> ao longo do dia e registra num gráfico.</p><p>Serve tanto para <b>espaçar</b> quanto para <b>conquistar</b> uma gestação, e funciona em ciclos regulares ou irregulares, na amamentação e na pré-menopausa — sempre com acompanhamento de uma instrutora.</p>',true)
-  +sec("👀 Como observar no dia a dia",'<ul><li>Preste atenção à <b>sensação na vulva</b> durante as atividades normais: ao caminhar, sentar, levantar. Ela é seca, úmida, molhada ou escorregadia?</li><li>Observe o que aparece <b>ao se secar</b> com papel ou na roupa íntima (nada, leitoso, turvo, flocoso, clara de ovo).</li><li><b>Não</b> é preciso fazer exame interno. A sensação é o mais importante.</li><li>À noite, registre o <b>mais fértil</b> que percebeu no dia.</li><li>Use suas próprias palavras na descrição — é o que a instrutora quer ouvir.</li></ul>')
-  +sec("🎨 Cores e símbolos do gráfico",'<div class="ref-grid">'+ref+'</div>')
-  +sec("📏 O PBI (Padrão Básico de Infertilidade)",'<p>É o padrão que se repete igual, dia após dia, nos dias inférteis antes da ovulação: pode ser <b>secura</b> (verde) ou uma <b>secreção que não muda</b> (amarelo).</p><p>Qualquer <b>mudança</b> nesse padrão (sensação mais molhada, muco diferente, sangramento) é sinal de <b>possível fertilidade</b>. Aprender o seu PBI leva alguns ciclos — por isso a comparação lado a lado ajuda tanto.</p>')
-  +sec("✖️ O Ápice e a contagem 1, 2, 3",'<p>O <b>Ápice</b> é o <b>último dia</b> da sensação mais fértil (escorregadia/lubrificada). Ele só é reconhecido <b>no dia seguinte</b>, quando a sensação muda. Então você volta e marca <b>X</b> no dia anterior.</p><p>Depois do Ápice, conte <b>1, 2, 3</b>. O app faz essa contagem sozinho quando você marca o X. A fertilidade vai até o fim do 3º dia.</p>')
-  +sec("📋 As 4 regras",rules+'<p class="muted" style="margin-top:8px">Na Regra 03, quando o padrão volta ao PBI, normalmente se contam 3 dias antes de retomar. Confirme sempre os detalhes com sua instrutora.</p>')
-  +sec("🔎 O que observar e levar à instrutora",'<ul><li>Mudanças no seu PBI e dias em que ficou na dúvida do símbolo.</li><li>Dia que você acha que foi o ápice, mas não tem certeza.</li><li>Sangramentos fora da época da menstruação.</li><li>Estresse, doença, viagem, remédios, noites mal dormidas: podem alterar o ciclo — anote em <b>Sintomas</b>.</li><li>Ciclos muito mais curtos ou longos que o habitual.</li><li>Anote as dúvidas na aba <b>Instrutora</b> assim que surgirem.</li></ul>')
-  +sec("📱 Dicas do app",'<ul><li><b>Falar:</b> toque no 🎤 e diga algo como “seca, nada vejo, cólica”. O app preenche sensação, aparência, sintomas e símbolo.</li><li><b>Dias passados:</b> mude a data no topo do registro, ou toque num quadradinho vazio do gráfico.</li><li><b>Comparar:</b> no Gráfico, escolha quantas linhas (ciclos) quer ver lado a lado.</li><li><b>PDF:</b> escolha os ciclos ou um período, e se quer incluir dúvidas e orientações.</li><li><b>Cópia de segurança:</b> os dados ficam só no seu celular. Salve uma cópia no Perfil de vez em quando.</li><li><b>Instalar:</b> no navegador, use “Adicionar à tela inicial” para abrir como app.</li></ul>')
-  +'<p class="disc">Este conteúdo é um resumo para consulta. O aprendizado do método deve ser feito com uma instrutora credenciada, e as orientações dela prevalecem.</p>';
+  const sec=(n,t,b,open)=>'<details class="lrn"'+(open?" open":"")+'><summary><small>'+n+'</small><span>'+t+'</span></summary><div class="bd">'+b+'</div></details>';
+  $("#learn").innerHTML='<div class="vh"><h2>Como usar o método</h2></div>'
+  +sec("01","O que é o Método Billings",'<p>É um método natural de reconhecimento da fertilidade. A mulher aprende a perceber o <b>muco cervical</b> pela <b>sensação na vulva</b> ao longo do dia e registra num gráfico.</p><p>Serve para <b>espaçar</b> ou para <b>conquistar</b> uma gestação, em ciclos regulares ou irregulares, na amamentação e na pré-menopausa, sempre com acompanhamento de uma instrutora.</p>',true)
+  +sec("02","Como observar no dia a dia",'<ul><li>Preste atenção à <b>sensação na vulva</b> nas atividades normais: ao caminhar, sentar, levantar. Ela está seca, úmida, molhada ou escorregadia?</li><li>Observe o que aparece <b>ao se secar</b> ou na roupa íntima: nada, muco branco, turvo, flocoso, claro.</li><li>Não é preciso exame interno. A sensação é o principal.</li><li>À noite, registre o <b>mais fértil</b> que percebeu no dia.</li><li>Descreva com suas palavras. É isso que a instrutora quer ler.</li></ul>')
+  +sec("03","Cores e símbolos do gráfico",'<div class="ref-grid">'+ref+'</div>')
+  +sec("04","O PBI · Padrão Básico de Infertilidade",'<p>É o padrão que se repete igual, dia após dia, nos dias inférteis antes da ovulação: <b>secura</b> (verde) ou uma <b>secreção que não muda</b> (amarelo).</p><p>Qualquer <b>mudança</b> nesse padrão é sinal de <b>possível fertilidade</b>. Reconhecer o seu PBI leva alguns ciclos, e comparar os ciclos lado a lado ajuda muito.</p>')
+  +sec("05","O ápice e a contagem 1, 2, 3",'<p>O <b>ápice</b> é o <b>último dia</b> da sensação mais fértil (escorregadia, lubrificada). Ele só é reconhecido <b>no dia seguinte</b>, quando a sensação muda. Então você volta ao dia anterior e marca <b>X</b>.</p><p>Depois do ápice contam-se <b>1, 2, 3</b>. O app faz a contagem sozinho quando você marca o X.</p>')
+  +sec("06","As 4 regras",rules+'<p class="muted" style="margin-top:8px">Os detalhes de cada regra, inclusive o uso de R e LS na coluna de regras, seguem a orientação da sua instrutora.</p>')
+  +sec("07","O que levar à instrutora",'<ul><li>Mudanças no seu PBI e dias em que ficou em dúvida sobre o selo.</li><li>O dia que você acha que foi o ápice.</li><li>Sangramentos fora da época da menstruação.</li><li>Estresse, doença, viagem, remédios e noites mal dormidas: podem alterar o ciclo. Anote em Sintomas.</li><li>Ciclos bem mais curtos ou longos que o habitual.</li><li>Dúvidas, assim que surgirem, na aba Instrutora.</li></ul>')
+  +sec("08","Dicas do app",'<ul><li><b>Escrever ou falar:</b> “seca, nada vejo, cólica” preenche sensação, aparência, sintomas e o selo.</li><li><b>Dias passados:</b> mude a data do registro ou toque num dia vazio do gráfico.</li><li><b>Comparar:</b> escolha quantos ciclos ver lado a lado e se quer as descrições.</li><li><b>Título do ciclo:</b> toque no nome do ciclo no gráfico para anotar a classificação da instrutora.</li><li><b>PDF:</b> escolha ciclos ou período, e se inclui dúvidas e orientações.</li></ul>')
+  +'<p class="disc">Resumo para consulta. O aprendizado do método é feito com uma instrutora credenciada, e as orientações dela prevalecem.</p>';
 }
 
-/* ════════════════ ONBOARDING ════════════════ */
-let onbStep=0;
+/* ═══════════ BOAS-VINDAS ═══════════ */
+let onbStep=0,onbSlide=0;
 const SLIDES=[
-  {e:"👀",t:"Observe durante o dia",p:"Preste atenção à <b>sensação na vulva</b> (seca, úmida, molhada, escorregadia) e ao que você <b>vê</b> ao se secar."},
-  {e:"🎤",t:"Registre à noite",p:"Fale ou toque: <i>“seca, nada vejo”</i>. O app preenche a <b>cor e o símbolo</b> sozinho — você só confere.",ex:[["verde","traco"],["amarelo","igual"],["branco","",1],["vermelho","cheia"]]},
-  {e:"📊",t:"Veja seus ciclos lado a lado",p:"Cada linha do gráfico é um ciclo. Marque o <b>X</b> no ápice e o app conta <b>1, 2, 3</b>."},
-  {e:"💬",t:"Leve tudo à instrutora",p:"Anote <b>dúvidas</b> e <b>orientações</b>, e gere o <b>PDF</b> do gráfico para o acompanhamento."}
+  {t:"Observe durante o dia",p:"Preste atenção à <b>sensação na vulva</b> (seca, úmida, molhada, escorregadia) e ao que você <b>vê</b> ao se secar."},
+  {t:"Registre à noite",p:"Escreva ou fale: <i>“seca, nada vejo”</i>. O app escolhe a <b>cor e o símbolo</b> sozinho. Você só confere.",ex:[["vermelho","cheia"],["verde","traco"],["amarelo","igual"],["branco","",1]]},
+  {t:"Compare seus ciclos",p:"O gráfico segue a folha da instrutora: cada ciclo é uma coluna. Marque o <b>X</b> no ápice e o app conta <b>1, 2, 3</b>."},
+  {t:"Leve tudo ao acompanhamento",p:"Anote <b>dúvidas</b> e <b>orientações</b> e gere o <b>PDF</b> do gráfico para mostrar à instrutora."}
 ];
 function onbRender(){
-  const steps='<div class="onb-steps">'+[0,1,2].map(i=>'<i class="'+(i<=onbStep?"on":"")+'"></i>').join("")+'</div>';
+  const steps='<div class="steps">'+[0,1].map(i=>'<i class="'+(i<=onbStep?"on":"")+'"></i>').join("")+'</div>';
   const box=$("#onbIn");
   if(onbStep===0){
-    box.innerHTML=steps+'<div class="onb-hero"><div style="font-size:2.4rem">🌸</div><h1>Bem-vinda!</h1><p>Primeiro, um mini cadastro. Leva 1 minuto.</p></div>'
-      +'<div class="card">'+profFormHTML("o_")+'</div><button class="btn pri block" id="onbNext">Continuar</button>';
+    box.innerHTML=steps+'<div class="onb-h"><small>Passo 1 de 2 · Cadastro</small><h1>Bem-vinda ao seu <i>gráfico</i></h1><p>Um mini cadastro para personalizar o acompanhamento. Leva um minuto.</p></div>'
+      +'<div class="panel">'+profFormHTML("o_")+'</div><button class="btn pri block" id="onbNext">Continuar</button>';
     bindProfForm("o_");
-    $("#onbNext").onclick=async()=>{if(await saveProfile("o_")){onbStep=1;onbSlide=0;onbRender();scrollTo(0,0)}};
-  }else if(onbStep===1){
+    $("#onbNext").onclick=()=>{if(saveProfile("o_")){onbStep=1;onbSlide=0;onbRender();$("#onb").scrollTop=0}};
+  }else{
     const s=SLIDES[onbSlide];
-    box.innerHTML=steps+'<div class="card"><div class="slide"><div class="emo">'+s.e+'</div><h2>'+s.t+'</h2><p>'+s.p+'</p>'
+    box.innerHTML=steps+'<div class="onb-h"><small>Passo 2 de 2 · Como funciona</small></div>'
+      +'<div class="panel"><div class="slide"><div class="n num">'+pad(onbSlide+1)+'</div><h2>'+s.t+'</h2><p>'+s.p+'</p>'
       +(s.ex?'<div class="ex">'+s.ex.map(([c,y,f])=>stampHTML({cor:c,sym:y,fert:!!f})).join("")+'</div>':"")
-      +'<div class="onb-steps" style="margin:14px 0 0">'+SLIDES.map((_,i)=>'<i style="width:8px;height:8px;border-radius:50%" class="'+(i===onbSlide?"on":"")+'"></i>').join("")+'</div></div></div>'
+      +'<div class="steps" style="margin:16px 0 0">'+SLIDES.map((_,i)=>'<i class="'+(i<=onbSlide?"on":"")+'"></i>').join("")+'</div></div></div>'
       +'<div class="row">'+(onbSlide>0?'<button class="btn ghost" id="onbBack">Voltar</button>':"")+'<button class="btn pri grow" id="onbNext">'+(onbSlide<SLIDES.length-1?"Próximo":"Ver meu gráfico")+'</button></div>'
-      +'<p style="text-align:center"><button class="btn ghost sm" id="onbSkip">Pular explicação</button></p>';
+      +'<p style="text-align:center;margin-top:10px"><button class="btn ghost sm" id="onbSkip">Pular explicação</button></p>';
     if($("#onbBack"))$("#onbBack").onclick=()=>{onbSlide--;onbRender()};
     $("#onbNext").onclick=()=>{if(onbSlide<SLIDES.length-1){onbSlide++;onbRender()}else onbFinish()};
     $("#onbSkip").onclick=onbFinish;
   }
 }
-let onbSlide=0;
-function onbFinish(){S.onboarded=true;save();document.body.classList.remove("onb");$("#onb").classList.remove("show");go("graf");refreshAll()}
+function onbFinish(){S.onboarded=true;save();$("#onb").classList.remove("show");$("#bnav").hidden=false;go("grafico")}
 
-/* ════════════════ MIGRAÇÃO DA VERSÃO ANTERIOR ════════════════ */
-function migrateV1(){
-  return new Promise(res=>{
-    if(!window.indexedDB)return res(false);
-    let req;try{req=indexedDB.open("billings2",1)}catch(e){return res(false)}
-    let created=false;
-    req.onupgradeneeded=e=>{created=true;e.target.transaction.abort()};
-    req.onerror=()=>res(false);
-    req.onsuccess=e=>{
-      const db=e.target.result;
-      if(created||!db.objectStoreNames.contains("days")){db.close();return res(false)}
-      const all=s=>new Promise(r=>{try{const q=db.transaction(s,"readonly").objectStore(s).getAll();q.onsuccess=()=>r(q.result||[]);q.onerror=()=>r([])}catch(e){r([])}});
-      Promise.all([all("cycles"),all("days"),all("meta")]).then(([cycles,days,meta])=>{
-        db.close();
-        if(!days.length&&!meta.length)return res(false);
-        S.starts=[...new Set(cycles.map(c=>c.inicio).filter(Boolean))].sort();
-        days.forEach(d=>{if(!d.data)return;S.days[d.data]={sinto:d.sinto||"",vejo:d.vejo||"",sang:d.sang||"",cor:d.cor||"",sym:d.sym||"",
-          fert:!!d.fert,rule:d.rule||"",apice:!!d.apice,rel:!!d.rel,sintomas:[],nota:"",desc:d.desc||"",ts:Date.now()}});
-        const m=meta.find(x=>x.id==="cadastro");
-        if(m){S.profile.nome=m.uNome||"";S.profile.instrutora=m.iNome||"";S.profile.instrContato=m.iContato||"";
-          if(m.uNasc){const b=parse(m.uNasc),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;S.profile.idade=String(a)}
-          if(m.uObs&&/amament/i.test(m.uObs))S.profile.situacao="Amamentando";}
-        save();res(true);
-      });
-    };
-  });
-}
-
-/* ════════════════ BACKUP ════════════════ */
-function exportBackup(){
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:"application/json"}));
-  a.download="grafico-mob-copia-"+todayISO()+".json";document.body.appendChild(a);a.click();a.remove();
-  toast("Cópia salva ✓");
-}
-async function importBackup(file){
-  try{const o=JSON.parse(await file.text());
-    if(!o||typeof o.days!=="object")throw 0;
-    if(!confirm("Substituir os dados deste aparelho pela cópia?"))return;
-    const f=fresh();S={...f,...o,profile:{...f.profile,...(o.profile||{})},onboarded:true};save();
-    toast("Cópia restaurada ✓");setFormDate(todayISO());refreshAll();
-  }catch(e){toast("Arquivo inválido")}
-}
-
-/* ════════════════ NAVEGAÇÃO ════════════════ */
+/* ═══════════ NAVEGAÇÃO ═══════════ */
 function go(v){
   $$("#bnav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
   $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
-  if(v==="graf")renderChart();
-  if(v==="duv"){renderAcomp();renderQ();renderO()}
-  if(v==="perf")renderProfile();
-  scrollTo(0,0);
+  if(v==="grafico")renderChart();
+  if(v==="instrutora"){renderAcomp();renderQ();renderO()}
+  if(v==="perfil")renderProfile();
+  window.scrollTo(0,0);
 }
 function bindClose(){$$("[data-close]").forEach(b=>b.onclick=()=>$("#"+b.dataset.close).classList.remove("show"))}
 function refreshAll(){
   renderTop();
-  if($("#v-graf").classList.contains("on"))renderChart();
-  if($("#v-perf").classList.contains("on"))renderStarts();
-  if($("#v-duv").classList.contains("on")){renderAcomp();renderQ();renderO()}
+  if($("#v-grafico").classList.contains("on"))renderChart();
+  if($("#v-perfil").classList.contains("on")){renderStarts();renderReminders();renderStoreNote()}
+  if($("#v-instrutora").classList.contains("on")){renderAcomp();renderQ();renderO()}
 }
 
-/* ════════════════ INÍCIO ════════════════ */
-(async function init(){
-  if(isNew){const ok=await migrateV1();if(ok)toast("Seus registros anteriores foram trazidos ✓")}
-  renderLearn();
-  setFormDate(todayISO());
-  renderTop();
+/* ═══════════ MICROFONE ═══════════ */
+async function setupMic(){
+  const btn=$("#micBtn"),hint=$("#voiceHint"),inp=$("#fVoice");
+  const idleHint="Toque no microfone e fale: “molhada, muco branco, estresse”.";
+  if(IN_CLAUDE){
+    const d=await window.claude.use("dictation");if(!d)return;
+    btn.hidden=false;hint.textContent=idleHint;
+    let text="";
+    d.onPartial(({text:p})=>{if(p)inp.value=(text+" "+p).trim()});
+    d.onFinal(({text:f})=>{text=(text+f).trim();inp.value=text});
+    d.onState(({state,reason})=>{
+      btn.classList.toggle("rec",state!=="idle");
+      if(state==="listening")hint.textContent="Ouvindo… toque de novo para parar.";
+      if(state==="idle"){hint.textContent=idleHint;if(text.trim())parseVoice(text);text="";
+        if(reason==="unavailable"||reason==="not_granted")btn.hidden=true}
+    });
+    btn.onclick=()=>{if(d.active()){d.stop();return}text="";inp.value="";
+      d.start().catch(e=>{if(e&&(e.code==="unavailable"||e.code==="not_granted")){btn.hidden=true;hint.textContent="Use o microfone do teclado do celular para ditar."}})};
+    return;
+  }
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return;
+  btn.hidden=false;hint.textContent=idleHint;let rec=null;
+  btn.onclick=()=>{
+    if(rec){rec.stop();return}
+    rec=new SR();rec.lang="pt-BR";rec.interimResults=true;let fin="";
+    btn.classList.add("rec");hint.textContent="Ouvindo…";
+    rec.onresult=e=>{let s="";for(const r of e.results)s+=r[0].transcript;inp.value=s;fin=s};
+    rec.onerror=()=>toast("Não consegui ouvir");
+    rec.onend=()=>{btn.classList.remove("rec");rec=null;hint.textContent=idleHint;if(fin.trim())parseVoice(fin)};
+    rec.start();
+  };
+}
 
+/* ═══════════ INÍCIO ═══════════ */
+function bindAll(){
   $$("#bnav button").forEach(b=>b.onclick=()=>go(b.dataset.v));
   $("#fDate").onchange=e=>{if(e.target.value)setFormDate(e.target.value)};
   $$("[data-qd]").forEach(b=>b.onclick=()=>setFormDate(addDays(todayISO(),+b.dataset.qd)));
   $("#fVoice").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();if(e.target.value.trim())parseVoice(e.target.value)}};
-  $("#fVoice").onchange=e=>{if(e.target.value.trim())parseVoice(e.target.value)};
+  $("#fVoice").onblur=e=>{const v=e.target.value.trim();if(v&&v!==e.target.dataset.parsed){e.target.dataset.parsed=v;parseVoice(v)}};
   $("#fDesc").oninput=e=>{F.desc=e.target.value;F.descEdited=true;$("#pvDesc").textContent=F.desc};
   $("#fNota").oninput=e=>{F.nota=e.target.value};
-  $("#tgNovo").onclick=()=>{F.novo=!F.novo;renderForm()};
-  $("#tgApice").onclick=()=>{F.apice=!F.apice;if(F.apice&&!F.cor&&!F.manual){F.sinto=F.sinto||"Escorregadia";applySuggestion()}renderForm()};
-  $("#tgRel").onclick=()=>{F.rel=!F.rel;renderForm()};
-  $("#saveDayBtn").onclick=saveDay;
-  $("#delDayBtn").onclick=deleteDay;
-
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(SR){
-    let rec=null;
-    $("#micBtn").onclick=()=>{
-      if(rec){rec.stop();return}
-      rec=new SR();rec.lang="pt-BR";rec.interimResults=true;rec.continuous=false;
-      $("#micBtn").classList.add("rec");$("#voiceHint").textContent="Ouvindo… fale o que sentiu e viu.";
-      let final="";
-      rec.onresult=e=>{let s="";for(const r of e.results)s+=r[0].transcript;$("#fVoice").value=s;final=s};
-      rec.onerror=e=>{toast(e.error==="not-allowed"?"Permita o microfone":"Não consegui ouvir")};
-      rec.onend=()=>{$("#micBtn").classList.remove("rec");rec=null;$("#voiceHint").textContent="Toque no 🎤 e fale: “molhada, clara de ovo, estresse”.";if(final.trim())parseVoice(final)};
-      rec.start();
-    };
-  }else{
-    $("#micBtn").style.display="none";
-    $("#voiceHint").textContent="Dica: use o 🎤 do teclado do celular para ditar, e toque em OK.";
-  }
-
-  $("#pdfBtn").onclick=openPdf;
-  $("#pdfGo").onclick=genPdf;
-  $$('input[name="pdfMode"]').forEach(r=>r.onchange=()=>{const c=document.querySelector('input[name="pdfMode"]:checked').value;
-    $("#pdfCiclos").style.display=c==="ciclo"?"":"none";$("#pdfPeriodo").style.display=c==="periodo"?"":"none"});
-  $("#pdfQAll").onchange=e=>{if(e.target.checked)$("#pdfQ").checked=true};
-
+  $("#mkNovo").onclick=()=>{F.novo=!F.novo;renderForm()};
+  $("#mkApice").onclick=()=>{F.apice=!F.apice;renderForm()};
+  $("#mkRel").onclick=()=>{F.rel=!F.rel;renderForm()};
+  $("#mkLs").onclick=()=>{F.rule=F.rule==="LS"?"":"LS";renderForm()};
+  $("#saveDayBtn").onclick=saveDay;$("#delDayBtn").onclick=deleteDay;
+  $("#descTg").onclick=()=>{S.prefs.desc=!descOn();save();renderChart()};
+  $("#pdfBtn").onclick=openPdf;$("#pdfGo").onclick=genPdf;
+  $$('input[name="pdfMode"]').forEach(r=>r.onchange=()=>{const c=document.querySelector('input[name="pdfMode"]:checked').value;$("#pdfCiclos").hidden=c!=="ciclo";$("#pdfPeriodo").hidden=c!=="periodo"});
   $("#qAdd").onclick=()=>{const t=$("#qNew").value.trim();if(!t){toast("Escreva a dúvida");return}
-    S.duvidas.push({id:Date.now(),date:todayISO(),text:t,resposta:"",done:false});save();$("#qNew").value="";qFilter="pend";renderQ();renderTop();toast("Dúvida anotada ✓")};
+    S.duvidas.push({id:Date.now(),date:todayISO(),text:t,resposta:"",done:false});save();$("#qNew").value="";qFilter="pend";renderQ();renderTop();toast("Dúvida anotada")};
   $$("[data-qf]").forEach(b=>b.onclick=()=>{qFilter=b.dataset.qf;renderQ()});
   $("#oDate").value=todayISO();
   $("#oAdd").onclick=()=>{const t=$("#oNew").value.trim();if(!t){toast("Escreva a orientação");return}
-    S.orient.push({id:Date.now(),date:$("#oDate").value||todayISO(),text:t});save();$("#oNew").value="";renderO();toast("Orientação salva ✓")};
-
-  $("#profSave").onclick=async()=>{if(await saveProfile("p_")){toast("Cadastro salvo ✓");renderProfile()}};
-  $("#notifBtn").onclick=askNotif;
-  $("#icsDaily").onclick=icsDaily;
-  $("#icsAcomp").onclick=icsAcomp;
+    S.orient.push({id:Date.now(),date:$("#oDate").value||todayISO(),text:t});save();$("#oNew").value="";renderO();toast("Orientação salva")};
+  $("#profSave").onclick=()=>{if(saveProfile("p_")){toast("Cadastro salvo");renderProfile()}};
+  $("#notifBtn").onclick=async()=>{const r=await Notification.requestPermission();if(r==="granted"){S.profile.lembrete=true;save()}renderReminders()};
   $("#startAdd").onclick=()=>{const v=$("#startNew").value;if(!v)return;if(!S.starts.includes(v))S.starts.push(v);S.starts.sort();save();$("#startNew").value="";refreshAll();toast("Início de ciclo adicionado")};
   $("#bkExport").onclick=exportBackup;
   $("#bkImport").onclick=()=>$("#bkFile").click();
   $("#bkFile").onchange=e=>{if(e.target.files[0])importBackup(e.target.files[0]);e.target.value=""};
-  $("#wipeBtn").onclick=()=>{if(confirm("Apagar TODOS os dados deste aparelho? Faça uma cópia antes.")&&confirm("Tem certeza? Não dá para desfazer.")){localStorage.removeItem(LS);location.reload()}};
-  $$(".ov").forEach(o=>o.onclick=e=>{if(e.target===o)o.classList.remove("show")});
+  $("#wipeBtn").onclick=async()=>{
+    if(!await dialog({title:"Apagar todos os dados?",text:"Isso apaga todos os registros, dúvidas e o cadastro. Salve uma cópia antes. Não dá para desfazer.",ok:"Apagar tudo",danger:true}))return;
+    S=fresh();save();if(cloud.db){clearTimeout(cloud.timer);await flushCloud()}location.reload()};
+  $$(".ov").forEach(o=>{if(o.id!=="dlgOv")o.onclick=e=>{if(e.target===o)o.classList.remove("show")}});
   bindClose();
-
-  if(!S.onboarded){document.body.classList.add("onb");$("#onb").classList.add("show");onbRender()}
-  else if(location.hash==="#registrar")go("hoje");
-  else go(Object.keys(S.days).length?"hoje":"graf");
-
-  checkReminder();
-  setInterval(checkReminder,60000);
+}
+async function boot(){
+  bindAll();renderLearn();setFormDate(todayISO());setupMic();
+  if(IN_CLAUDE&&!hasLocal()){await initCloud()}else if(IN_CLAUDE){initCloud().then(()=>{setFormDate(F.date);refreshAll();renderStoreNote()})}
+  $("#bootLoading").hidden=true;
+  renderTop();
+  if(!S.onboarded){$("#onb").classList.add("show");onbRender()}
+  else{$("#bnav").hidden=false;go(location.hash==="#registrar"||Object.keys(S.days).length?"registrar":"grafico")}
+  checkReminder();setInterval(checkReminder,60000);
   document.addEventListener("visibilitychange",()=>{if(!document.hidden){checkReminder();renderTop()}});
-})();
+}
+boot();
 </script>
+
 </body>
 </html>
