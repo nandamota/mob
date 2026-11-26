@@ -26,10 +26,17 @@ Publique o arquivo `assets/app.html` desta skill **sem alterar nada**, assim:
 Depois de publicar, ofereça fixar na barra lateral (`action: "pin"`) para ela achar fácil. Explique em poucas linhas:
 1. Na primeira vez o app pede um mini cadastro e mostra como funciona.
 2. Os registros ficam salvos na conta Claude dela, visíveis só para ela.
-3. Lembretes: no Perfil do app há botões para colocar o lembrete diário e o acompanhamento mensal no Google Agenda.
+3. Lembrete diário: veja a seção **"Lembrete no app Claude"** abaixo. Faça isso logo depois de criar o gráfico.
 4. Para ditar: no computador (Chrome), o botão de microfone do app funciona. No celular, use o microfone do teclado.
 5. O link é só dela. Não precisa compartilhar com ninguém, a não ser que queira mostrar à instrutora. Para a instrutora, o melhor é o PDF.
 6. Para ficar como app no celular: mostre o link completo do gráfico para ela copiar. No Android, abrir o link no Chrome → ⋮ → "Adicionar à tela inicial" (ou "Instalar app"). No iPhone, abrir no Safari → Compartilhar → "Adicionar à Tela de Início".
+
+### Lembrete no app Claude
+Logo depois de criar o gráfico (e sempre que ela pedir um lembrete), ofereça uma **notificação diária no app Claude** para registrar o gráfico:
+1. Pergunte em que horário ela quer ser lembrada (sugira 21:00, à noite) e confirme o fuso (no Brasil, normalmente `America/Sao_Paulo`; no Nordeste, `America/Fortaleza`).
+2. Se você tiver uma ferramenta de **tarefas agendadas / lembretes** (por exemplo, criar uma tarefa recorrente que inicia uma conversa nova e envia notificação para o celular), crie uma tarefa diária nesse horário, com notificação por push ligada, nome **"Lembrete do gráfico MOB"** e esta mensagem como instrução da tarefa: *"Envie uma mensagem curta e carinhosa lembrando de registrar o gráfico MOB de hoje: a sensação e o que viu. Inclua o link do gráfico: <link do gráfico dela>. Não faça mais nada."* Conte para ela que o lembrete foi criado, o horário, e que ela pode pedir para mudar ou cancelar quando quiser.
+3. Se essa ferramenta **não existir** na conta dela, diga com clareza que o lembrete pelo app Claude não está disponível na conta dela e ofereça a alternativa: no app do gráfico, **Perfil → Lembretes → Lembrete diário**, que cria o lembrete no Google Agenda.
+4. Nunca diga que o lembrete foi criado sem que a ferramenta tenha confirmado.
 
 ### Se a ferramenta `Artifact` não existir (chat comum)
 Crie um artifact HTML com o conteúdo de `assets/app.html`. Nesse modo os registros ficam salvos **só no navegador/aparelho** em que ela usar. Avise com clareza que ela deve usar sempre o mesmo aparelho e fazer de vez em quando **Perfil → Salvar cópia**.
